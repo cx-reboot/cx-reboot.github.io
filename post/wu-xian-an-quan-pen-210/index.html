@@ -1,0 +1,318 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>无线安全（PEN-210） | CXAQHQ</title>
+<link rel="shortcut icon" href="https://cx-reboot.github.io/favicon.ico?v=1680620821880">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cx-reboot.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="无线安全（PEN-210） | CXAQHQ - Atom Feed" href="https://cx-reboot.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="第一章
+IEEE 802.11
+1997 年发布的原始 IEEE 802.11 标准
+Wi-Fi 无线电可以接收或传输，但不能同时进行。这种功能限制是我们将 Wi-Fi 无线电称为半双工的原因
+什么是IEEE
+电气和电子工程师协会 (IEE..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cx-reboot.github.io">
+  <img class="avatar" src="https://cx-reboot.github.io/images/avatar.png?v=1680620821880" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              无线安全（PEN-210）
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-03-07
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="第一章">第一章</h1>
+<h2 id="ieee-80211">IEEE 802.11</h2>
+<p>1997 年发布的原始 IEEE 802.11 标准<br>
+Wi-Fi 无线电可以接收或传输，但不能同时进行。这种功能限制是我们将 Wi-Fi 无线电称为半双工的原因</p>
+<p>什么是IEEE</p>
+<p>电气和电子工程师协会 (IEEE)</p>
+<p>IEEE 的 802 委员会制定了局域网 (LAN) 标准和城域网 (MAN) 标准。这些包括以太网、令牌环、无线 LAN、桥接和虚拟桥接 LAN</p>
+<p>IEEE 802.11 是无线局域网 (WLAN) 的标准</p>
+<ul>
+<li>802.11：最初的无线局域网标准</li>
+<li>802.11a：在 5 GHz 上高达 54 Mbit/s</li>
+<li>802.11b：2.4 GHz 上 5.5 Mbit/s 和 11 Mbit/s</li>
+<li>802.11g：在 2.4 GHz 上高达 54 Mbit/s，向后兼容 802.11b</li>
+<li>802.11h：限制 5GHz 频段功率和传输的监管要求</li>
+<li>802.11i：提供增强的安全性</li>
+<li>802.11n：通过多输入/多输出 (MIMO) 提供更高的吞吐量，又名 Wi-Fi 4</li>
+<li>802.11ac：非常高的吞吐量 &lt; 6 GHz，又名 Wi-Fi 5</li>
+<li>802.11ad：60GHz 频段中的多千兆位，称为 WiGig</li>
+<li>802.11ax：高效 (HE) 无线局域网，又名 Wi-Fi 6</li>
+<li></li>
+</ul>
+<h2 id="无线网络">无线网络</h2>
+<blockquote>
+<p>监控模式本身并不是一种架构，而是无线网卡使用的一种模式，可帮助我们在渗透测试期间捕获 Wi-Fi 帧并注入数据包</p>
+</blockquote>
+<p>基础设施网络中至少有一个AP和一个站点（STA）。这两个组成了一个基本服务集（BSS）。AP 通常连接到有线网络，称为分布式系统 (DS)。</p>
+<figure data-type="image" tabindex="1"><img src="https://cx-reboot.github.io/post-images/1678189931448.png" alt="" loading="lazy"></figure>
+<p>监控模式不是无线模式或架构方案，而是无线设备的状态，允许它监控其范围内的所有 Wi-Fi 信号。<br>
+让我们想象一个场景，我们在我们的渗透测试目标之外的停车场。有几台笔记本电脑连接到目标的 Wi-Fi 网络。如果我们将 Wi-Fi 卡置于监控模式，我们将看到的不仅仅是我们自己、AP 以及连接到同一 AP 的所有其他客户端。我们还将看到来自范围内任何其他网络的流量，例如附近的企业、住宅和移动 Wi-Fi 热点。</p>
+<p>监控模式对于无线渗透测试至关重要，因为它可以捕获原始 802.11 帧并允许数据包注入。1大多数用于测试 Wi-Fi 网络的工具都要求我们的无线接口处于监控模式。</p>
+<h2 id="wifi加密">WIFI加密</h2>
+<p>Wi-Fi 通过无线电波工作，这意味着它容易被窃听，因此必须使用加密来保护传输的数据。</p>
+<ul>
+<li>
+<p>WEP<br>
+有线等效保密 (WEP) 1是在 802.11 标准发布时创建的，目的是提供类似于有线网络中的保密功能。</p>
+</li>
+<li>
+<p>WPA/WPA2<br>
+一旦发现 WEP 中的缺陷（WEP 可以在一分钟内被破解），IEEE 就创建了一个名为 802.11i 的新组织，旨在提高 Wi-Fi 安全性。Wi-Fi 保护访问 (WPA) 2 在 2003 年取代了 WEP，随后在 2004 年取代了 WPA2（802.11i 标准）。</p>
+</li>
+<li>
+<p>WPS<br>
+不久之后，来自不同供应商的技术允许用户安全地共享要添加到网络的设备上的密码，而无需键入。Wi-Fi Protected Setup (WPS) 3于 2006 年发布以对其进行标准化。</p>
+</li>
+<li>
+<p>WPA3<br>
+WPA3 于 2018 年 1 月由 Wi-Fi 联盟首次公布，并于同年 6 月发布4。它并不是要取代任何现有的安全解决方案，而是旨在解决以下几个关键问题：</p>
+</li>
+<li>
+<p>WEP</p>
+<ol>
+<li>客户端向AP发送认证请求</li>
+<li>AP发送“成功”的认证响应</li>
+<li>STA向接入点发送关联请求</li>
+<li>如果客户端的能力满足AP的能力，则AP发送关联响应</li>
+</ol>
+</li>
+</ul>
+<p>RC4<br>
+RC4 是一种对称密码，这意味着使用相同的密钥来加密和解密数据。它创建一个位流，这些位流与纯文本进行异或运算以获取加密数据。要解密它，我们可以简单地将加密文本与密钥流进行异或以恢复明文。</p>
+<ul>
+<li>WPA<br>
+WPA 加密有两种形式：
+<ol>
+<li>WPA Personal：使用预共享密钥身份验证 (WPA-PSK)，这是网络所有对等方共享的密码。</li>
+<li>WPA Enterprise：使用 802.1X 和 Radius 服务器进行身份验证、授权和计费 (AAA)。</li>
+</ol>
+</li>
+</ul>
+<h2 id="linux-无线工具">Linux 无线工具</h2>
+<pre><code>kali@kali:~$ sudo airmon-ng
+
+PHY     Interface       Driver          Chipset
+
+phy0    wlan0           ath9k_htc       Qualcomm Atheros Communications AR9271 802.11n
+</code></pre>
+<pre><code>kali@kali:~# sudo lsusb -vv
+
+Bus 001 Device 002: ID 0cf3:9271 Qualcomm Atheros Communications AR9271 802.11n
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          255 Vendor Specific Class
+  bDeviceSubClass       255 Vendor Specific Subclass
+  bDeviceProtocol       255 Vendor Specific Protocol
+  bMaxPacketSize0        64
+  idVendor           0x0cf3 Qualcomm Atheros Communications
+  idProduct          0x9271 AR9271 802.11n
+  bcdDevice            1.08
+  iManufacturer          16 ATHEROS
+  iProduct               32 USB2.0 WLAN
+  iSerial                48 12345
+  bNumConfigurations      1
+</code></pre>
+<p>Linux 网络工具</p>
+<ul>
+<li>iwconfig</li>
+<li>iw</li>
+<li>rfkill</li>
+</ul>
+<h2 id="wireshark">Wireshark</h2>
+<h2 id="数据包">数据包</h2>
+<h1 id="第二章">第二章</h1>
+<h2 id="aircrack-ng-套件">Aircrack-ng 套件</h2>
+<h2 id="hash-破解">Hash 破解</h2>
+<h2 id="攻击wps">攻击WPS</h2>
+<h2 id="恶意wifi流氓接入点">恶意WIFI（流氓接入点）</h2>
+<h2 id="攻击wpa企业">攻击WPA企业</h2>
+<h2 id="攻击强制门户">攻击强制门户</h2>
+<h2 id="bettercap-套件">Bettercap 套件</h2>
+<h2 id="kismet-攻击">Kismet 攻击</h2>
+<h2 id="芯片与驱动程序">芯片与驱动程序</h2>
+<h2 id="网络连接">网络连接</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%AC%AC%E4%B8%80%E7%AB%A0">第一章</a>
+<ul>
+<li><a href="#ieee-80211">IEEE 802.11</a></li>
+<li><a href="#%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C">无线网络</a></li>
+<li><a href="#wifi%E5%8A%A0%E5%AF%86">WIFI加密</a></li>
+<li><a href="#linux-%E6%97%A0%E7%BA%BF%E5%B7%A5%E5%85%B7">Linux 无线工具</a></li>
+<li><a href="#wireshark">Wireshark</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%8C%85">数据包</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0">第二章</a>
+<ul>
+<li><a href="#aircrack-ng-%E5%A5%97%E4%BB%B6">Aircrack-ng 套件</a></li>
+<li><a href="#hash-%E7%A0%B4%E8%A7%A3">Hash 破解</a></li>
+<li><a href="#%E6%94%BB%E5%87%BBwps">攻击WPS</a></li>
+<li><a href="#%E6%81%B6%E6%84%8Fwifi%E6%B5%81%E6%B0%93%E6%8E%A5%E5%85%A5%E7%82%B9">恶意WIFI（流氓接入点）</a></li>
+<li><a href="#%E6%94%BB%E5%87%BBwpa%E4%BC%81%E4%B8%9A">攻击WPA企业</a></li>
+<li><a href="#%E6%94%BB%E5%87%BB%E5%BC%BA%E5%88%B6%E9%97%A8%E6%88%B7">攻击强制门户</a></li>
+<li><a href="#bettercap-%E5%A5%97%E4%BB%B6">Bettercap 套件</a></li>
+<li><a href="#kismet-%E6%94%BB%E5%87%BB">Kismet 攻击</a></li>
+<li><a href="#%E8%8A%AF%E7%89%87%E4%B8%8E%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F">芯片与驱动程序</a></li>
+<li><a href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5">网络连接</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cx-reboot.github.io/post/nei-wang-cun-huo-zhu-ji-tan-ce/">
+              <h3 class="post-title">
+                内网存活主机探测
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://cx-reboot.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
