@@ -1,0 +1,451 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cobalt Strike 通讯协议分析 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Cobalt Strike 通讯协议分析 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="元数据上报
+数据包格式
++-----------------+-----------------+-----------------+-----------------+-------------------+---------------..." />
+    <meta name="keywords" content="CobaltStrike" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Cobalt Strike 通讯协议分析
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-04-20
+              </span>
+              <span>
+                9 min read
+              </span>
+              
+                <a href="https://blog.cxaqhq.cn/tag/wuzWyw5MWV/" class="post-tag">
+                  # CobaltStrike
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://blog.cxaqhq.cn/post-images/cobalt-strike-通讯协议分析.jpg" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="元数据上报">元数据上报</h2>
+<p><em><strong>数据包格式</strong></em></p>
+<pre><code>+-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|  固定开头 (4B)  |   数据长度 (4B) | AES密钥 (16B)  |  编码1 (2B)     |  编码2 (2B)       |  会话ID (4B)    |
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|   magic number   |   数据实际长度  |   AES密钥部分   |  编码类型 1     |  编码类型 2       |  beacon session ID|
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|   PID (4B)      |   SSH端口 (2B)  |  系统和程序标识 |  Windows NT版本 |  Windows Build号   |  未知作用 (4B)  |
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+|  ptr_gmh (4B)   |  ptr_gpa (4B)   | 内网IP地址 (4B) | 计算机信息      |                   |                 |
++-----------------+-----------------+-----------------+-----------------+-------------------+-----------------+
+</code></pre>
+<p><em><strong>数据包格式文字解答</strong></em></p>
+<blockquote>
+<p>引用：https://xz.aliyun.com/t/12546?time__1311=GqGxuiD%3DiQLxlrzd0%3DAmODmh4fEq7TymD&amp;u_atoken=5e0d1b0f22c6cd147d8471acc50da034&amp;u_asig=1a0c39d517305973725098259e003e#toc-8</p>
+</blockquote>
+<pre><code>4byte：元数据的固定开头magic number 48897
+4byte：数据长度
+16byte：把这16位进行sha256加密，得出的32位二进制结果的前16位就是通信的aes密钥，后16位就是hmac hash
+2byte：大端字节序表示的编码，具体对应关系在WindowsCharsets.getName
+2byte：大端字节序表示的编码，具体对应关系在WindowsCharsets.getName
+4byte：beacon session id，用来标识每个会话
+4byte：pid
+2byte：ssh port
+1byte：用来判断系统和程序位数，和是否system权限，初始值为0，如果是64位系统就+4，如果是64位程序就+2，如果是system权限就+8，报错获取不到就+1，这里用按位与的方法来累加判断，用非常少的代码就表实现了这个判断，很巧妙。
+2byte：windows nt 版本
+2byte：window 系统build 号
+4byte：未知作用
+4byte：ptr_gmh
+4byte：ptr_gpa
+4byte：大端字节序表示的内网ip地址
+
+计算机信息：从输入的metadata 的第59位开始截取到末尾，截取的数据就是计算机名\n用户名\n程序名
+</code></pre>
+<p>元数据及对应解析结果</p>
+<pre><code>+++++++++++++++元数据格式解析+++++++++++++++
+原始数据:  [0 0 190 239 0 0 0 98 1 162 254 43 204 151 152 151 148 205 223 57 183 86 194 164 233 253 233 253 0 13 178 162 0 0 26 14 0 0 2 15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 76 50 168 192 77 97 99 66 111 111 107 45 80 114 111 45 45 45 99 120 97 113 104 113 46 108 111 99 97 108 32 40 68 97 114 119 105 110 41 9 99 120 97 113 104 113 9 109 97 105 110]
+魔数: 48879
+数据长度: 98
+AES 密钥: 8d7b19390812af8d9ae8c09eabaacb92
+HMAC: 26a61f715dffae444b6400d31c2743ec
+编码 1: 59901, 编码 2: 59901
+会话 ID: 897698
+进程 ID: 6670
+SSH 端口: 0
+操作系统状态: 2
+Windows NT 版本: 3840, Build: 0
+未知字段 1: 0
+指针 GMH: 0, GPA: 0
+内网 IP 地址: 192.168.50.76
+计算机信息（原始字节数据转换为字符串）: MacBook-Pro---cxaqhq.local (Darwin)	cxaqhq	main
+计算机信息，原始字节数据:
+ [77 97 99 66 111 111 107 45 80 114 111 45 45 45 99 120 97 113 104 113 46 108 111 99 97 108 32 40 68 97 114 119 105 110 41 9 99 120 97 113 104 113 9 109 97 105 110]
+信息: MacBook-Pro---cxaqhq.local (Darwin)	cxaqhq	main
++++++++++++++++元数据格式解析+++++++++++++++
+</code></pre>
+<h2 id="teamserver-下发任务">TeamServer 下发任务</h2>
+<p><em><strong>数据格式</strong></em></p>
+<pre><code>+-----------------+-----------------+-----------------+-----------------+-------------------+
+|    时间戳 (4B)  |   任务数据长度 (4B) |  命令类型 (4B)   | cmdbuf长度 (4B) |   cmd buf (N)     |
++-----------------+-----------------+-----------------+-----------------+-------------------+
+
+</code></pre>
+<p><em><strong>数据格式文字说明</strong></em></p>
+<blockquote>
+<p>引用：https://xz.aliyun.com/t/12546?time__1311=GqGxuiD%3DiQLxlrzd0%3DAmODmh4fEq7TymD&amp;u_atoken=5e0d1b0f22c6cd147d8471acc50da034&amp;u_asig=1a0c39d517305973725098259e003e#toc-8</p>
+</blockquote>
+<pre><code>4byte 时间戳
+4byte 任务数据长度
+任务数据
+    4byte 命令类型
+    4byte cmdbuf长度
+    cmd buf
+</code></pre>
+<h3 id="pwd-任务下发">pwd 任务下发</h3>
+<p>解析结果，cmdType: 39 为pwd 命令，具体cmdType 可见文末部分。</p>
+<pre><code>+++++++++++++++任务数据格式解析+++++++++++++++
+原始返回数据:  [53 186 77 13 96 199 175 8 208 35 189 31 249 27 85 158 2 5 23 238 25 84 50 40 154 21 248 0 174 132 82 150 114 73 122 46 67 99 54 37 11 156 141 177 103 225 102 69]
+AES解密数据:  [103 39 14 19 0 0 0 8 0 0 0 39 0 0 0 0 65 65 65 65 65 65 65 65 65 65 65 65 65 65 65 65]
+前四字节:  [103 39 14 19]
+4-8字节 长度:  [0 0 0 8]
+时间戳: 1730612755
+任务数据长度: 8
+命令类型: 39
+cmdbuf 长度: 0
+cmd buf: 
+cmdType: 39
+cmdBufferString: 
+cmdBuffer: []
+返回任务执行结果
+callbackType:  19
+执行结果:  [47 85 115 101 114 115 47 99 120 97 113 104 113 47 116 111 111 108 115 47 67 50 47 103 101 97 99 111 110 95 112 114 111 95 116 101 115 116]
+执行结果字符串: /Users/cxaqhq/tools/C2/geacon_pro_test
++++++++++++++++任务数据格式解析+++++++++++++++
+</code></pre>
+<h3 id="命令行ps和页面ps命令区别">命令行PS和页面PS命令区别</h3>
+<p>命令行PS 下发的任务数据</p>
+<pre><code>前四字节:  [103 38 250 90]
+4-8字节 长度:  [0 0 0 12]
+时间戳: 1730607706
+任务数据长度: 12
+命令类型: 32
+cmdbuf 长度: 4
+cmd buf: 00000000
+cmdType: 32
+cmdBufferString: 
+cmdBuffer: [0 0 0 0]
+</code></pre>
+<p>页面PS 下发的任务数据</p>
+<pre><code>前四字节:  [103 38 250 113]
+4-8字节 长度:  [0 0 0 12]
+时间戳: 1730607729
+任务数据长度: 12
+命令类型: 32
+cmdbuf 长度: 4
+cmd buf: 00000001
+cmdType: 32
+cmdBufferString: 
+cmdBuffer: [0 0 0 1]
+</code></pre>
+<p>区别就在于cmdbuf 内容是否存在</p>
+<h2 id="beacon-结果回传">Beacon 结果回传</h2>
+<p><em><strong>数据包格式</strong></em></p>
+<pre><code>+-----------------+-------------------+-----------------+-------------------+-----------------+---------------------+
+|    数据长度 (4B)  |    AES 加密数据 (N)   |  CS 防重放整数 (4B) |   数据长度 (4B)   |  任务类型 (4B)   |  任务结果数据 (M)  |
+|                 |                   |                 |                   |                 |                     |
+|                 |                   |                 |                   |                 |                     |
++-----------------+-------------------+-----------------+-------------------+-----------------+---------------------+
+|                       其他数据 (X)                                    |
++-----------------------------------------------------------------------+
+|                               HMAC (16B)                             |
++-----------------------------------------------------------------------+
+</code></pre>
+<p><em><strong>数据包格式文字说明</strong></em></p>
+<blockquote>
+<p>引用：https://xz.aliyun.com/t/12546?time__1311=GqGxuiD%3DiQLxlrzd0%3DAmODmh4fEq7TymD&amp;u_atoken=5e0d1b0f22c6cd147d8471acc50da034&amp;u_asig=1a0c39d517305973725098259e003e#toc-8</p>
+</blockquote>
+<pre><code>4byte：数据长度
+    aes 加密数据
+        4byte：cs 防重放int
+        4byte：数据长度
+            4byte：数据对应任务类型
+            任务结果数据
+            其他数据
+    16byte：hmac hash签名
+</code></pre>
+<p>任务类型（Callback）: 19，具体Callback可见文末部分。</p>
+<pre><code>+++++++++++++++上报数据格式解析+++++++++++++++
+加密后原始数据:  [0 0 0 80 76 249 176 87 29 175 60 99 241 216 76 224 237 233 157 78 87 1 133 248 49 69 23 163 44 209 63 97 143 65 255 166 240 222 185 170 6 6 62 224 67 143 214 248 216 113 100 195 198 230 250 9 74 121 55 65 219 143 124 205 105 92 120 235 140 155 97 71 135 170 129 187 141 184 215 6 135 3 97 241]
+加密后原始数据 (hex): 000000504cf9b0571daf3c63f1d84ce0ede99d4e570185f8314517a32cd13f618f41ffa6f0deb9aa06063ee0438fd6f8d87164c3c6e6fa094a793741db8f7ccd695c78eb8c9b614787aa81bb8db8d706870361f1
+数据长度: 80
+AES 长度: 64
+AES 数据: 4cf9b0571daf3c63f1d84ce0ede99d4e570185f8314517a32cd13f618f41ffa6f0deb9aa06063ee0438fd6f8d87164c3c6e6fa094a793741db8f7ccd695c78eb
+AES 数据:  [76 249 176 87 29 175 60 99 241 216 76 224 237 233 157 78 87 1 133 248 49 69 23 163 44 209 63 97 143 65 255 166 240 222 185 170 6 6 62 224 67 143 214 248 216 113 100 195 198 230 250 9 74 121 55 65 219 143 124 205 105 92 120 235]
+KEY : 0bdd5db92d8dbe82e8b98d7c754af58d
+IV : 6162636465666768696a6b6c6d6e6f70
+解密结果: */Users/cxaqhq/tools/C2/geacon_pro_testAAAAAAAAAAAAAA
+解密数据长度: 64
+CS 防重放整数: 1
+数据长度: 42
+任务类型: 19
+任务结果数据: /Users/cxaqhq/tools/C2/geacon_pro_testAAAA
+其他数据: 41414141414141414141
+HMAC hash 签名: 8c9b614787aa81bb8db8d706870361f1
++++++++++++++++上报数据格式解析+++++++++++++++
+</code></pre>
+<h2 id="aes解密">AES解密</h2>
+<pre><code>AES 数据 (hex): c1523d7fb9925c88dd6515a8c8967468ad9a9b063c7bcff92a9882a776c4802ab0da181dafad1e503d6536fecb65873e5cd1731243baca9bf45f091d79262a00
+AES KEY (hex): 9d2154fb874d9929b01c170be95a5a42
+AES IV (hex): 6162636465666768696a6b6c6d6e6f70
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://blog.cxaqhq.cn/post-images/1730621618509.png" alt="" loading="lazy"></figure>
+<h2 id="cmd_type">CMD_TYPE</h2>
+<p>常见cmdType。</p>
+<pre><code>	CMD_TYPE_SLEEP                      = 4
+	CMD_TYPE_PAUSE                      = 47
+	CMD_TYPE_SHELL                      = 78
+	CMD_TYPE_UPLOAD_START               = 10
+	CMD_TYPE_UPLOAD_LOOP                = 67
+	CMD_TYPE_DOWNLOAD                   = 11
+	CMD_TYPE_EXIT                       = 3
+	CMD_TYPE_CD                         = 5
+	CMD_TYPE_PWD                        = 39
+	CMD_TYPE_FILE_BROWSE                = 53
+	CMD_TYPE_SPAWN_X64                  = 44
+	CMD_TYPE_SPAWN_X86                  = 1
+	CMD_TYPE_EXECUTE                    = 12
+	CMD_TYPE_GETUID                     = 27
+	CMD_TYPE_GET_PRIVS                  = 77
+	CMD_TYPE_STEAL_TOKEN                = 31
+	CMD_TYPE_PS                         = 32
+	CMD_TYPE_KILL                       = 33
+	CMD_TYPE_DRIVES                     = 55
+	CMD_TYPE_RUNAS                      = 38
+	CMD_TYPE_MKDIR                      = 54
+	CMD_TYPE_RM                         = 56
+	CMD_TYPE_CP                         = 73
+	CMD_TYPE_MV                         = 74
+	CMD_TYPE_REV2SELF                   = 28
+	CMD_TYPE_MAKE_TOKEN                 = 49
+	CMD_TYPE_PIPE                       = 40
+	CMD_TYPE_PORTSCAN_X86               = 89
+	CMD_TYPE_PORTSCAN_X64               = 90
+	CMD_TYPE_KEYLOGGER                  = 101
+	CMD_TYPE_EXECUTE_ASSEMBLY_X64       = 88
+	CMD_TYPE_EXECUTE_ASSEMBLY_X86       = 87
+	CMD_TYPE_EXECUTE_ASSEMBLY_TOKEN_X64 = 71
+	CMD_TYPE_EXECUTE_ASSEMBLY_TOKEN_X86 = 70
+	CMD_TYPE_IMPORT_POWERSHELL          = 37
+	CMD_TYPE_POWERSHELL_PORT            = 79
+	CMD_TYPE_INJECT_X64                 = 43
+	CMD_TYPE_INJECT_X86                 = 9
+	CMD_TYPE_BOF                        = 100
+	CMD_TYPE_RUNU                       = 76
+	CMD_TYPE_ARGUE_QUERY                = 85
+	CMD_TYPE_ARGUE_REMOVE               = 84
+	CMD_TYPE_ARGUE_ADD                  = 83
+</code></pre>
+<h2 id="callback">CALLBACK</h2>
+<p>常见Callback。</p>
+<pre><code>	CALLBACK_OUTPUT            = 0
+	CALLBACK_KEYSTROKES        = 1
+	CALLBACK_FILE              = 2
+	CALLBACK_SCREENSHOT        = 3
+	CALLBACK_CLOSE             = 4
+	CALLBACK_READ              = 5
+	CALLBACK_CONNECT           = 6
+	CALLBACK_PING              = 7
+	CALLBACK_FILE_WRITE        = 8
+	CALLBACK_FILE_CLOSE        = 9
+	CALLBACK_PIPE_OPEN         = 10
+	CALLBACK_PIPE_CLOSE        = 11
+	CALLBACK_PIPE_READ         = 12
+	CALLBACK_POST_ERROR        = 13
+	CALLBACK_PIPE_PING         = 14
+	CALLBACK_TOKEN_STOLEN      = 15
+	CALLBACK_TOKEN_GETUID      = 16
+	CALLBACK_PROCESS_LIST      = 17
+	CALLBACK_POST_REPLAY_ERROR = 18
+	CALLBACK_PWD               = 19
+	CALLBACK_JOBS              = 20
+	CALLBACK_HASHDUMP          = 21
+	CALLBACK_PENDING           = 22
+	CALLBACK_ACCEPT            = 23
+	CALLBACK_NETVIEW           = 24
+	CALLBACK_PORTSCAN          = 25
+	CALLBACK_DEAD              = 26
+	CALLBACK_SSH_STATUS        = 27
+	CALLBACK_CHUNK_ALLOCATE    = 28
+	CALLBACK_CHUNK_SEND        = 29
+	CALLBACK_OUTPUT_OEM        = 30
+	CALLBACK_ERROR             = 31
+	CALLBACK_OUTPUT_UTF8       = 32
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%85%83%E6%95%B0%E6%8D%AE%E4%B8%8A%E6%8A%A5">元数据上报</a></li>
+<li><a href="#teamserver-%E4%B8%8B%E5%8F%91%E4%BB%BB%E5%8A%A1">TeamServer 下发任务</a>
+<ul>
+<li><a href="#pwd-%E4%BB%BB%E5%8A%A1%E4%B8%8B%E5%8F%91">pwd 任务下发</a></li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E8%A1%8Cps%E5%92%8C%E9%A1%B5%E9%9D%A2ps%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB">命令行PS和页面PS命令区别</a></li>
+</ul>
+</li>
+<li><a href="#beacon-%E7%BB%93%E6%9E%9C%E5%9B%9E%E4%BC%A0">Beacon 结果回传</a></li>
+<li><a href="#aes%E8%A7%A3%E5%AF%86">AES解密</a></li>
+<li><a href="#cmd_type">CMD_TYPE</a></li>
+<li><a href="#callback">CALLBACK</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/wifichallenge-lab-v20/">
+              <h3 class="post-title">
+                WiFiChallenge Lab V2.0
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

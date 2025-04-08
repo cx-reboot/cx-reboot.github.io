@@ -1,0 +1,281 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IIS 端口复用及后门研究 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="IIS 端口复用及后门研究 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前言
+端口复用
+IIS 端口复用
+IIS后门
+实战
+Winrm + 证书认证
+在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令：
+
+winrm set winrm/config/service/auth @..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              IIS 端口复用及后门研究
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-07-12
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="前言">前言</h2>
+<h2 id="端口复用">端口复用</h2>
+<h2 id="iis-端口复用">IIS 端口复用</h2>
+<h3 id="iis后门">IIS后门</h3>
+<h2 id="实战">实战</h2>
+<h3 id="winrm-证书认证">Winrm + 证书认证</h3>
+<pre><code>在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令：
+
+winrm set winrm/config/service/auth @{Certificate=&quot;true&quot;}
+这个命令将启用 WinRM 服务器上的证书身份验证。启用证书身份验证后，WinRM 服务器将验证客户端证书以确保客户端的身份。如果客户端证书不受信任或无效，则连接将被拒绝。
+
+注意：运行此命令需要管理员权限。
+
+另外，如果你想禁用 WinRM 服务器上的证书身份验证，可以使用以下命令：
+
+winrm set winrm/config/service/auth @{Certificate=&quot;false&quot;}
+这个命令将禁用 WinRM 服务器上的证书身份验证。
+</code></pre>
+<p>为了配置 WinRM 证书认证设置后门，你需要进行以下步骤：</p>
+<ol>
+<li>在运行 WinRM 的服务器上，生成一个自签名证书。</li>
+</ol>
+<p>你可以使用 PowerShell cmdlet <code>New-SelfSignedCertificate</code> 来生成自签名证书。例如，以下命令将生成一个有效期为 10 年的自签名证书：</p>
+<pre><code>New-SelfSignedCertificate -Subject &quot;CN=MyServer&quot; -CertStoreLocation &quot;Cert:\LocalMachine\My&quot; -NotAfter (Get-Date).AddYears(10)
+</code></pre>
+<p>在运行 WinRM 的服务器上使用 cmd 生成自签名证书的方法如下：</p>
+<ol>
+<li>
+<p>打开命令提示符（cmd）。</p>
+</li>
+<li>
+<p>输入以下命令来生成自签名证书：</p>
+</li>
+</ol>
+<pre><code>makecert -r -pe -n &quot;CN=MyServer&quot; -b 01/01/2022 -e 01/01/2025 -sky exchange -ss My
+</code></pre>
+<p>其中，“CN=MyServer”是证书的主题名称，可以根据需要进行更改。此外，还可以更改证书的有效期和存储位置。</p>
+<ol start="3">
+<li>输入以下命令来查看新生成的证书：</li>
+</ol>
+<pre><code>certutil -store My
+</code></pre>
+<p>此命令将列出存储在“我的”证书存储区中的证书，包括刚刚生成的自签名证书。</p>
+<p>现在，您已经在运行 WinRM 的服务器上生成了一个自签名证书。请注意，自签名证书不受受信任的根证书颁发机构的信任，因此在生产环境中使用自签名证书时，请确保将其导入到受信任的根证书颁发机构存储中或由受信任的根证书颁发机构颁发的证书。</p>
+<ol start="2">
+<li>将证书导出为 PFX 文件。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Export-PfxCertificate</code> 将证书导出为 PFX 文件。例如，以下命令将证书导出到 C:\MyCertificate.pfx 文件中：</p>
+<pre><code>Export-PfxCertificate -Cert &quot;Cert:\LocalMachine\My\&lt;Thumbprint&gt;&quot; -FilePath C:\MyCertificate.pfx -Password (ConvertTo-SecureString -String &quot;&lt;Password&gt;&quot; -Force –AsPlainText)
+</code></pre>
+<p>其中 <code>&lt;Thumbprint&gt;</code> 是证书的指纹，<code>&lt;Password&gt;</code> 是用于保护导出文件的密码。</p>
+<ol start="3">
+<li>在需要进行后门访问的客户端上，导入 PFX 文件。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Import-PfxCertificate</code> 将 PFX 文件导入到客户端计算机的证书存储中。例如，以下命令将 C:\MyCertificate.pfx 文件导入到客户端计算机的个人证书存储中：</p>
+<pre><code>Import-PfxCertificate -FilePath C:\MyCertificate.pfx -CertStoreLocation &quot;Cert:\CurrentUser\My&quot; -Password (ConvertTo-SecureString -String &quot;&lt;Password&gt;&quot; -Force –AsPlainText)
+</code></pre>
+<ol start="4">
+<li>配置 WinRM 服务器以使用证书认证。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Set-Item</code> 配置 WinRM 服务器以使用证书认证。例如，以下命令将 WinRM 服务器配置为使用证书认证：</p>
+<pre><code>Set-Item -Path WSMan:\localhost\Service\Auth\Certificate -Value $true
+</code></pre>
+<ol start="5">
+<li>在客户端上，配置 WinRM 以使用证书身份验证。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Set-Item</code> 配置客户端上的 WinRM 以使用证书身份验证。例如，以下命令将客户端上的 WinRM 配置为使用证书身份验证：</p>
+<pre><code>Set-Item -Path WSMan:\localhost\Client\Auth\Certificate -Value $true
+</code></pre>
+<ol start="6">
+<li>使用 PowerShell 连接到 WinRM 服务器。</li>
+</ol>
+<p>使用 PowerShell cmdlet <code>Enter-PSSession</code> 或 <code>New-PSSession</code>，使用 <code>-CertificateThumbprint</code> 参数指定证书的指纹，连接到 WinRM 服务器。例如，以下命令将使用证书身份验证连接到 WinRM 服务器：</p>
+<pre><code>Enter-PSSession -ComputerName &lt;ServerName&gt; -Credential (Get-Credential) -CertificateThumbprint &lt;Thumbprint&gt;
+</code></pre>
+<p>其中 <code>&lt;ServerName&gt;</code> 是 WinRM 服务器的名称，<code>&lt;Thumbprint&gt;</code> 是证书的指纹。</p>
+<p>以上是配置 WinRM 证书认证设置后门的步骤。请注意，这种做法可能会导致安全风险，请谨慎使用。</p>
+<h3 id="参考">参考</h3>
+<ul>
+<li>https://paper.seebug.org/1004</li>
+<li>https://paper.seebug.org/1692/</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E7%AB%AF%E5%8F%A3%E5%A4%8D%E7%94%A8">端口复用</a></li>
+<li><a href="#iis-%E7%AB%AF%E5%8F%A3%E5%A4%8D%E7%94%A8">IIS 端口复用</a>
+<ul>
+<li><a href="#iis%E5%90%8E%E9%97%A8">IIS后门</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%9E%E6%88%98">实战</a>
+<ul>
+<li><a href="#winrm-%E8%AF%81%E4%B9%A6%E8%AE%A4%E8%AF%81">Winrm + 证书认证</a></li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/naabu-duan-kou-sao-miao/">
+              <h3 class="post-title">
+                Naabu 端口扫描
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

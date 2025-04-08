@@ -1,0 +1,379 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>无线安全 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="无线安全 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="第一章
+IEEE 802.11
+1997 年发布的原始 IEEE 802.11 标准
+Wi-Fi 无线电可以接收或传输，但不能同时进行。这种功能限制是我们将 Wi-Fi 无线电称为半双工的原因
+什么是IEEE
+电气和电子工程师协会 (IEE..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              无线安全
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-03-07
+              </span>
+              <span>
+                12 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="第一章">第一章</h1>
+<h2 id="ieee-80211">IEEE 802.11</h2>
+<p>1997 年发布的原始 IEEE 802.11 标准<br>
+Wi-Fi 无线电可以接收或传输，但不能同时进行。这种功能限制是我们将 Wi-Fi 无线电称为半双工的原因</p>
+<p>什么是IEEE</p>
+<p>电气和电子工程师协会 (IEEE)</p>
+<p>IEEE 的 802 委员会制定了局域网 (LAN) 标准和城域网 (MAN) 标准。这些包括以太网、令牌环、无线 LAN、桥接和虚拟桥接 LAN</p>
+<p>IEEE 802.11 是无线局域网 (WLAN) 的标准</p>
+<ul>
+<li>802.11：最初的无线局域网标准</li>
+<li>802.11a：在 5 GHz 上高达 54 Mbit/s</li>
+<li>802.11b：2.4 GHz 上 5.5 Mbit/s 和 11 Mbit/s</li>
+<li>802.11g：在 2.4 GHz 上高达 54 Mbit/s，向后兼容 802.11b</li>
+<li>802.11h：限制 5GHz 频段功率和传输的监管要求</li>
+<li>802.11i：提供增强的安全性</li>
+<li>802.11n：通过多输入/多输出 (MIMO) 提供更高的吞吐量，又名 Wi-Fi 4</li>
+<li>802.11ac：非常高的吞吐量 &lt; 6 GHz，又名 Wi-Fi 5</li>
+<li>802.11ad：60GHz 频段中的多千兆位，称为 WiGig</li>
+<li>802.11ax：高效 (HE) 无线局域网，又名 Wi-Fi 6</li>
+<li></li>
+</ul>
+<h2 id="无线网络">无线网络</h2>
+<blockquote>
+<p>监控模式本身并不是一种架构，而是无线网卡使用的一种模式，可帮助我们在渗透测试期间捕获 Wi-Fi 帧并注入数据包</p>
+</blockquote>
+<p>基础设施网络中至少有一个AP和一个站点（STA）。这两个组成了一个基本服务集（BSS）。AP 通常连接到有线网络，称为分布式系统 (DS)。</p>
+<figure data-type="image" tabindex="1"><img src="https://blog.cxaqhq.cn/post-images/1678189931448.png" alt="" loading="lazy"></figure>
+<p>监控模式不是无线模式或架构方案，而是无线设备的状态，允许它监控其范围内的所有 Wi-Fi 信号。<br>
+让我们想象一个场景，我们在我们的渗透测试目标之外的停车场。有几台笔记本电脑连接到目标的 Wi-Fi 网络。如果我们将 Wi-Fi 卡置于监控模式，我们将看到的不仅仅是我们自己、AP 以及连接到同一 AP 的所有其他客户端。我们还将看到来自范围内任何其他网络的流量，例如附近的企业、住宅和移动 Wi-Fi 热点。</p>
+<p>监控模式对于无线渗透测试至关重要，因为它可以捕获原始 802.11 帧并允许数据包注入。1大多数用于测试 Wi-Fi 网络的工具都要求我们的无线接口处于监控模式。</p>
+<h2 id="wifi加密">WIFI加密</h2>
+<p>Wi-Fi 通过无线电波工作，这意味着它容易被窃听，因此必须使用加密来保护传输的数据。</p>
+<ul>
+<li>
+<p>WEP<br>
+有线等效保密 (WEP) 1是在 802.11 标准发布时创建的，目的是提供类似于有线网络中的保密功能。</p>
+</li>
+<li>
+<p>WPA/WPA2<br>
+一旦发现 WEP 中的缺陷（WEP 可以在一分钟内被破解），IEEE 就创建了一个名为 802.11i 的新组织，旨在提高 Wi-Fi 安全性。Wi-Fi 保护访问 (WPA) 2 在 2003 年取代了 WEP，随后在 2004 年取代了 WPA2（802.11i 标准）。</p>
+</li>
+<li>
+<p>WPS<br>
+不久之后，来自不同供应商的技术允许用户安全地共享要添加到网络的设备上的密码，而无需键入。Wi-Fi Protected Setup (WPS) 3于 2006 年发布以对其进行标准化。</p>
+</li>
+<li>
+<p>WPA3<br>
+WPA3 于 2018 年 1 月由 Wi-Fi 联盟首次公布，并于同年 6 月发布4。它并不是要取代任何现有的安全解决方案，而是旨在解决以下几个关键问题：</p>
+</li>
+<li>
+<p>WEP</p>
+<ol>
+<li>客户端向AP发送认证请求</li>
+<li>AP发送“成功”的认证响应</li>
+<li>STA向接入点发送关联请求</li>
+<li>如果客户端的能力满足AP的能力，则AP发送关联响应</li>
+</ol>
+</li>
+</ul>
+<p>RC4<br>
+RC4 是一种对称密码，这意味着使用相同的密钥来加密和解密数据。它创建一个位流，这些位流与纯文本进行异或运算以获取加密数据。要解密它，我们可以简单地将加密文本与密钥流进行异或以恢复明文。</p>
+<ul>
+<li>WPA<br>
+WPA 加密有两种形式：
+<ol>
+<li>WPA Personal：使用预共享密钥身份验证 (WPA-PSK)，这是网络所有对等方共享的密码。</li>
+<li>WPA Enterprise：使用 802.1X 和 Radius 服务器进行身份验证、授权和计费 (AAA)。</li>
+</ol>
+</li>
+</ul>
+<h2 id="理论知识">理论知识</h2>
+<pre><code>引用来源：https://www.cnblogs.com/bushilushan/p/17138733.html
+</code></pre>
+<h3 id="wep">WEP</h3>
+<ol>
+<li>由于无线网络通过无线电波传输数据，除非采取安全措施，否则数据很容易被截获。有线等效保密 (WEP) 于 1997 年推出，是人们首次就保护无线网络安全而尝试采取的措施。其目的是通过加密数据来增加无线网络的安全性。即便无线数据被拦截，拦截者也无法识别数据，因为这些数据均经过加密处理。但是，在网络上获得授权的系统将能够识别和解密数据。这是因为网络上的设备使用相同的加密算法。</li>
+<li>WEP 使用 64 位或 128 位十六进制密钥对流量进行加密。这是一个静态密钥，这意味着，所有流量（无论设备如何）都使用单个密钥进行加密。WEP 密钥允许网络上的计算机交换编码消息，同时对入侵者隐藏消息的内容。此密钥用于连接到启用无线安全功能的网络。</li>
+<li>WEP 的主要目标之一是防止中间人攻击，而且也曾经在一段时间里成功实现了这一目标。但随着时间的推移，尽管协议进行了修订、其密钥大小得到了提升，WEP 标准还是显露出各种安全漏洞。随着计算性能的提高，犯罪分子更容易利用这些漏洞。由于存在漏洞，Wi-Fi 联盟于 2004 年正式停用 WEP。如今，WEP 安全功能已被视为一种过时的技术，不过有些时候还是会用到它 - 可能是因为网络管理员没有更改其无线路由器的默认安全设置，也可能是因为设备过于陈旧，无法支持 WPA 等较新的加密方法。</li>
+</ol>
+<h3 id="wpa">WPA</h3>
+<ol>
+<li>接下来是 WPA，即 Wi-Fi 保护访问。该协议于 2003 年推出，它是 Wi-Fi 联盟对 WEP 的替代协议。它与 WEP 有相似之处，但在处理安全密钥的方式和用户授权方式上进行了改进。WEP 为每个授权系统提供相同的密钥，而 WPA 使用临时密钥完整性协议 (TKIP)，该协议可动态更改系统使用的密钥。这可以防止入侵者创建自己的加密密钥以匹配安全网络使用的密钥。TKIP 加密标准后来被高级加密标准 (AES) 所取代。</li>
+<li>此外，WPA 包括消息完整性检查，以确定攻击者是否已捕获或更改数据包。WPA 使用的密钥为 256 位，相比 WEP 系统中使用的 64 位和 128 位密钥有了显著提升。但是，尽管存在这些改进，WPA 的元素还是遭到利用 - 这导致 WPA2 诞生。</li>
+<li>您有时会听到与 WPA 相关的术语“WPA 密钥”。WPA 密钥是用于连接到无线网络的密码。您可以从运行网络的任何人那里获取 WPA 密码。在某些情况下，无线路由器上可能会印有默认的 WPA 密码。如果您无法确定路由器密码，也可以重置它。</li>
+</ol>
+<h3 id="wpa2">WPA2</h3>
+<ol>
+<li>WPA2 于 2004 年推出，它是 WPA 的升级版本。WPA2 基于强大的安全网络 (RSN) 机制，并在两种模式下运行：</li>
+</ol>
+<ul>
+<li>个人模式或预共享密钥 (WPA2-PSK) - 依赖共享密码进行访问，通常用于家庭环境。</li>
+<li>企业模式 (WPA2-EAP) - 顾名思义，更适合组织或企业使用。</li>
+</ul>
+<ol start="2">
+<li>两种模式都使用 CCMP - 它代表“计数器模式密码区块链消息身份验证代码协议”。CCMP 协议基于高级加密标准 (AES) 算法，该算法提供消息真实性和完整性验证。CCMP 比 WPA 最初的临时密钥完整性协议 (TKIP) 更强大、更可靠，使攻击者更难发现模式。</li>
+<li>但是，WPA2 仍然有缺点。例如，它容易遭受密钥重新安装攻击 (KRACK)。KRACK 利用了 WPA2 中的一个弱点，该弱点允许攻击者伪装成克隆网络并强制受害者连接到恶意网络。这使黑客能够解密一小段数据，这些数据可能被聚合以破解加密密钥。但是，设备可以打补丁，WPA2 仍然被认为比 WEP 或 WPA 更安全。</li>
+</ol>
+<h3 id="wpa3">WPA3</h3>
+<ol>
+<li>WPA3 是 Wi-Fi 保护访问协议的第三次迭代。Wi-Fi 联盟于 2018 年推出了 WPA3。WPA3 引入了供个人和企业使用的新功能，包括：</li>
+</ol>
+<ul>
+<li>个性化数据加密：在登录公共网络时，WPA3 通过一个并非共享密码的流程注册新设备。WPA3 使用 Wi-Fi 设备调配协议 (DPP) 系统，该系统允许用户使用近场通信 (NFC) 标签或二维码来允许网络上的设备。此外，WPA3 安全功能使用 GCMP-256 加密，而不是以前使用的 128 位加密。</li>
+<li>Equals 协议的同步身份验证：这用于创建安全握手，其中，网络设备将连接到无线接入点，并且两个设备进行通信以验证身份和连接。即使用户的密码强度很低，WPA3 也可使用 Wi-Fi DPP 提供更安全的握手。</li>
+<li>更强的暴力破解攻击防护：WPA3 只允许一名用户猜测一次，从而防止离线密码猜测，迫使用户直接与 Wi-Fi 设备交互，这意味着他们每次想猜测密码时都必须亲自到场。WPA2 在公共开放网络中缺乏内置的加密和隐私功能，使得暴力破解攻击成为重大威胁。</li>
+</ul>
+<ol start="2">
+<li>WPA3 设备在 2019 年开始广泛使用，并且向后兼容使用 WPA2 协议的设备。</li>
+</ol>
+<h2 id="专业术语">专业术语</h2>
+<pre><code>引用：https://www.kaspersky.com.cn/resource-center/definitions/what-is-an-ssid
+</code></pre>
+<h3 id="ssid">SSID</h3>
+<ol>
+<li>SSID 是 Service Set Identifier（服务集标识符）的缩写，是无线网络的重要标识符。基本上，SSID 是在设置路由器时分配给 Wi-Fi 网络的名称。SSID 的例子可能包括“The Smith Home”或“Coffee House Rewards”。路由器随后使用 SSID 创建热点并在其周围广播其网络。SSID 即充当接入点，这样附近的笔记本电脑和智能手机等设备就可以定位并连接到网络。当用户尝试连接设备时，会看到所有可用 Wi-Fi 网络的列表，并使用 SSID 作为名称来标识他们想要使用的特定网络。该标识符通常保留在设备内，以便以后可以自动重新连接到同一网络。</li>
+<li>需要注意的是，SSID 只是用作标识符的网络名称。大多数 Wi-Fi 网络还启用了某种安全机制，通常是 WPA2 或 WPA3 协议。因此，用户需要获得网络的密码或密钥才能连接到网络。</li>
+</ol>
+<p><strong>个人理解：SSID就是WIFI名称，例如常见的：TP-LINK_F2A4、CMCC-XXXX、ChinaNet-xxxx等。</strong></p>
+<h2 id="linux-无线工具">Linux 无线工具</h2>
+<pre><code>kali@kali:~$ sudo airmon-ng
+
+PHY     Interface       Driver          Chipset
+
+phy0    wlan0           ath9k_htc       Qualcomm Atheros Communications AR9271 802.11n
+</code></pre>
+<pre><code>kali@kali:~# sudo lsusb -vv
+
+Bus 001 Device 002: ID 0cf3:9271 Qualcomm Atheros Communications AR9271 802.11n
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          255 Vendor Specific Class
+  bDeviceSubClass       255 Vendor Specific Subclass
+  bDeviceProtocol       255 Vendor Specific Protocol
+  bMaxPacketSize0        64
+  idVendor           0x0cf3 Qualcomm Atheros Communications
+  idProduct          0x9271 AR9271 802.11n
+  bcdDevice            1.08
+  iManufacturer          16 ATHEROS
+  iProduct               32 USB2.0 WLAN
+  iSerial                48 12345
+  bNumConfigurations      1
+</code></pre>
+<p>Linux 网络工具</p>
+<ul>
+<li>iwconfig</li>
+<li>iw</li>
+<li>rfkill</li>
+</ul>
+<h2 id="wireshark">Wireshark</h2>
+<h2 id="数据包">数据包</h2>
+<h1 id="第二章">第二章</h1>
+<h2 id="aircrack-ng-套件">Aircrack-ng 套件</h2>
+<h2 id="hash-破解">Hash 破解</h2>
+<h2 id="攻击wps">攻击WPS</h2>
+<h2 id="恶意wifi流氓接入点">恶意WIFI（流氓接入点）</h2>
+<h2 id="攻击wpa企业">攻击WPA企业</h2>
+<h2 id="攻击强制门户">攻击强制门户</h2>
+<h2 id="bettercap-套件">Bettercap 套件</h2>
+<h2 id="kismet-攻击">Kismet 攻击</h2>
+<h2 id="芯片与驱动程序">芯片与驱动程序</h2>
+<h2 id="网络连接">网络连接</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%AC%AC%E4%B8%80%E7%AB%A0">第一章</a>
+<ul>
+<li><a href="#ieee-80211">IEEE 802.11</a></li>
+<li><a href="#%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C">无线网络</a></li>
+<li><a href="#wifi%E5%8A%A0%E5%AF%86">WIFI加密</a></li>
+<li><a href="#%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86">理论知识</a>
+<ul>
+<li><a href="#wep">WEP</a></li>
+<li><a href="#wpa">WPA</a></li>
+<li><a href="#wpa2">WPA2</a></li>
+<li><a href="#wpa3">WPA3</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%93%E4%B8%9A%E6%9C%AF%E8%AF%AD">专业术语</a>
+<ul>
+<li><a href="#ssid">SSID</a></li>
+</ul>
+</li>
+<li><a href="#linux-%E6%97%A0%E7%BA%BF%E5%B7%A5%E5%85%B7">Linux 无线工具</a></li>
+<li><a href="#wireshark">Wireshark</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%8C%85">数据包</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0">第二章</a>
+<ul>
+<li><a href="#aircrack-ng-%E5%A5%97%E4%BB%B6">Aircrack-ng 套件</a></li>
+<li><a href="#hash-%E7%A0%B4%E8%A7%A3">Hash 破解</a></li>
+<li><a href="#%E6%94%BB%E5%87%BBwps">攻击WPS</a></li>
+<li><a href="#%E6%81%B6%E6%84%8Fwifi%E6%B5%81%E6%B0%93%E6%8E%A5%E5%85%A5%E7%82%B9">恶意WIFI（流氓接入点）</a></li>
+<li><a href="#%E6%94%BB%E5%87%BBwpa%E4%BC%81%E4%B8%9A">攻击WPA企业</a></li>
+<li><a href="#%E6%94%BB%E5%87%BB%E5%BC%BA%E5%88%B6%E9%97%A8%E6%88%B7">攻击强制门户</a></li>
+<li><a href="#bettercap-%E5%A5%97%E4%BB%B6">Bettercap 套件</a></li>
+<li><a href="#kismet-%E6%94%BB%E5%87%BB">Kismet 攻击</a></li>
+<li><a href="#%E8%8A%AF%E7%89%87%E4%B8%8E%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F">芯片与驱动程序</a></li>
+<li><a href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5">网络连接</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/nei-wang-cun-huo-zhu-ji-tan-ce/">
+              <h3 class="post-title">
+                内网存活主机探测
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

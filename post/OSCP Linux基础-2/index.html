@@ -1,0 +1,266 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSCP Linux基础-2 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="OSCP Linux基础-2 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="PATH
+export
+$$
+env
+history
+！！
+管道与重定向
+cat
+grep
+sed
+awk
+cut
+head
+wc
+nano
+vi/vim
+comm
+diff
+vimdiff
+bg
+jobs
+fg
+ps
+tail
+watch..." />
+    <meta name="keywords" content="OSCP" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              OSCP Linux基础-2
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-02-08
+              </span>
+              <span>
+                1 min read
+              </span>
+              
+                <a href="https://blog.cxaqhq.cn/tag/1BL_i05Us/" class="post-tag">
+                  # OSCP
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="path">PATH</h2>
+<h2 id="export">export</h2>
+<h2 id="">$$</h2>
+<h2 id="env">env</h2>
+<h2 id="history">history</h2>
+<h2 id="-2">！！</h2>
+<h2 id="管道与重定向">管道与重定向</h2>
+<h2 id="cat">cat</h2>
+<h2 id="grep">grep</h2>
+<h2 id="sed">sed</h2>
+<h2 id="awk">awk</h2>
+<h2 id="cut">cut</h2>
+<h2 id="head">head</h2>
+<h2 id="wc">wc</h2>
+<h2 id="nano">nano</h2>
+<h2 id="vivim">vi/vim</h2>
+<h2 id="comm">comm</h2>
+<h2 id="diff">diff</h2>
+<h2 id="vimdiff">vimdiff</h2>
+<h2 id="bg">bg</h2>
+<h2 id="jobs">jobs</h2>
+<h2 id="fg">fg</h2>
+<h2 id="ps">ps</h2>
+<h2 id="tail">tail</h2>
+<h2 id="watch">watch</h2>
+<h2 id="wget">wget</h2>
+<h2 id="curl">curl</h2>
+<h2 id="axel">axel</h2>
+<h2 id="alias">alias</h2>
+<h2 id="unalias">unalias</h2>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#path">PATH</a></li>
+<li><a href="#export">export</a></li>
+<li><a href="#">$$</a></li>
+<li><a href="#env">env</a></li>
+<li><a href="#history">history</a></li>
+<li><a href="#-2">！！</a></li>
+<li><a href="#%E7%AE%A1%E9%81%93%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91">管道与重定向</a></li>
+<li><a href="#cat">cat</a></li>
+<li><a href="#grep">grep</a></li>
+<li><a href="#sed">sed</a></li>
+<li><a href="#awk">awk</a></li>
+<li><a href="#cut">cut</a></li>
+<li><a href="#head">head</a></li>
+<li><a href="#wc">wc</a></li>
+<li><a href="#nano">nano</a></li>
+<li><a href="#vivim">vi/vim</a></li>
+<li><a href="#comm">comm</a></li>
+<li><a href="#diff">diff</a></li>
+<li><a href="#vimdiff">vimdiff</a></li>
+<li><a href="#bg">bg</a></li>
+<li><a href="#jobs">jobs</a></li>
+<li><a href="#fg">fg</a></li>
+<li><a href="#ps">ps</a></li>
+<li><a href="#tail">tail</a></li>
+<li><a href="#watch">watch</a></li>
+<li><a href="#wget">wget</a></li>
+<li><a href="#curl">curl</a></li>
+<li><a href="#axel">axel</a></li>
+<li><a href="#alias">alias</a></li>
+<li><a href="#unalias">unalias</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/OSCP Linux基础-1/">
+              <h3 class="post-title">
+                OSCP Linux基础-1
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

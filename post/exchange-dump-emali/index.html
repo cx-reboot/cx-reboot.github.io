@@ -1,0 +1,217 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Exchange 邮件导出 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Exchange 邮件导出 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="常用命令
+连接服务器
+Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
+
+查看邮箱用户
+Get-Mailbox
+
+获取所有邮箱名称
+Get-Mailbox -Resul..." />
+    <meta name="keywords" content="渗透测试" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Exchange 邮件导出
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-10-16
+              </span>
+              <span>
+                1 min read
+              </span>
+              
+                <a href="https://blog.cxaqhq.cn/tag/7BFV4Er_M/" class="post-tag">
+                  # 渗透测试
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://blog.cxaqhq.cn/post-images/exchange-dump-emali.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="常用命令">常用命令</h2>
+<h3 id="连接服务器">连接服务器</h3>
+<pre><code>Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
+</code></pre>
+<h3 id="查看邮箱用户">查看邮箱用户</h3>
+<pre><code>Get-Mailbox
+</code></pre>
+<h3 id="获取所有邮箱名称">获取所有邮箱名称</h3>
+<pre><code>Get-Mailbox -ResultSize unlimited
+</code></pre>
+<h3 id="查看邮件导出请求">查看邮件导出请求</h3>
+<pre><code>Get-MailboxExportRequest
+</code></pre>
+<h2 id="导出全部邮件">导出全部邮件</h2>
+<pre><code>Get-Mailbox -OrganizationalUnit Users -Resultsize unlimited |%{New-MailboxexportRequest -mailbox $_.name -FilePath (&quot;\\localhost\c$\test\&quot;+($_.name)+&quot;.pst&quot;)}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">常用命令</a>
+<ul>
+<li><a href="#%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8">连接服务器</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E9%82%AE%E7%AE%B1%E7%94%A8%E6%88%B7">查看邮箱用户</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E9%82%AE%E7%AE%B1%E5%90%8D%E7%A7%B0">获取所有邮箱名称</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E9%82%AE%E4%BB%B6%E5%AF%BC%E5%87%BA%E8%AF%B7%E6%B1%82">查看邮件导出请求</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AF%BC%E5%87%BA%E5%85%A8%E9%83%A8%E9%82%AE%E4%BB%B6">导出全部邮件</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
+              <h3 class="post-title">
+                IIS 端口复用及后门研究
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

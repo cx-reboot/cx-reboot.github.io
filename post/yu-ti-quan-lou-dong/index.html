@@ -1,0 +1,219 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>域提权漏洞 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="域提权漏洞 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="CVE-2022-26923
+利用条件
+
+域内普通用户账号权限
+
+Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              域提权漏洞
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-05-05
+              </span>
+              <span>
+                1 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="cve-2022-26923">CVE-2022-26923</h2>
+<h3 id="利用条件">利用条件</h3>
+<ul>
+<li>域内普通用户账号权限
+<ul>
+<li>Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。</li>
+</ul>
+</li>
+<li>企业证书服务
+<ul>
+<li>域内部署有企业证书服务，并允许被控制的计算机账户申请计算机身份验证证书。</li>
+</ul>
+</li>
+<li>域控服务器系统版本
+<ul>
+<li>需要获取域内至少一个普通用户账号权限，并且需要该账户对dNSHostName等属性具有相应的权限。默认情况，普通用户账号具有该权限。</li>
+</ul>
+</li>
+</ul>
+<h3 id="利用方法">利用方法</h3>
+<h2 id="cve-2020-1472">CVE-2020-1472</h2>
+<p>攻击者在通过NetLogon（MS-NRPC）协议与AD域控建立安全通道时，可利用该漏洞将AD域控的计算机账号密码置为空，从而控制域控服务器</p>
+<h3 id="利用条件-2">利用条件</h3>
+<h3 id="利用方法-2">利用方法</h3>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#cve-2022-26923">CVE-2022-26923</a>
+<ul>
+<li><a href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6">利用条件</a></li>
+<li><a href="#%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95">利用方法</a></li>
+</ul>
+</li>
+<li><a href="#cve-2020-1472">CVE-2020-1472</a>
+<ul>
+<li><a href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6-2">利用条件</a></li>
+<li><a href="#%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95-2">利用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/oscp-1/">
+              <h3 class="post-title">
+                OSCP-Medtech
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

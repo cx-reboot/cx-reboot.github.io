@@ -1,0 +1,318 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>劫持升级漏洞 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="劫持升级漏洞 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前言
+之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。
+环境准备
+
+安装各种软件的PC（这里就用自己的电脑做演示）
+Fiddler抓包工具
+
+开始抓包
+这个时候就打开各种软件，然后去Fd那边检查抓到的..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              劫持升级漏洞
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-04-04
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>前言<br>
+之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。</p>
+<p>环境准备</p>
+<ul>
+<li>安装各种软件的PC（这里就用自己的电脑做演示）</li>
+<li>Fiddler抓包工具</li>
+</ul>
+<p>开始抓包<br>
+这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。</p>
+<p>发现特殊请求<br>
+Seay 源代码审计系统居然对外发起请求，而且还是Http协议的，感觉这里有戏。<br>
+[图片]<br>
+尝试返回内容<br>
+这里尝试对请求的/tools/ver.txt进行一个返回特殊内容，这里新建一个ver.txt 内容随便写，我这里写的是“cxaqhq v1.0”。<br>
+[图片]<br>
+然后配置自动回复器，选择我们指定的ver.txt进行回复，然后重新打开Seay 源代码审计系统，进行下一步检查。<br>
+[图片]<br>
+直接出现弹窗提示，而且提示内容正是我们在ver.txt中输入的内容，这里我们选择升级。<br>
+[图片]<br>
+这时候程序会开启一个新的弹窗，并且提示让我们结束当前进程进行升级，这里我们也选择是，然后就提示升级失败了，不要慌，去看看Fiddler那边情况。<br>
+[图片]<br>
+[图片]<br>
+发现upgrade请求<br>
+咱们发现，这个比第一次多了一个下载ZIP文件的请求，而且根据路径来说还是upgrade，兄弟们这里感觉有戏啊，咱们也给这边响应返回一个内容，内容就是把计算器给它压缩成ZIP文件。<br>
+[图片]<br>
+尝试返回计算器<br>
+现在咱们就有2个自动回复内容了，继续打开程序看看流程。<br>
+[图片]<br>
+现在出现了文件下载成功了，然后也解压成功了，我们重新启动程序，看看我们的计算器能否被执行。<br>
+[图片]<br>
+这里计算器没有被执行，我们找到程序的安装路径，在安装路径里面我们发现了new.zip和calc.exe，这不就是我们刚刚返回给第二个请求包内容吗？现在我们已经能劫持让他下载文件了，只要这个文件能执行那么这个流程就打通了。<br>
+[图片]</p>
+<p>分析程序代码<br>
+幸运的是，我们能找到Seay 源代码审计系统源码，下载地址如下所示，我们可以直接分析程序源代码去观察程序更新的逻辑。<br>
+下载地址：https://github.com/f1tz/cnseay.git<br>
+这里大家容易有一个误区，就是直接在Seay主项目中去找更新逻辑，其实更新逻辑并不在主项目里面，而是在upgrade项目里面，我们很容易能找到对应的更新代码。<br>
+[图片]<br>
+分析下载与解压逻辑<br>
+可以从代码中看到下载的Url地址是在代码中写死的，然后会把下载的文件存储到当前目录并重命名为new.zip</p>
+<pre><code>string DownURL = &quot;http://www.cnseay.com/tools/upgrade/codesafecheck.zip&quot;;
+string filename = Application.StartupPath + &quot;\\new.zip&quot;;
+</code></pre>
+<p>下面就是程序的更新代码，可以看到没有对下载文件作任何校验，直接在当前目录下对zip包进行解压，这里我尝试进行目录穿越让我们对exe解压到其他目录，但是没有成功。</p>
+<pre><code>        public void DownloadFile()
+        {
+            listbox_info.Items.Add(&quot;开始升级...&quot;);
+            try
+            {
+                System.Net.HttpWebRequest Myrq = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(DownURL);
+                System.Net.HttpWebResponse myrp = (System.Net.HttpWebResponse)Myrq.GetResponse();
+                long totalBytes = myrp.ContentLength;
+
+                toolStripProgressBar1.Maximum = (int)totalBytes;
+
+                listbox_info.Items.Add(&quot;正在下载升级包...&quot;);
+
+                Stream st = myrp.GetResponseStream();
+                Stream so = new FileStream(filename, System.IO.FileMode.Create);
+                long totalDownloadedByte = 0;
+                byte[] by = new byte[1024];
+                int osize = st.Read(by, 0, (int)by.Length);
+                while (osize &gt; 0)
+                {
+                    totalDownloadedByte = osize + totalDownloadedByte;
+                    System.Windows.Forms.Application.DoEvents();
+                    so.Write(by, 0, osize);
+
+                    toolStripProgressBar1.Value = (int)totalDownloadedByte;
+
+                    osize = st.Read(by, 0, (int)by.Length);
+
+                    //percent = (float)totalDownloadedByte / (float)totalBytes * 100;
+
+                    System.Windows.Forms.Application.DoEvents(); //必须加注这句代码，否则将因为循环执行太快而来不及显示信息  
+
+                }
+
+                listbox_info.Items.Add(&quot;下载完成... ...&quot;);
+
+                so.Flush();//将缓冲区内在写入到基础流中  
+                st.Flush();//将缓冲区内在写入到基础流中  
+                so.Close();
+                st.Close();
+
+                unzip();
+                listbox_info.Items.Add(&quot;升级成功...&quot;);
+            }
+
+            catch (System.Exception)
+            {
+                listbox_info.Items.Add(&quot;升级失败...&quot;);
+            }
+        }
+
+        public void unzip()
+        {
+            listbox_info.Items.Add(&quot; &quot;);
+            listbox_info.Items.Add(&quot;正在解压文件...&quot;);
+            try
+            {
+                Shell32.ShellClass sc = new Shell32.ShellClass();
+                Shell32.Folder SrcFolder = sc.NameSpace(filename);
+                Shell32.Folder DestFolder = sc.NameSpace(Application.StartupPath + &quot;\\&quot;);
+                Shell32.FolderItems items = SrcFolder.Items();
+                DestFolder.CopyHere(items, 20);
+                listbox_info.Items.Add(&quot;解压完成...&quot;);
+            }
+            catch (Exception)
+            {
+                listbox_info.Items.Add(&quot;解压失败...&quot;);
+            }
+
+        }
+</code></pre>
+<p>利用方式1，Dll劫持(未利用成功)<br>
+因为下载结束后，程序会重新启动，而重启的exe名称已经写死了，这里我们可以尝试寻找Seay源代码审计系统.exe是否存在Dll劫持漏洞，我们可以下载恶意Dll文件到当前目录，当&quot;Seay源代码审计系统.exe&quot;启动时会自动加载我们的恶意Dll</p>
+<pre><code>     DownloadFile();
+            if (MessageBox.Show(&quot;是否重新启动程序&quot;, &quot;提示&quot;, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(&quot;Seay源代码审计系统.exe&quot;);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+</code></pre>
+<p>通过Windbg发现&quot;Seay源代码审计系统.exe&quot;会调用当前目录下MyScript.dll，根据代码发现是CSPluginKernel项目编译的，但是此Dll没有导出表，无法利用，欢迎各位大佬指点一下。<br>
+[图片]<br>
+[图片]</p>
+<p>利用方式2，在主程序添加后门功能<br>
+我们直接修改&quot;Seay源代码审计系统.exe&quot;代码并在中加入恶意代码，通过更新下载对原有对exe进行替换，当程序重启的时候就可以运行我们的恶意代码了。<br>
+[图片]<br>
+在Main函数加入弹窗函数，编译、运行，弹窗成功触发。</p>
+<p>思考<br>
+随着使用Https协议的软件越来越多，此类漏洞现在越来越少了，但是我们还是需要提高警惕，相信还是有不少人还在使用这款工具把，我也在使用，如果使用过程中受到DNS劫持，或者请求的www.cnseay.com域名被攻击者抢注，很容易就被植入木马了，建议大家使用的时候断网操作。</p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/windows-cmd-sou-suo-bing-shan-chu-wen-jian/">
+              <h3 class="post-title">
+                Windows cmd 搜索并删除文件
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

