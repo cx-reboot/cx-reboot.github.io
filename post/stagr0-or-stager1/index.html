@@ -1,0 +1,382 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Gridea Pro 1.3.0-beta.2">
+<title>Stagr0 or Stager1 | CXAQHQ</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1794544184">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="alternate" type="application/rss+xml" title="Stagr0 or Stager1 | CXAQHQ - RSS Feed" href="/feed.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <meta name="description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St&amp;hellip;">
+<link rel="canonical" href="blog.cxaqhq.cn/post/stagr0-or-stager1/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Stagr0 or Stager1","url":"blog.cxaqhq.cn/post/stagr0-or-stager1/","description":"序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St\u0026hellip;","datePublished":"2023-08-28T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/stagr0-or-stager1/","name":"Stagr0 or Stager1","position":2}]}</script>
+<meta property="og:title" content="Stagr0 or Stager1">
+<meta property="og:description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St&amp;hellip;">
+<meta property="og:url" content="blog.cxaqhq.cn/post/stagr0-or-stager1/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CXAQHQ">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="blog.cxaqhq.cn/post/stagr0-or-stager1/">
+<meta name="twitter:title" content="Stagr0 or Stager1">
+<meta name="twitter:description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St&amp;hellip;">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="blog.cxaqhq.cn">
+  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544184" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/post" class="menu">
+          博客
+        </a>
+      
+    
+      
+        <a href="/memos" class="menu">
+          闪念
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/links" class="menu">
+          友链
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Stagr0 or Stager1
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-08-28
+              </span>
+              <span>
+                4 分钟阅读
+              </span>
+              
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="heading">序言</h2>
+<ul>
+<li>
+<p>何为 Stager0 ？</p>
+<ul>
+<li>我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。</li>
+</ul>
+</li>
+<li>
+<p>Stager0 和Stager1 区别？</p>
+<ul>
+<li>Stager0 功能简单，Stager1功能复杂。</li>
+<li>Stager0 加载Stager1。</li>
+<li>Stager0 注重隐蔽，作用是持久化控制。</li>
+<li>Stager1 注重功能，主要是实现各种功能。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Stager0 可以理解为小马，加载器，但是本身具有一些简单功能。</p>
+</blockquote>
+<h2 id="stager0-">Stager0 介绍</h2>
+<h3 id="heading-1">功能介绍</h3>
+<ul>
+<li>执行命令（并返回结果）</li>
+<li>文件操作
+<ul>
+<li>上传文件</li>
+<li>下载文件</li>
+</ul>
+</li>
+<li>加载ShellCode （此功能不是优先考虑）</li>
+</ul>
+<h3 id="heading-2">通信协议</h3>
+<p>由于Stager0 首重隐蔽，所以优先考虑DNS协议，而且DNS协议局限小，实际效果好。具体通信协议参考CobaltStrike DNS Beacon。原则做到以下几点。</p>
+<ul>
+<li>简洁，不必要数据不要</li>
+<li>隐蔽性好，避免出现特征</li>
+<li>通信加密，防止内容被解密</li>
+</ul>
+<h3 id="heading-3">通信流程</h3>
+<p>通信流程按照木马上线时间来列举。</p>
+<h4 id="heading-4">心跳包</h4>
+<blockquote>
+<p>存活检测，可自由更改间隔时间，默认时间为60秒。</p>
+</blockquote>
+<p>大写字母为自定义值，小写字母为固定内容。</p>
+<pre><code>DNS 查询类型：A
+查询域名：www.UUID.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+
+返回结果：8.8.8.8
+</code></pre>
+<h4 id="heading-5">任务查询</h4>
+<p>查询是否有任务，没有任务则循环</p>
+<pre><code>DNS 查询类型：A
+查询域名：www.UUID.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+
+返回结果：8.8.8.1
+进行任务1
+- 上传系统信息
+
+返回结果：8.8.8.2
+进行任务2
+- 上传文件
+
+返回结果：8.8.8.3
+进行任务3
+- 下载文件
+
+返回结果：8.8.8.4
+进行任务4
+- 执行命令
+
+返回结果：8.8.8.5
+进行任务5
+- 加载ShellCode
+</code></pre>
+<h4 id="heading-6">元数据</h4>
+<blockquote>
+<p>上报系统信息。包括（Hostname、IP、PID、OS）</p>
+</blockquote>
+<pre><code>// 查询任务
+DNS 查询类型：A
+查询域名：www.UUID.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+
+返回结果：8.8.8.1
+进行任务1
+- 上传系统信息
+
+程序收集系统信息并进行加密（加密方法未定）和编码（编码需要考虑不能包含特殊字符不能进行DNS查询）
+
+// 传输内容
+DNS 查询类型：TXT
+查询域名：update.UUID.TARICK.INT.STRING.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+TARICK 为任务ID
+INT 为传输顺序ID，乱序传输也可以后期排序
+STRING 为传输内容
+
+返回结果：8.8.8.8 （服务响应正常）
+
+// 传输内容结束
+DNS 查询类型：TXT
+查询域名：upgrade.UUID.TARICK.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+TARICK 为任务ID
+
+返回结果：8.8.8.8 （服务响应正常）
+</code></pre>
+<h4 id="heading-7">文件传输</h4>
+<blockquote>
+<p>文件传输分为上传文件与下载文件，数据由4部分组成（本地文件名、远程文件名、文件长度、文件内容）<br />
+数据由后段程序进行解析</p>
+</blockquote>
+<h5 id="heading-8">文件上传</h5>
+<pre><code>// 查询任务
+DNS 查询类型：A
+查询域名：www.UUID.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+
+返回结果：8.8.8.1
+进行任务2
+- 上传文件
+
+程序将本地文件进行加密（加密方法未定）和编码（编码需要考虑不能包含特殊字符不能进行DNS查询）
+
+// 传输内容
+DNS 查询类型：TXT
+查询域名：upload.UUID.TARICK.INT.STRING.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+TARICK 为任务ID
+INT 为传输顺序ID，乱序传输也可以后期排序
+STRING 为传输内容
+
+返回结果：8.8.8.8 （服务响应正常）
+
+// 传输内容结束
+DNS 查询类型：TXT
+查询域名：upgradefile.UUID.TARICK.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+TARICK 为任务ID
+
+返回结果：8.8.8.8 （服务响应正常）
+</code></pre>
+<h5 id="heading-9">文件下载</h5>
+<pre><code>// 查询任务
+DNS 查询类型：A
+查询域名：www.UUID.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+
+返回结果：8.8.8.3
+进行任务3
+- 下载文件
+
+程序将本地文件进行加密（加密方法未定）和编码（编码需要考虑不能包含特殊字符不能进行DNS查询）
+
+// 传输内容
+DNS 查询类型：TXT
+查询域名：download.UUID.TARICK.INT.STRING.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+TARICK 为任务ID
+INT 为传输顺序ID，乱序传输也可以后期排序
+STRING 为传输内容
+
+返回结果：8.8.8.8 （服务响应正常）
+
+// 传输内容结束
+DNS 查询类型：TXT
+查询域名：downloadfile.UUID.TARICK.domain.com
+UUID 为主机随机ID，用于机器唯一ID，长度未定
+TARICK 为任务ID
+
+返回结果：8.8.8.8 （服务响应正常）
+</code></pre>
+<h4 id="heading-10">命令执行</h4>
+<blockquote>
+<p>调用cmd执行命令，并将结果返回</p>
+</blockquote>
+<h4 id="shellcode-">ShellCode 加载</h4>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
+              <h3 class="post-title">
+                IIS 端口复用及后门研究
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="/feed.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  <script>console.log("\n%c ✦ Gridea Pro v1.3.0-beta.2 %c · Theme: notes v1.2.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>

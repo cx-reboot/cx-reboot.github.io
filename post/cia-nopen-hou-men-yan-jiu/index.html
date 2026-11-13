@@ -1,0 +1,251 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Gridea Pro 1.3.0-beta.2">
+<title>CIA-NOPEN 后门研究 | CXAQHQ</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1794544184">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="alternate" type="application/rss+xml" title="CIA-NOPEN 后门研究 | CXAQHQ - RSS Feed" href="/feed.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <meta name="description" content="起因 详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。 使用方法 文件搜索 下载泄漏项目文件 git clone https://github.com/badboycxcc/EQGRP-CIA-2.git 搜索nopen 相关文件位&amp;hellip;">
+<link rel="canonical" href="blog.cxaqhq.cn/post/cia-nopen-hou-men-yan-jiu/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CIA-NOPEN 后门研究","url":"blog.cxaqhq.cn/post/cia-nopen-hou-men-yan-jiu/","description":"起因 详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。 使用方法 文件搜索 下载泄漏项目文件 git clone https://github.com/badboycxcc/EQGRP-CIA-2.git 搜索nopen 相关文件位\u0026hellip;","image":"/post-images/cia-nopen-hou-men-yan-jiu.png","datePublished":"2024-01-21T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/cia-nopen-hou-men-yan-jiu/","name":"CIA-NOPEN 后门研究","position":2}]}</script>
+<meta property="og:title" content="CIA-NOPEN 后门研究">
+<meta property="og:description" content="起因 详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。 使用方法 文件搜索 下载泄漏项目文件 git clone https://github.com/badboycxcc/EQGRP-CIA-2.git 搜索nopen 相关文件位&amp;hellip;">
+<meta property="og:url" content="blog.cxaqhq.cn/post/cia-nopen-hou-men-yan-jiu/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CXAQHQ">
+<meta property="og:image" content="/post-images/cia-nopen-hou-men-yan-jiu.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="blog.cxaqhq.cn/post/cia-nopen-hou-men-yan-jiu/">
+<meta name="twitter:title" content="CIA-NOPEN 后门研究">
+<meta name="twitter:description" content="起因 详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。 使用方法 文件搜索 下载泄漏项目文件 git clone https://github.com/badboycxcc/EQGRP-CIA-2.git 搜索nopen 相关文件位&amp;hellip;">
+<meta name="twitter:image" content="/post-images/cia-nopen-hou-men-yan-jiu.png">
+</head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="blog.cxaqhq.cn">
+  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544184" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/post" class="menu">
+          博客
+        </a>
+      
+    
+      
+        <a href="/memos" class="menu">
+          闪念
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/links" class="menu">
+          友链
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CIA-NOPEN 后门研究
+            </h2>
+            <div class="post-info">
+              <span>
+                2024-01-21
+              </span>
+              <span>
+                2 分钟阅读
+              </span>
+              
+              
+            </div>
+            
+              <img class="post-feature-image" src="/post-images/cia-nopen-hou-men-yan-jiu.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="heading">起因</h2>
+<p>详细介绍参考中国国家计算机病毒应急处理中心分析报告，这里记录如何配置NOPEN木马反向连接方法，截止到2024年1月21日，互联网还没有公开资料介绍NOPEN配置反向后门方法。</p>
+<h2 id="heading-1">使用方法</h2>
+<h3 id="heading-2">文件搜索</h3>
+<p>下载泄漏项目文件</p>
+<pre><code>git clone https://github.com/badboycxcc/EQGRP-CIA-2.git
+</code></pre>
+<p>搜索nopen 相关文件位置，有几个目录都有nopen 程序，最新到版本是 3.3.2.3， 在EQGRP-CIA-2/Linux/bin 目录下以及 ./archive_files/morerats*/ 目录下。</p>
+<p>EQGRP-CIA-2/Linux/bin。\</p>
+<p><img src="/post-images/1705803291150.png" alt="" /></p>
+<p><br />
+./archive_files/morerats* 有多个版本，最新版本位3.3.2.3 。\</p>
+<p><img src="/post-images/1713582159657.png" alt="" /></p>
+<p>警告！！！</p>
+<p>noclient 是控制端、noserver 是被控端，noclient 只有32位，因此攻击者操作系统环境必须是32位。我这里使用Ubuntu 16.04 X86 作为演示系统。</p>
+<p>noclient\</p>
+<p><img src="/post-images/1713582105900.png" alt="" /></p>
+<p>noserver\</p>
+<p><img src="/post-images/1713581917278.png" alt="" /></p>
+<h2 id="noclient">noclient</h2>
+<p>自带提示命令有点少，而且缺少部分组件。\</p>
+<p><img src="/post-images/1714515107640.png" alt="" /></p>
+<h3 id="heading-3">正向连接</h3>
+<p><img src="/post-images/1714515230517.png" alt="" /></p>
+<h3 id="heading-4">反向连接</h3>
+<p>noclient 设置监听等待noserver 回连。\</p>
+<p><img src="/post-images/1714515235874.jpeg" alt="" /></p>
+<h2 id="noserver">noserver</h2>
+<p>noserver 执行没有任何提示，各种配置参数都是写死在程序中的，默认监听 32754 端口，如果此端口被占用则监听端口自动加1。\</p>
+<p><img src="/post-images/1714515269656.png" alt="" /></p>
+<h3 id="heading-5">正向连接</h3>
+<p>监听自定义端口。\</p>
+<p><img src="/post-images/1714515392064.png" alt="" /></p>
+<h3 id="heading-6">反向连接</h3>
+<p>noprep 使用方法，就是使用这个脚本来设置noserver 各项参数配置。\</p>
+<p><img src="/post-images/1714515428500.jpeg" alt="" /></p>
+<p><br />
+设置回连IP 端口。\</p>
+<p><img src="/post-images/1714515455884.jpg" alt="" /></p>
+<p><br />
+noclient 监听。\</p>
+<p><img src="/post-images/1714515472788.jpg" alt="" /></p>
+<p>成功上线\</p>
+<p><img src="/post-images/1714515485750.jpg" alt="" /></p>
+<h2 id="heading-7">参考资料</h2>
+<ul>
+<li><a href="https://github.com/badboycxcc/nopen-rat/README.md">详细资料</a></li>
+<li><a href="http://www.cverc.org.cn/head/zhaiyao/news20220218-1.htm">NOPEN木马分析报告</a></li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="/post/wifichallenge-lab-v20/">
+              <h3 class="post-title">
+                WiFiChallenge Lab V2.0
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="/feed.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  <script>console.log("\n%c ✦ Gridea Pro v1.3.0-beta.2 %c · Theme: notes v1.2.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>

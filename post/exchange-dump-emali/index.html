@@ -1,0 +1,222 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Gridea Pro 1.3.0-beta.2">
+<title>Exchange 邮件导出 | CXAQHQ</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1794544184">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="alternate" type="application/rss+xml" title="Exchange 邮件导出 | CXAQHQ - RSS Feed" href="/feed.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="渗透测试" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <meta name="description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...">
+<link rel="canonical" href="blog.cxaqhq.cn/post/exchange-dump-emali/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Exchange 邮件导出","url":"blog.cxaqhq.cn/post/exchange-dump-emali/","description":"常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...","image":"/post-images/exchange-dump-emali.png","datePublished":"2023-10-16T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/exchange-dump-emali/","name":"Exchange 邮件导出","position":2}]}</script>
+<meta property="og:title" content="Exchange 邮件导出">
+<meta property="og:description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...">
+<meta property="og:url" content="blog.cxaqhq.cn/post/exchange-dump-emali/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CXAQHQ">
+<meta property="og:image" content="/post-images/exchange-dump-emali.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="blog.cxaqhq.cn/post/exchange-dump-emali/">
+<meta name="twitter:title" content="Exchange 邮件导出">
+<meta name="twitter:description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...">
+<meta name="twitter:image" content="/post-images/exchange-dump-emali.png">
+</head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="blog.cxaqhq.cn">
+  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544184" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/post" class="menu">
+          博客
+        </a>
+      
+    
+      
+        <a href="/memos" class="menu">
+          闪念
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/links" class="menu">
+          友链
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Exchange 邮件导出
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-10-16
+              </span>
+              <span>
+                1 分钟阅读
+              </span>
+              
+              
+                <a href="/tag/pentest/" class="post-tag">
+                  # 渗透测试
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="/post-images/exchange-dump-emali.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="heading">常用命令</h2>
+<h3 id="heading-1">连接服务器</h3>
+<pre><code>Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
+</code></pre>
+<h3 id="heading-2">查看邮箱用户</h3>
+<pre><code>Get-Mailbox
+</code></pre>
+<h3 id="heading-3">获取所有邮箱名称</h3>
+<pre><code>Get-Mailbox -ResultSize unlimited
+</code></pre>
+<h3 id="heading-4">查看邮件导出请求</h3>
+<pre><code>Get-MailboxExportRequest
+</code></pre>
+<h2 id="heading-5">导出全部邮件</h2>
+<pre><code>Get-Mailbox -OrganizationalUnit Users -Resultsize unlimited |%{New-MailboxexportRequest -mailbox $_.name -FilePath (&quot;\\localhost\c$\test\&quot;+($_.name)+&quot;.pst&quot;)}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="/post/oscp-skylark/">
+              <h3 class="post-title">
+                OSCP-Skylark
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="/feed.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  <script>console.log("\n%c ✦ Gridea Pro v1.3.0-beta.2 %c · Theme: notes v1.2.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>

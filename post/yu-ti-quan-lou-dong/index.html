@@ -1,0 +1,224 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Gridea Pro 1.3.0-beta.2">
+<title>域提权漏洞 | CXAQHQ</title>
+<link rel="shortcut icon" href="/favicon.ico?v=1794544184">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="alternate" type="application/rss+xml" title="域提权漏洞 | CXAQHQ - RSS Feed" href="/feed.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <meta name="description" content="CVE-2022-26923 利用条件 域内普通用户账号权限 Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。 企业证书服务 域内部署有企业证书服务，并允许被控制的计算机账户申请计算&amp;hellip;">
+<link rel="canonical" href="blog.cxaqhq.cn/post/yu-ti-quan-lou-dong/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"域提权漏洞","url":"blog.cxaqhq.cn/post/yu-ti-quan-lou-dong/","description":"CVE-2022-26923 利用条件 域内普通用户账号权限 Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。 企业证书服务 域内部署有企业证书服务，并允许被控制的计算机账户申请计算\u0026hellip;","datePublished":"2023-05-05T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/yu-ti-quan-lou-dong/","name":"域提权漏洞","position":2}]}</script>
+<meta property="og:title" content="域提权漏洞">
+<meta property="og:description" content="CVE-2022-26923 利用条件 域内普通用户账号权限 Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。 企业证书服务 域内部署有企业证书服务，并允许被控制的计算机账户申请计算&amp;hellip;">
+<meta property="og:url" content="blog.cxaqhq.cn/post/yu-ti-quan-lou-dong/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="CXAQHQ">
+<meta property="og:image" content="/images/avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="blog.cxaqhq.cn/post/yu-ti-quan-lou-dong/">
+<meta name="twitter:title" content="域提权漏洞">
+<meta name="twitter:description" content="CVE-2022-26923 利用条件 域内普通用户账号权限 Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。 企业证书服务 域内部署有企业证书服务，并允许被控制的计算机账户申请计算&amp;hellip;">
+<meta name="twitter:image" content="/images/avatar.png">
+</head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="blog.cxaqhq.cn">
+  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544184" alt="">
+  </a>
+  <h1 class="site-title">
+    CXAQHQ
+  </h1>
+  <p class="site-description">
+    再努力一点！
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/post" class="menu">
+          博客
+        </a>
+      
+    
+      
+        <a href="/memos" class="menu">
+          闪念
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/links" class="menu">
+          友链
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              域提权漏洞
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-05-05
+              </span>
+              <span>
+                1 分钟阅读
+              </span>
+              
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="cve-2022-26923">CVE-2022-26923</h2>
+<h3 id="heading">利用条件</h3>
+<ul>
+<li>域内普通用户账号权限
+<ul>
+<li>Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。</li>
+</ul>
+</li>
+<li>企业证书服务
+<ul>
+<li>域内部署有企业证书服务，并允许被控制的计算机账户申请计算机身份验证证书。</li>
+</ul>
+</li>
+<li>域控服务器系统版本
+<ul>
+<li>需要获取域内至少一个普通用户账号权限，并且需要该账户对dNSHostName等属性具有相应的权限。默认情况，普通用户账号具有该权限。</li>
+</ul>
+</li>
+</ul>
+<h3 id="heading-1">利用方法</h3>
+<h2 id="cve-2020-1472">CVE-2020-1472</h2>
+<p>攻击者在通过NetLogon（MS-NRPC）协议与AD域控建立安全通道时，可利用该漏洞将AD域控的计算机账号密码置为空，从而控制域控服务器</p>
+<h3 id="heading-2">利用条件</h3>
+<h3 id="heading-3">利用方法</h3>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="/post/oscp-1/">
+              <h3 class="post-title">
+                OSCP-Medtech
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Backdoor
+  <a class="rss" href="/feed.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  <script>console.log("\n%c ✦ Gridea Pro v1.3.0-beta.2 %c · Theme: notes v1.2.0 · https://gridea.pro %c\n","color:#fadfa3;background:#111111;padding:9px 14px;border-radius:4px 0 0 4px;font-weight:500;font-size:12px","color:#e05c00;background:#fff3ec;padding:9px 14px;border-radius:0 4px 4px 0;font-size:11px","")</script>
+</body>
+</html>
