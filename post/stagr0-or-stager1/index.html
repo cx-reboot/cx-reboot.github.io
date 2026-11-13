@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>Stagr0 or Stager1 | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794544242">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="Stagr0 or Stager1 | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -16,28 +16,28 @@
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
-  <meta name="description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St&amp;hellip;">
-<link rel="canonical" href="blog.cxaqhq.cn/post/stagr0-or-stager1/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Stagr0 or Stager1","url":"blog.cxaqhq.cn/post/stagr0-or-stager1/","description":"序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St\u0026hellip;","datePublished":"2023-08-28T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/stagr0-or-stager1/","name":"Stagr0 or Stager1","position":2}]}</script>
+  <meta name="description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 &amp;hellip;">
+<link rel="canonical" href="https://blog.cxaqhq.cn/post/stagr0-or-stager1/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Stagr0 or Stager1","url":"https://blog.cxaqhq.cn/post/stagr0-or-stager1/","description":"序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 \u0026hellip;","datePublished":"2023-08-28T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/stagr0-or-stager1/","name":"Stagr0 or Stager1","position":2}]}</script>
 <meta property="og:title" content="Stagr0 or Stager1">
-<meta property="og:description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St&amp;hellip;">
-<meta property="og:url" content="blog.cxaqhq.cn/post/stagr0-or-stager1/">
+<meta property="og:description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 &amp;hellip;">
+<meta property="og:url" content="https://blog.cxaqhq.cn/post/stagr0-or-stager1/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
 <meta property="og:image" content="/images/avatar.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="blog.cxaqhq.cn/post/stagr0-or-stager1/">
+<meta name="twitter:url" content="https://blog.cxaqhq.cn/post/stagr0-or-stager1/">
 <meta name="twitter:title" content="Stagr0 or Stager1">
-<meta name="twitter:description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 Stager0 加载St&amp;hellip;">
+<meta name="twitter:description" content="序言 何为 Stager0 ？ 我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。 Stager0 和Stager1 区别？ Stager0 功能简单，Stager1功能复杂。 &amp;hellip;">
 <meta name="twitter:image" content="/images/avatar.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="blog.cxaqhq.cn">
-  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544242" alt="">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -118,21 +118,24 @@
                 4 分钟阅读
               </span>
               
+                <a href="/category/c2-av/" class="post-tag post-category">
+                  C2 与免杀
+                </a>
+              
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <h2 id="heading">序言</h2>
+                <!-- more -->
+<h2 id="heading">序言</h2>
 <ul>
-<li>
-<p>何为 Stager0 ？</p>
+<li>何为 Stager0 ？
 <ul>
 <li>我们都知道Stager 是分阶段意思，在渗透测试中我们在不同对阶段需要不同功能，而在C2中也是这样的，可以分为建立立足点、内网渗透、持久化控制等阶段，而Stager0 则代表建立立足点和持久化控制阶段。</li>
 </ul>
 </li>
-<li>
-<p>Stager0 和Stager1 区别？</p>
+<li>Stager0 和Stager1 区别？
 <ul>
 <li>Stager0 功能简单，Stager1功能复杂。</li>
 <li>Stager0 加载Stager1。</li>
@@ -237,8 +240,8 @@ TARICK 为任务ID
 </code></pre>
 <h4 id="heading-7">文件传输</h4>
 <blockquote>
-<p>文件传输分为上传文件与下载文件，数据由4部分组成（本地文件名、远程文件名、文件长度、文件内容）<br />
-数据由后段程序进行解析</p>
+<p>文件传输分为上传文件与下载文件，数据由4部分组成（本地文件名、远程文件名、文件长度、文件内容）</p>
+<p>数据由后段程序进行解析</p>
 </blockquote>
 <h5 id="heading-8">文件上传</h5>
 <pre><code>// 查询任务

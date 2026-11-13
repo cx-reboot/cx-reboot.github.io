@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>劫持升级漏洞 | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794544242">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="劫持升级漏洞 | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -16,28 +16,28 @@
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
-  <meta name="description" content="前言 之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。 环境准备 安装各种软件的PC（这里就用自己的电脑做演示） Fiddler抓包工具 开始抓包 这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。 发现特殊请求 Seay 源代码审计系统居然对外发起请求，而且还是Ht&amp;hellip;">
-<link rel="canonical" href="blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"劫持升级漏洞","url":"blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/","description":"前言 之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。 环境准备 安装各种软件的PC（这里就用自己的电脑做演示） Fiddler抓包工具 开始抓包 这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。 发现特殊请求 Seay 源代码审计系统居然对外发起请求，而且还是Ht\u0026hellip;","datePublished":"2023-04-04T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/","name":"劫持升级漏洞","position":2}]}</script>
+  <meta name="description" content="前言">
+<link rel="canonical" href="https://blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"劫持升级漏洞","url":"https://blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/","description":"前言","datePublished":"2023-04-04T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/","name":"劫持升级漏洞","position":2}]}</script>
 <meta property="og:title" content="劫持升级漏洞">
-<meta property="og:description" content="前言 之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。 环境准备 安装各种软件的PC（这里就用自己的电脑做演示） Fiddler抓包工具 开始抓包 这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。 发现特殊请求 Seay 源代码审计系统居然对外发起请求，而且还是Ht&amp;hellip;">
-<meta property="og:url" content="blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/">
+<meta property="og:description" content="前言">
+<meta property="og:url" content="https://blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
 <meta property="og:image" content="/images/avatar.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/">
+<meta name="twitter:url" content="https://blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/">
 <meta name="twitter:title" content="劫持升级漏洞">
-<meta name="twitter:description" content="前言 之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。 环境准备 安装各种软件的PC（这里就用自己的电脑做演示） Fiddler抓包工具 开始抓包 这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。 发现特殊请求 Seay 源代码审计系统居然对外发起请求，而且还是Ht&amp;hellip;">
+<meta name="twitter:description" content="前言">
 <meta name="twitter:image" content="/images/avatar.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="blog.cxaqhq.cn">
-  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544242" alt="">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -118,50 +118,55 @@
                 8 分钟阅读
               </span>
               
+                <a href="/category/intranet/" class="post-tag post-category">
+                  内网渗透
+                </a>
+              
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <p>前言<br />
-之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。</p>
+                <p>前言</p>
+<!-- more -->
+<p>之前一直只是听说劫持升级，但是一直没有机会尝试，正好趁这次公司内部演练，刚好去挖掘一下。</p>
 <p>环境准备</p>
 <ul>
 <li>安装各种软件的PC（这里就用自己的电脑做演示）</li>
 <li>Fiddler抓包工具</li>
 </ul>
-<p>开始抓包<br />
-这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。</p>
-<p>发现特殊请求<br />
-Seay 源代码审计系统居然对外发起请求，而且还是Http协议的，感觉这里有戏。<br />
-[图片]<br />
-尝试返回内容<br />
-这里尝试对请求的/tools/ver.txt进行一个返回特殊内容，这里新建一个ver.txt 内容随便写，我这里写的是“cxaqhq v1.0”。<br />
-[图片]<br />
-然后配置自动回复器，选择我们指定的ver.txt进行回复，然后重新打开Seay 源代码审计系统，进行下一步检查。<br />
-[图片]<br />
-直接出现弹窗提示，而且提示内容正是我们在ver.txt中输入的内容，这里我们选择升级。<br />
-[图片]<br />
-这时候程序会开启一个新的弹窗，并且提示让我们结束当前进程进行升级，这里我们也选择是，然后就提示升级失败了，不要慌，去看看Fiddler那边情况。<br />
-[图片]<br />
-[图片]<br />
-发现upgrade请求<br />
-咱们发现，这个比第一次多了一个下载ZIP文件的请求，而且根据路径来说还是upgrade，兄弟们这里感觉有戏啊，咱们也给这边响应返回一个内容，内容就是把计算器给它压缩成ZIP文件。<br />
-[图片]<br />
-尝试返回计算器<br />
-现在咱们就有2个自动回复内容了，继续打开程序看看流程。<br />
-[图片]<br />
-现在出现了文件下载成功了，然后也解压成功了，我们重新启动程序，看看我们的计算器能否被执行。<br />
-[图片]<br />
-这里计算器没有被执行，我们找到程序的安装路径，在安装路径里面我们发现了new.zip和calc.exe，这不就是我们刚刚返回给第二个请求包内容吗？现在我们已经能劫持让他下载文件了，只要这个文件能执行那么这个流程就打通了。<br />
-[图片]</p>
-<p>分析程序代码<br />
-幸运的是，我们能找到Seay 源代码审计系统源码，下载地址如下所示，我们可以直接分析程序源代码去观察程序更新的逻辑。<br />
-下载地址：https://github.com/f1tz/cnseay.git<br />
-这里大家容易有一个误区，就是直接在Seay主项目中去找更新逻辑，其实更新逻辑并不在主项目里面，而是在upgrade项目里面，我们很容易能找到对应的更新代码。<br />
-[图片]<br />
-分析下载与解压逻辑<br />
-可以从代码中看到下载的Url地址是在代码中写死的，然后会把下载的文件存储到当前目录并重命名为new.zip</p>
+<p>开始抓包</p>
+<p>这个时候就打开各种软件，然后去Fd那边检查抓到的流量包，一个个软件的打开，如果用检查更新的按钮去去点击一下，一个个去找。</p>
+<p>发现特殊请求</p>
+<p>Seay 源代码审计系统居然对外发起请求，而且还是Http协议的，感觉这里有戏。</p>
+<p>[图片]</p>
+<p>尝试返回内容</p>
+<p>这里尝试对请求的/tools/ver.txt进行一个返回特殊内容，这里新建一个ver.txt 内容随便写，我这里写的是“cxaqhq v1.0”。</p>
+<p>[图片]</p>
+<p>然后配置自动回复器，选择我们指定的ver.txt进行回复，然后重新打开Seay 源代码审计系统，进行下一步检查。</p>
+<p>[图片]</p>
+<p>直接出现弹窗提示，而且提示内容正是我们在ver.txt中输入的内容，这里我们选择升级。</p>
+<p>[图片]</p>
+<p>这时候程序会开启一个新的弹窗，并且提示让我们结束当前进程进行升级，这里我们也选择是，然后就提示升级失败了，不要慌，去看看Fiddler那边情况。</p>
+<p>[图片]</p>
+<p>[图片]</p>
+<p>发现upgrade请求</p>
+<p>咱们发现，这个比第一次多了一个下载ZIP文件的请求，而且根据路径来说还是upgrade，兄弟们这里感觉有戏啊，咱们也给这边响应返回一个内容，内容就是把计算器给它压缩成ZIP文件。</p>
+<p>[图片]</p>
+<p>尝试返回计算器</p>
+<p>现在咱们就有2个自动回复内容了，继续打开程序看看流程。</p>
+<p>[图片]</p>
+<p>现在出现了文件下载成功了，然后也解压成功了，我们重新启动程序，看看我们的计算器能否被执行。</p>
+<p>[图片]</p>
+<p>这里计算器没有被执行，我们找到程序的安装路径，在安装路径里面我们发现了new.zip和calc.exe，这不就是我们刚刚返回给第二个请求包内容吗？现在我们已经能劫持让他下载文件了，只要这个文件能执行那么这个流程就打通了。</p>
+<p>[图片]</p>
+<p>分析程序代码</p>
+<p>幸运的是，我们能找到Seay 源代码审计系统源码，下载地址如下所示，我们可以直接分析程序源代码去观察程序更新的逻辑。</p>
+<p>下载地址：https://github.com/f1tz/cnseay.git</p>
+<p>这里大家容易有一个误区，就是直接在Seay主项目中去找更新逻辑，其实更新逻辑并不在主项目里面，而是在upgrade项目里面，我们很容易能找到对应的更新代码。</p>
+<p>[图片]</p>
+<p>分析下载与解压逻辑</p>
+<p>可以从代码中看到下载的Url地址是在代码中写死的，然后会把下载的文件存储到当前目录并重命名为new.zip</p>
 <pre><code>string DownURL = &quot;http://www.cnseay.com/tools/upgrade/codesafecheck.zip&quot;;
 string filename = Application.StartupPath + &quot;\\new.zip&quot;;
 </code></pre>
@@ -237,8 +242,8 @@ string filename = Application.StartupPath + &quot;\\new.zip&quot;;
 
         }
 </code></pre>
-<p>利用方式1，Dll劫持(未利用成功)<br />
-因为下载结束后，程序会重新启动，而重启的exe名称已经写死了，这里我们可以尝试寻找Seay源代码审计系统.exe是否存在Dll劫持漏洞，我们可以下载恶意Dll文件到当前目录，当“Seay源代码审计系统.exe”启动时会自动加载我们的恶意Dll</p>
+<p>利用方式1，Dll劫持(未利用成功)</p>
+<p>因为下载结束后，程序会重新启动，而重启的exe名称已经写死了，这里我们可以尝试寻找Seay源代码审计系统.exe是否存在Dll劫持漏洞，我们可以下载恶意Dll文件到当前目录，当“Seay源代码审计系统.exe”启动时会自动加载我们的恶意Dll</p>
 <pre><code>     DownloadFile();
             if (MessageBox.Show(&quot;是否重新启动程序&quot;, &quot;提示&quot;, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
@@ -252,15 +257,15 @@ string filename = Application.StartupPath + &quot;\\new.zip&quot;;
             }
         }
 </code></pre>
-<p>通过Windbg发现“Seay源代码审计系统.exe”会调用当前目录下MyScript.dll，根据代码发现是CSPluginKernel项目编译的，但是此Dll没有导出表，无法利用，欢迎各位大佬指点一下。<br />
-[图片]<br />
-[图片]</p>
-<p>利用方式2，在主程序添加后门功能<br />
-我们直接修改“Seay源代码审计系统.exe”代码并在中加入恶意代码，通过更新下载对原有对exe进行替换，当程序重启的时候就可以运行我们的恶意代码了。<br />
-[图片]<br />
-在Main函数加入弹窗函数，编译、运行，弹窗成功触发。</p>
-<p>思考<br />
-随着使用Https协议的软件越来越多，此类漏洞现在越来越少了，但是我们还是需要提高警惕，相信还是有不少人还在使用这款工具把，我也在使用，如果使用过程中受到DNS劫持，或者请求的www.cnseay.com域名被攻击者抢注，很容易就被植入木马了，建议大家使用的时候断网操作。</p>
+<p>通过Windbg发现“Seay源代码审计系统.exe”会调用当前目录下MyScript.dll，根据代码发现是CSPluginKernel项目编译的，但是此Dll没有导出表，无法利用，欢迎各位大佬指点一下。</p>
+<p>[图片]</p>
+<p>[图片]</p>
+<p>利用方式2，在主程序添加后门功能</p>
+<p>我们直接修改“Seay源代码审计系统.exe”代码并在中加入恶意代码，通过更新下载对原有对exe进行替换，当程序重启的时候就可以运行我们的恶意代码了。</p>
+<p>[图片]</p>
+<p>在Main函数加入弹窗函数，编译、运行，弹窗成功触发。</p>
+<p>思考</p>
+<p>随着使用Https协议的软件越来越多，此类漏洞现在越来越少了，但是我们还是需要提高警惕，相信还是有不少人还在使用这款工具把，我也在使用，如果使用过程中受到DNS劫持，或者请求的www.cnseay.com域名被攻击者抢注，很容易就被植入木马了，建议大家使用的时候断网操作。</p>
 
               </div>
               <div class="toc-container">

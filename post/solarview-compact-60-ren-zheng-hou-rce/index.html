@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>SolarView Compact 6.0 认证后RCE | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794544242">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="SolarView Compact 6.0 认证后RCE | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -16,28 +16,28 @@
     <meta name="keywords" content="IoT漏洞挖掘" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
-  <meta name="description" content="前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。\ ![](/post-images/16760936486&amp;hellip;">
-<link rel="canonical" href="blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SolarView Compact 6.0 认证后RCE","url":"blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/","description":"前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。\\ ![](/post-images/16760936486\u0026hellip;","datePublished":"2023-02-11T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/","name":"SolarView Compact 6.0 认证后RCE","position":2}]}</script>
+  <meta name="description" content="前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。 ![](/pos&amp;hellip;">
+<link rel="canonical" href="https://blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SolarView Compact 6.0 认证后RCE","url":"https://blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/","description":"前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。 ![](/pos\u0026hellip;","datePublished":"2023-02-11T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/","name":"SolarView Compact 6.0 认证后RCE","position":2}]}</script>
 <meta property="og:title" content="SolarView Compact 6.0 认证后RCE">
-<meta property="og:description" content="前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。\ ![](/post-images/16760936486&amp;hellip;">
-<meta property="og:url" content="blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/">
+<meta property="og:description" content="前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。 ![](/pos&amp;hellip;">
+<meta property="og:url" content="https://blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
 <meta property="og:image" content="/images/avatar.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/">
+<meta name="twitter:url" content="https://blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/">
 <meta name="twitter:title" content="SolarView Compact 6.0 认证后RCE">
-<meta name="twitter:description" content="前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。\ ![](/post-images/16760936486&amp;hellip;">
+<meta name="twitter:description" content="前言 之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。 漏洞点 通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。 ![](/pos&amp;hellip;">
 <meta name="twitter:image" content="/images/avatar.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="blog.cxaqhq.cn">
-  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544242" alt="">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -118,6 +118,10 @@
                 2 分钟阅读
               </span>
               
+                <a href="/category/wireless-iot/" class="post-tag post-category">
+                  无线与 IoT
+                </a>
+              
               
                 <a href="/tag/iot/" class="post-tag">
                   # IoT漏洞挖掘
@@ -127,28 +131,25 @@
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <h2 id="heading">前言</h2>
+                <!-- more -->
+<h2 id="heading">前言</h2>
 <p>之前在 SolarView Compact 6.0 设备上挖了一些漏洞，不过都是PHP页面的，后来发现设备有一些Cgi文件，就看看也没有漏洞，结果真的发现一个，内容较为简单，此文仅作记录。</p>
 <h2 id="heading-1">漏洞点</h2>
-<p>通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。\</p>
+<p>通过查System函数调用发现的。byte_148D0 值是由51行v2得到的，v2是由 off_12A68得到的。</p>
 <p><img src="/post-images/1676093648692.png" alt="" /></p>
-<p><br />
-off_12A68 里面疑似记录是密码内容。\</p>
+<p>off_12A68 里面疑似记录是密码内容。</p>
 <p><img src="/post-images/1676094215273.png" alt="" /></p>
 <h2 id="heading-2">漏洞验证</h2>
-<p>直接访问设备Cgi文件提示401登录认证，根据之前的PHP漏洞获取设备权限，然后查看Web服务组件，发现设备是lighttpd ，根据进程找到lighttpd配置文件，发现记录密码位置。\</p>
+<p>直接访问设备Cgi文件提示401登录认证，根据之前的PHP漏洞获取设备权限，然后查看Web服务组件，发现设备是lighttpd ，根据进程找到lighttpd配置文件，发现记录密码位置。</p>
 <p><img src="/post-images/1676094509705.png" alt="" /></p>
-<p>\</p>
 <p><img src="/post-images/1676094525114.png" alt="" /></p>
-<p><br />
-内容如下，加密方式为 des(unix) 。</p>
+<p>内容如下，加密方式为 des(unix) 。</p>
 <pre><code>admin:OmAOSAs8DVjsc
 solar:RdE1VkNO5r4pY
 </code></pre>
-<p>根据cmd5查询得出密码并登录，疑似添加用户页面。\</p>
+<p>根据cmd5查询得出密码并登录，疑似添加用户页面。</p>
 <p><img src="/post-images/1676094636556.png" alt="" /></p>
-<p><br />
-使用Burp抓包，构造PoC进行验证\</p>
+<p>使用Burp抓包，构造PoC进行验证</p>
 <p><img src="/post-images/1676094774818.png" alt="" /></p>
 <p>PoC 请求</p>
 <pre><code>POST /cgi-bin/p1_system_user.cgi HTTP/1.1

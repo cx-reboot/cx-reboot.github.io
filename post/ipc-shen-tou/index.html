@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>IPC渗透 | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794544242">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="IPC渗透 | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -16,28 +16,28 @@
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
-  <meta name="description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况 n...">
-<link rel="canonical" href="blog.cxaqhq.cn/post/ipc-shen-tou/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"IPC渗透","url":"blog.cxaqhq.cn/post/ipc-shen-tou/","description":"自启动目录 #系统自启动 C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp #用户自启动 c:\\users\\用户名\\appdata\\roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup 查看本机连接共享情况 n...","datePublished":"2023-05-06T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/ipc-shen-tou/","name":"IPC渗透","position":2}]}</script>
+  <meta name="description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况&amp;hellip;">
+<link rel="canonical" href="https://blog.cxaqhq.cn/post/ipc-shen-tou/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"IPC渗透","url":"https://blog.cxaqhq.cn/post/ipc-shen-tou/","description":"自启动目录 #系统自启动 C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp #用户自启动 c:\\users\\用户名\\appdata\\roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup 查看本机连接共享情况\u0026hellip;","datePublished":"2023-05-06T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/ipc-shen-tou/","name":"IPC渗透","position":2}]}</script>
 <meta property="og:title" content="IPC渗透">
-<meta property="og:description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况 n...">
-<meta property="og:url" content="blog.cxaqhq.cn/post/ipc-shen-tou/">
+<meta property="og:description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况&amp;hellip;">
+<meta property="og:url" content="https://blog.cxaqhq.cn/post/ipc-shen-tou/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
 <meta property="og:image" content="/images/avatar.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="blog.cxaqhq.cn/post/ipc-shen-tou/">
+<meta name="twitter:url" content="https://blog.cxaqhq.cn/post/ipc-shen-tou/">
 <meta name="twitter:title" content="IPC渗透">
-<meta name="twitter:description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况 n...">
+<meta name="twitter:description" content="自启动目录 #系统自启动 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp #用户自启动 c:\users\用户名\appdata\roaming\Microsoft\Windows\Start Menu\Programs\Startup 查看本机连接共享情况&amp;hellip;">
 <meta name="twitter:image" content="/images/avatar.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="blog.cxaqhq.cn">
-  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544242" alt="">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -118,12 +118,17 @@
                 3 分钟阅读
               </span>
               
+                <a href="/category/intranet/" class="post-tag post-category">
+                  内网渗透
+                </a>
+              
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <h3 id="heading">自启动目录</h3>
+                <!-- more -->
+<h3 id="heading">自启动目录</h3>
 <pre><code>#系统自启动
 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
 

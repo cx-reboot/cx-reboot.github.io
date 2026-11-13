@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>Exchange 邮件导出 | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794544242">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="Exchange 邮件导出 | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -16,28 +16,28 @@
     <meta name="keywords" content="渗透测试" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
-  <meta name="description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...">
-<link rel="canonical" href="blog.cxaqhq.cn/post/exchange-dump-emali/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Exchange 邮件导出","url":"blog.cxaqhq.cn/post/exchange-dump-emali/","description":"常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...","image":"/post-images/exchange-dump-emali.png","datePublished":"2023-10-16T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/exchange-dump-emali/","name":"Exchange 邮件导出","position":2}]}</script>
+  <meta name="description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查&amp;hellip;">
+<link rel="canonical" href="https://blog.cxaqhq.cn/post/exchange-dump-emali/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Exchange 邮件导出","url":"https://blog.cxaqhq.cn/post/exchange-dump-emali/","description":"常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查\u0026hellip;","image":"/post-images/exchange-dump-emali.png","datePublished":"2023-10-16T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/exchange-dump-emali/","name":"Exchange 邮件导出","position":2}]}</script>
 <meta property="og:title" content="Exchange 邮件导出">
-<meta property="og:description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...">
-<meta property="og:url" content="blog.cxaqhq.cn/post/exchange-dump-emali/">
+<meta property="og:description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查&amp;hellip;">
+<meta property="og:url" content="https://blog.cxaqhq.cn/post/exchange-dump-emali/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
 <meta property="og:image" content="/post-images/exchange-dump-emali.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="blog.cxaqhq.cn/post/exchange-dump-emali/">
+<meta name="twitter:url" content="https://blog.cxaqhq.cn/post/exchange-dump-emali/">
 <meta name="twitter:title" content="Exchange 邮件导出">
-<meta name="twitter:description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查看邮件导出请求 Get-MailboxExp...">
+<meta name="twitter:description" content="常用命令 连接服务器 Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn 查看邮箱用户 Get-Mailbox 获取所有邮箱名称 Get-Mailbox -ResultSize unlimited 查&amp;hellip;">
 <meta name="twitter:image" content="/post-images/exchange-dump-emali.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="blog.cxaqhq.cn">
-  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544242" alt="">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -118,6 +118,10 @@
                 1 分钟阅读
               </span>
               
+                <a href="/category/exchange/" class="post-tag post-category">
+                  Exchange 安全
+                </a>
+              
               
                 <a href="/tag/pentest/" class="post-tag">
                   # 渗透测试
@@ -129,7 +133,8 @@
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <h2 id="heading">常用命令</h2>
+                <!-- more -->
+<h2 id="heading">常用命令</h2>
 <h3 id="heading-1">连接服务器</h3>
 <pre><code>Add-PSSnapin Microsoft.Exchange.Management.PowerShell.SnapIn
 </code></pre>

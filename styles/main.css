@@ -975,6 +975,94 @@ td {
   font-weight: bold;
 }
 
+/* ==== 防溢出补丁（长代码行 / 宽图 / 表格）==== */
+.post-content pre,
+.post-abstract pre,
+article pre {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.post-content img,
+.post-abstract img,
+article img {
+  max-width: 100%;
+  height: auto;
+}
+.post-content table,
+.post-abstract table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+.post-content,
+.post-abstract {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 首页摘要限高，避免整篇正文（含长代码）铺满列表 */
+.post-abstract {
+  max-height: 14em;
+  overflow: hidden;
+  position: relative;
+}
+.post-abstract::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3em;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
+}
+
+/* ==== 代码块外观补丁：无语言标注的块也给底色/边框/圆角，长行可滚动 ==== */
+.post-detail .post .post-content pre,
+.post-abstract pre,
+article pre {
+  background: #f6f8fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+.post-detail .post .post-content pre code,
+.post-abstract pre code,
+article pre code {
+  display: block;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 0.9em;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #24292f;
+}
+/* 已带高亮(pre code.hljs)的块沿用深色主题，不被上面的浅底覆盖 */
+.post-detail .post .post-content pre:has(code.hljs),
+.post-abstract pre:has(code.hljs) {
+  background: #282c34;
+  border-color: #3a3f4b;
+  padding: 0;
+}
+.post-abstract pre:has(code.hljs) code.hljs {
+  padding: 14px 16px;
+}
+
+/* ASCII 框线表格等需要保持对齐的块：不折行，横向滚动 */
+.post-detail .post .post-content pre code.language-text,
+.post-abstract pre code.language-text {
+  white-space: pre;
+}
+/* 滚动条可见，避免误以为内容被截断 */
+.post-detail .post .post-content pre::-webkit-scrollbar,
+.post-abstract pre::-webkit-scrollbar { height: 8px; }
+.post-detail .post .post-content pre::-webkit-scrollbar-thumb,
+.post-abstract pre::-webkit-scrollbar-thumb { background: #c3c9d0; border-radius: 4px; }
+.post-detail .post .post-content pre::-webkit-scrollbar-track,
+.post-abstract pre::-webkit-scrollbar-track { background: #eceef1; border-radius: 4px; }
+
 /* style-override */
 
       .post-container .post .post-title {

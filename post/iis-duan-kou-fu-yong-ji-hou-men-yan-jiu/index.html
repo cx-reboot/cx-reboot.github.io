@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>IIS 端口复用及后门研究 | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794544242">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="IIS 端口复用及后门研究 | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -16,28 +16,28 @@
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
-  <meta name="description" content="前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=&amp;quot;true&amp;quot;} 这个命令将启用 WinRM 服务器上的证书...">
-<link rel="canonical" href="blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"IIS 端口复用及后门研究","url":"blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/","description":"前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=\u0026quot;true\u0026quot;} 这个命令将启用 WinRM 服务器上的证书...","datePublished":"2023-07-12T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/","name":"IIS 端口复用及后门研究","position":2}]}</script>
+  <meta name="description" content="前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=&amp;quot;true&amp;quot;} 这个命令将启用 WinRM ...">
+<link rel="canonical" href="https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"IIS 端口复用及后门研究","url":"https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/","description":"前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=\u0026quot;true\u0026quot;} 这个命令将启用 WinRM ...","datePublished":"2023-07-12T00:00:00+08:00","dateModified":"2026-11-13T12:24:52+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/","name":"IIS 端口复用及后门研究","position":2}]}</script>
 <meta property="og:title" content="IIS 端口复用及后门研究">
-<meta property="og:description" content="前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=&amp;quot;true&amp;quot;} 这个命令将启用 WinRM 服务器上的证书...">
-<meta property="og:url" content="blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
+<meta property="og:description" content="前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=&amp;quot;true&amp;quot;} 这个命令将启用 WinRM ...">
+<meta property="og:url" content="https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
 <meta property="og:image" content="/images/avatar.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
+<meta name="twitter:url" content="https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/">
 <meta name="twitter:title" content="IIS 端口复用及后门研究">
-<meta name="twitter:description" content="前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=&amp;quot;true&amp;quot;} 这个命令将启用 WinRM 服务器上的证书...">
+<meta name="twitter:description" content="前言 端口复用 IIS 端口复用 IIS后门 实战 Winrm + 证书认证 在命令提示符（cmd）中启用 WinRM 服务器上的证书身份验证，可以使用以下命令： winrm set winrm/config/service/auth @{Certificate=&amp;quot;true&amp;quot;} 这个命令将启用 WinRM ...">
 <meta name="twitter:image" content="/images/avatar.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="blog.cxaqhq.cn">
-  <img class="avatar" src="blog.cxaqhq.cn/images/avatar.png?v=1794544242" alt="">
+  <a href="https://blog.cxaqhq.cn">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -118,12 +118,17 @@
                 4 分钟阅读
               </span>
               
+                <a href="/category/c2-av/" class="post-tag post-category">
+                  C2 与免杀
+                </a>
+              
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <h2 id="heading">前言</h2>
+                <!-- more -->
+<h2 id="heading">前言</h2>
 <h2 id="heading-1">端口复用</h2>
 <h2 id="iis-">IIS 端口复用</h2>
 <h3 id="iis">IIS后门</h3>
@@ -150,51 +155,45 @@ winrm set winrm/config/service/auth @{Certificate=&quot;false&quot;}
 </code></pre>
 <p>在运行 WinRM 的服务器上使用 cmd 生成自签名证书的方法如下：</p>
 <ol>
-<li>
-<p>打开命令提示符（cmd）。</p>
-</li>
-<li>
-<p>输入以下命令来生成自签名证书：</p>
-</li>
+<li>打开命令提示符（cmd）。</li>
+<li>输入以下命令来生成自签名证书：</li>
 </ol>
-<!-- -->
 <pre><code>makecert -r -pe -n &quot;CN=MyServer&quot; -b 01/01/2022 -e 01/01/2025 -sky exchange -ss My
 </code></pre>
 <p>其中，“CN=MyServer”是证书的主题名称，可以根据需要进行更改。此外，还可以更改证书的有效期和存储位置。</p>
-<ol start="3">
+<ol>
 <li>输入以下命令来查看新生成的证书：</li>
 </ol>
-<!-- -->
 <pre><code>certutil -store My
 </code></pre>
 <p>此命令将列出存储在“我的”证书存储区中的证书，包括刚刚生成的自签名证书。</p>
 <p>现在，您已经在运行 WinRM 的服务器上生成了一个自签名证书。请注意，自签名证书不受受信任的根证书颁发机构的信任，因此在生产环境中使用自签名证书时，请确保将其导入到受信任的根证书颁发机构存储中或由受信任的根证书颁发机构颁发的证书。</p>
-<ol start="2">
+<ol>
 <li>将证书导出为 PFX 文件。</li>
 </ol>
 <p>使用 PowerShell cmdlet <code>Export-PfxCertificate</code> 将证书导出为 PFX 文件。例如，以下命令将证书导出到 C:\MyCertificate.pfx 文件中：</p>
 <pre><code>Export-PfxCertificate -Cert &quot;Cert:\LocalMachine\My\&lt;Thumbprint&gt;&quot; -FilePath C:\MyCertificate.pfx -Password (ConvertTo-SecureString -String &quot;&lt;Password&gt;&quot; -Force –AsPlainText)
 </code></pre>
 <p>其中 <code>&lt;Thumbprint&gt;</code> 是证书的指纹，<code>&lt;Password&gt;</code> 是用于保护导出文件的密码。</p>
-<ol start="3">
+<ol>
 <li>在需要进行后门访问的客户端上，导入 PFX 文件。</li>
 </ol>
 <p>使用 PowerShell cmdlet <code>Import-PfxCertificate</code> 将 PFX 文件导入到客户端计算机的证书存储中。例如，以下命令将 C:\MyCertificate.pfx 文件导入到客户端计算机的个人证书存储中：</p>
 <pre><code>Import-PfxCertificate -FilePath C:\MyCertificate.pfx -CertStoreLocation &quot;Cert:\CurrentUser\My&quot; -Password (ConvertTo-SecureString -String &quot;&lt;Password&gt;&quot; -Force –AsPlainText)
 </code></pre>
-<ol start="4">
+<ol>
 <li>配置 WinRM 服务器以使用证书认证。</li>
 </ol>
 <p>使用 PowerShell cmdlet <code>Set-Item</code> 配置 WinRM 服务器以使用证书认证。例如，以下命令将 WinRM 服务器配置为使用证书认证：</p>
 <pre><code>Set-Item -Path WSMan:\localhost\Service\Auth\Certificate -Value $true
 </code></pre>
-<ol start="5">
+<ol>
 <li>在客户端上，配置 WinRM 以使用证书身份验证。</li>
 </ol>
 <p>使用 PowerShell cmdlet <code>Set-Item</code> 配置客户端上的 WinRM 以使用证书身份验证。例如，以下命令将客户端上的 WinRM 配置为使用证书身份验证：</p>
 <pre><code>Set-Item -Path WSMan:\localhost\Client\Auth\Certificate -Value $true
 </code></pre>
-<ol start="6">
+<ol>
 <li>使用 PowerShell 连接到 WinRM 服务器。</li>
 </ol>
 <p>使用 PowerShell cmdlet <code>Enter-PSSession</code> 或 <code>New-PSSession</code>，使用 <code>-CertificateThumbprint</code> 参数指定证书的指纹，连接到 WinRM 服务器。例如，以下命令将使用证书身份验证连接到 WinRM 服务器：</p>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: blog.cxaqhq.cn/sitemap.xml
+Sitemap: https://blog.cxaqhq.cn/sitemap.xml
