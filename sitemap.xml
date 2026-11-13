@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://blog.cxaqhq.cn/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,12 +11,18 @@
     <lastmod>2026-11-13T12:24:52+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-cobalt-strike-screenhost-shu-ju-ge-shi.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/go-fan-she-dll-zhu-ru/</loc>
     <lastmod>2026-11-13T12:24:52+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-go-fan-she-dll-zhu-ru.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/exchange-user-brute-gong-ju/</loc>
@@ -95,382 +101,517 @@
     <lastmod>2026-11-13T12:24:52+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-skylark.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/cobalt-strike-dns-beacon/</loc>
     <lastmod>2026-11-13T12:24:52+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-cobalt-strike-dns-beacon.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/stagr0-or-stager1/</loc>
     <lastmod>2026-11-13T12:24:52+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-stagr0-or-stager1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/iis-duan-kou-fu-yong-ji-hou-men-yan-jiu/</loc>
     <lastmod>2026-11-13T12:24:52+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-iis-duan-kou-fu-yong-ji-hou-men-yan-jiu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/naabu-duan-kou-sao-miao/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-naabu-duan-kou-sao-miao.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/windows-sc-ming-ling-fu-wu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-windows-sc-ming-ling-fu-wu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/mssql-shou-gong-zhu-ru/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-mssql-shou-gong-zhu-ru.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/crackmapexec/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-crackmapexec.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/impacket/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-impacket.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/ipc-shen-tou/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-ipc-shen-tou.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/yu-ti-quan-lou-dong/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-yu-ti-quan-lou-dong.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-1/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-relia/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-relia.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/jie-chi-sheng-ji-lou-dong/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-jie-chi-sheng-ji-lou-dong.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/windows-rdp-ri-zhi-shan-chu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-windows-rdp-ri-zhi-shan-chu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/windows-cmd-sou-suo-bing-shan-chu-wen-jian/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-windows-cmd-sou-suo-bing-shan-chu-wen-jian.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/windows-mi-ma-du-qu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-windows-mi-ma-du-qu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/wu-xian-an-quan-pen-210/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-wu-xian-an-quan-pen-210.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/shen-tou-ce-shi-zhi-nei-wang-shen-tou-d-link/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-shen-tou-ce-shi-zhi-nei-wang-shen-tou-d-link.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/nei-wang-cun-huo-zhu-ji-tan-ce/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-nei-wang-cun-huo-zhu-ji-tan-ce.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/windows-hou-shen-tou-zhi-wen-jian-ya-suo/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-windows-hou-shen-tou-zhi-wen-jian-ya-suo.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/shen-tou-ce-shi-zhi-nei-wang-shen-tou-ad-yu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-shen-tou-ce-shi-zhi-nei-wang-shen-tou-ad-yu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/shen-tou-ce-shi/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-shen-tou-ce-shi.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/windows-rdp-fan-zhi/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-windows-rdp-fan-zhi.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-fang-bing-du/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-fang-bing-du.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-metasploit/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-metasploit.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-shen-tou-ce-shi-zhi-nan/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-shen-tou-ce-shi-zhi-nan.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-huan-chong-qu-yi-chu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-huan-chong-qu-yi-chu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-web-cheng-xu-ping-gu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-web-cheng-xu-ping-gu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-wen-jian-chuan-shu/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-wen-jian-chuan-shu.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-zhu-dong-xin-xi-shou-ji/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-zhu-dong-xin-xi-shou-ji.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-lou-dong-sao-miao/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-lou-dong-sao-miao.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-quan-xian-ti-sheng/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-quan-xian-ti-sheng.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-fang-bing-du-gui-bi/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-fang-bing-du-gui-bi.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-osint/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-osint.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-lou-dong-sou-suo/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-lou-dong-sou-suo.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-empire/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-empire.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-duan-kou-zhuan-fa-yu-sui-dao/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-duan-kou-zhuan-fa-yu-sui-dao.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-ad-yu-shen-tou/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-ad-yu-shen-tou.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-mi-ma-gong-ji/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-mi-ma-gong-ji.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/oscp-ke-hu-duan-gong-ji/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-oscp-ke-hu-duan-gong-ji.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/solarview-compact-60-ren-zheng-hou-rce/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-solarview-compact-60-ren-zheng-hou-rce.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/OSCP%20Tools/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-OSCP-Tools.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/OSCP%20Linux%E5%9F%BA%E7%A1%80-2/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-OSCP-Linux%E5%9F%BA%E7%A1%80-2.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/OSCP%20Linux%E5%9F%BA%E7%A1%80-1/</loc>
     <lastmod>2026-11-13T12:24:53+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blog.cxaqhq.cn/post-images/cover-OSCP-Linux%E5%9F%BA%E7%A1%80-1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/post/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tags/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/archives/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tag/oscp/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tag/oswp/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tag/exchange/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tag/cobaltstrike/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tag/pentest/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/tag/iot/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/categories/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/oscp/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/labs/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/intranet/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/c2-av/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/exchange/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/wireless-iot/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/web-db/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/category/misc/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://blog.cxaqhq.cn/links/</loc>
-    <lastmod>2026-11-13T12:53:22+08:00</lastmod>
+    <lastmod>2026-11-13T12:59:56+08:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>

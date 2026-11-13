@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Gridea Pro 1.3.0-beta.2">
 <title>渗透测试之PhPMyadmin | CXAQHQ</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1794545602">
+<link rel="shortcut icon" href="/favicon.ico?v=1794545996">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="alternate" type="application/rss+xml" title="渗透测试之PhPMyadmin | CXAQHQ - RSS Feed" href="/feed.xml">
@@ -18,26 +18,26 @@
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
   <meta name="description" content="PhpMyadmin 弱口令 + GetShell 找网站目录 写一句话 Cobalt Strike + MSF 上线 信息收集 hash meterpreter &amp;gt; hashdump 1:1014:aad3b435b51404eeaad3b435b51404ee:b981e98078d75a930e4af39...">
 <link rel="canonical" href="https://blog.cxaqhq.cn/post/shen-tou-ce-shi/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"渗透测试之PhPMyadmin","url":"https://blog.cxaqhq.cn/post/shen-tou-ce-shi/","description":"PhpMyadmin 弱口令 + GetShell 找网站目录 写一句话 Cobalt Strike + MSF 上线 信息收集 hash meterpreter \u0026gt; hashdump 1:1014:aad3b435b51404eeaad3b435b51404ee:b981e98078d75a930e4af39...","datePublished":"2023-02-28T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"渗透测试之PhPMyadmin","url":"https://blog.cxaqhq.cn/post/shen-tou-ce-shi/","description":"PhpMyadmin 弱口令 + GetShell 找网站目录 写一句话 Cobalt Strike + MSF 上线 信息收集 hash meterpreter \u0026gt; hashdump 1:1014:aad3b435b51404eeaad3b435b51404ee:b981e98078d75a930e4af39...","image":"/post-images/cover-shen-tou-ce-shi.png","datePublished":"2023-02-28T00:00:00+08:00","dateModified":"2026-11-13T12:24:53+08:00","author":{"@type":"Person","name":"CXAQHQ"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/avatar.png"},"name":"CXAQHQ"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://blog.cxaqhq.cn","name":"CXAQHQ","position":1},{"@type":"ListItem","item":"https://blog.cxaqhq.cn/post/shen-tou-ce-shi/","name":"渗透测试之PhPMyadmin","position":2}]}</script>
 <meta property="og:title" content="渗透测试之PhPMyadmin">
 <meta property="og:description" content="PhpMyadmin 弱口令 + GetShell 找网站目录 写一句话 Cobalt Strike + MSF 上线 信息收集 hash meterpreter &amp;gt; hashdump 1:1014:aad3b435b51404eeaad3b435b51404ee:b981e98078d75a930e4af39...">
 <meta property="og:url" content="https://blog.cxaqhq.cn/post/shen-tou-ce-shi/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="CXAQHQ">
-<meta property="og:image" content="/images/avatar.png">
+<meta property="og:image" content="/post-images/cover-shen-tou-ce-shi.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://blog.cxaqhq.cn/post/shen-tou-ce-shi/">
 <meta name="twitter:title" content="渗透测试之PhPMyadmin">
 <meta name="twitter:description" content="PhpMyadmin 弱口令 + GetShell 找网站目录 写一句话 Cobalt Strike + MSF 上线 信息收集 hash meterpreter &amp;gt; hashdump 1:1014:aad3b435b51404eeaad3b435b51404ee:b981e98078d75a930e4af39...">
-<meta name="twitter:image" content="/images/avatar.png">
+<meta name="twitter:image" content="/post-images/cover-shen-tou-ce-shi.png">
 </head>
   <body>
     <div class="main">
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.cxaqhq.cn">
-  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545602" alt="">
+  <img class="avatar" src="https://blog.cxaqhq.cn/images/avatar.png?v=1794545996" alt="">
   </a>
   <h1 class="site-title">
     CXAQHQ
@@ -124,6 +124,8 @@
               
               
             </div>
+            
+              <img class="post-feature-image" src="/post-images/cover-shen-tou-ce-shi.png" alt="">
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
